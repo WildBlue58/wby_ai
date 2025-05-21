@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>朋友们</title>
+  </head>
+  <body>
+    <script>
+      const age = 19; //let age = 19;
+      const friends = [
+        {
+          name: "王",
+          hometown: "江西吉安",
+          college: "东华理工大学",
+        },
+        {
+          name: "李",
+          hometown: "上海",
+          college: "华东理工大学",
+        },
+      ];
+      friends.push({
+        name: "邹",
+        hometown: "江西宜春",
+        college: "东华理工大学",
+      });
+      const newFriends = friends;
+      newFriends.push({
+        name: "宋",
+        hometown: "宜春",
+        college: "东华理工大学",
+      });
+      // 栈 队列
+      newFriends.unshift({
+        name: "严",
+      });
+    </script>
+  </body>
+</html>

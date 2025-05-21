@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周杰伦介绍</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 60%; /* 调整图片宽度为容器的60% */
+            height: auto;
+            border-radius: 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>周杰伦介绍</h1>
+    </header>
+    <div class="container">
+        <div class="image-container">
+            <img src="images/Jay16.jpg" alt="周杰伦">
+        </div>
+        <p>周杰伦（Jay Chou），1979年1月18日出生于台湾省台北市，华语流行音乐男歌手、音乐制作人、演员、导演。</p>
+        <p>他以其独特的音乐风格和创作才华在华语乐坛享有盛誉，代表作包括《七里香》、《青花瓷》、《告白气球》等。</p>
+        <p>除了音乐，周杰伦还涉足电影和电视剧的拍摄，并执导了多部电影作品。</p>
+        <a href="https://baike.baidu.com/item/%E5%91%A8%E6%9D%B0%E4%BC%A6" class="button" target="_blank">了解更多</a>
+    </div>
+    <script>
+        document.querySelector('.button').addEventListener('click', function() {
+            alert('即将跳转到周杰伦的百度百科页面！');
+        });
+    </script>
+</body>
+</html>
