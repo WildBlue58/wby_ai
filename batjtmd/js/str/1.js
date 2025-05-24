@@ -3,11 +3,10 @@
  * @param {string} str 
  * @returns string
  */
-function reverseString(str) {
-    // str 是什么类型？ 字符串 简单数据类型 primitive 
-    return str.split('').reverse().join('')
-}
-
+// function reverseString(str) {
+//     // str 是什么类型？ 字符串 简单数据类型 primitive 
+//     return str.split('').reverse().join('')
+// }
 
 // 函数表达式
 // ES5 函数表达式
