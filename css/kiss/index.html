@@ -5,96 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      /* 设置页面背景为天蓝色，并移除默认边距 */
       body {
         background-color: skyblue;
         margin: 0;
       }
+      
+      /* 容器样式：用于居中放置两个表情球 */
       .container {
-        position: absolute;
+        position: absolute; /* 绝对定位 */
         top: 50%;
         left: 50%;
         width: 238px;
-        /* height: 238px; */
-        /* background: pink; */
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); /* 使容器完全居中 */
       }
+      
+      /* 表情球的基本样式 */
       .ball {
         width: 100px;
         height: 100px;
-        border: 8px solid black;
-        border-radius: 50%;
-        display: inline-block;
-        background-color: white;
-        vertical-align: top; /*vrt*/
-        position: relative; /*相对定位，子元素相对它定位*/
+        border: 8px solid black; /* 黑色边框 */
+        border-radius: 50%; /* 使形状变成圆形 */
+        display: inline-block; /* 使两个球可以并排显示 */
+        background-color: white; /* 白色背景 */
+        position: relative; /* 相对定位，作为面部特征的参考点 */
       }
+      
+      /* 面部区域样式 */
       .face {
         width: 70px;
         height: 30px;
         position: absolute;
         right: 0;
         top: 30px;
-        border-top-right-radius: 15px;
-        /* background-color: green; */
+        border-top-right-radius: 15px; /* 右上角圆角 */
       }
+      
+      /* 眼睛的基本样式 */
       .eye {
         width: 15px;
         height: 15px;
-        border-radius: 50%;
-        /* bdrs */
-        border-bottom: 5px solid black;
+        border-radius: 50%; /* 圆形眼睛 */
+        border-bottom: 5px solid black; /* 黑色下边框形成眼睛形状 */
         position: absolute;
       }
+      
+      /* 左眼位置 */
       .eye-l {
         left: 10px;
       }
+      
+      /* 右眼位置 */
       .eye-r {
         right: 5px;
       }
+      
+      /* 右侧表情球的特殊眼睛样式（向上看） */
       .eye-r-p {
-            border-top:5px solid black;
-            border-bottom:0px;
+        border-top: 5px solid black;
+        border-bottom: 0px;
       }
+      
+      /* 嘴巴样式 */
       .mouth {
         width: 30px;
         height: 14px;
         border-radius: 50%;
-        border-bottom: 5px solid black;
+        border-bottom: 5px solid black; /* 黑色下边框形成微笑 */
         position: absolute;
         bottom: -5px;
         transform: translate(3px);
         left: 0;
         right: 0;
-        margin: auto;
+        margin: auto; /* 水平居中 */
       }
     </style>
   </head>
   <body>
+    <!-- 主容器 -->
     <div class="container">
+      <!-- 左侧表情球 -->
       <div id="l-ball" class="ball">
         <div class="face face-l">
-          <div class="eye eye-l"></div>
-          <div class="eye eye-r"></div>
-          <div class="mouth"></div>
+          <div class="eye eye-l"></div> <!-- 左眼 -->
+          <div class="eye eye-r"></div> <!-- 右眼 -->
+          <div class="mouth"></div> <!-- 嘴巴 -->
         </div>
       </div>
-      <!-- <div id="r-ball" class="ball"> -->
-      <!-- </div> -->
-      <!-- <div class="container"> -->
-      <!-- <div id="l-ball" class="ball">
-        <div class="face face-l">
-          <div class="eye eye-l eye-l-p"></div>
-          <div class="eye eye-r eye-l-p"></div>
-          <div class="mouth mouth-l"></div>
-      </div>
-      </div> -->
+      
+      <!-- 右侧表情球 -->
       <div id="r-ball" class="ball">
         <div class="face face-r">
-          <div class="eye eye-l eye-r-p"></div>
-          <div class="eye eye-r eye-r-p"></div>
-          <div class="mouth mouth-r"></div>
+          <div class="eye eye-l eye-r-p"></div> <!-- 左眼（向上看） -->
+          <div class="eye eye-r eye-r-p"></div> <!-- 右眼（向上看） -->
+          <div class="mouth mouth-r"></div> <!-- 嘴巴 -->
         </div>
       </div>
     </div>
   </body>
 </html>
+
