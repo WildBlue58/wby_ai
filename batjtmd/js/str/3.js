@@ -1,3 +1,4 @@
+// 包装类
 let a = "abc"
 let b = new String("abc")
 console.log(a == b);// 值
@@ -7,5 +8,6 @@ console.log(b.split(''));
 // 为了统一面对对象写法
 // JS 会主动的把简单数据类型 包装成对象
 // a -> new String(a)
-// 之后会销毁对象，回归原来的简单类型
+
 console.log(a.split(''));
+// 之后会销毁对象，回归原来的简单类型
