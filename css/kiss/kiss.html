@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可爱的亲亲动画</title>
+    <style>
+        /* 页面基础样式设置 */
+        body {
+            /* 设置渐变背景色，从浅蓝到天蓝 */
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            margin: 0;
+            /* 设置页面高度为100%视窗高度 */
+            height: 100vh;
+            /* 使用flex布局使内容居中 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 隐藏溢出内容 */
+            overflow: hidden;
+        }
+
+        /* 主容器样式 */
+        .container {
+            position: relative;
+            width: 400px;  /* 增加容器宽度 */
+            height: 300px; /* 增加容器高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 表情球基础样式 */
+        .ball {
+            width: 150px;  /* 增加小球宽度 */
+            height: 150px; /* 增加小球高度 */
+            border: 10px solid #333; /* 增加边框粗细 */
+            border-radius: 50%;
+            background-color: #fff;
+            position: relative;
+            /* 添加过渡效果，使动画更平滑 */
+            transition: all 0.5s ease;
+            /* 添加浮动动画 */
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* 左侧小球特殊样式 */
+        .ball.left {
+            margin-right: -30px; /* 调整间距 */
+            animation-delay: 0s;
+        }
+
+        /* 右侧小球特殊样式 */
+        .ball.right {
+            margin-left: -30px; /* 调整间距 */
+            animation-delay: 1.5s;
+        }
+
+        /* 面部区域样式 */
+        .face {
+            position: absolute;
+            width: 100px;  /* 增加面部区域宽度 */
+            height: 45px;  /* 增加面部区域高度 */
+            top: 45px;     /* 调整位置 */
+            left: 25px;    /* 调整位置 */
+        }
+
+        /* 眼睛基础样式 */
+        .eye {
+            width: 22px;   /* 增加眼睛大小 */
+            height: 22px;  /* 增加眼睛大小 */
+            border-radius: 50%;
+            /* 使用边框创建眼睛形状 */
+            border-bottom: 7px solid #333; /* 增加边框粗细 */
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        /* 左眼位置 */
+        .eye.left {
+            left: 15px;    /* 调整位置 */
+        }
+
+        /* 右眼位置 */
+        .eye.right {
+            right: 15px;   /* 调整位置 */
+        }
+
+        /* 嘴巴样式 */
+        .mouth {
+            width: 45px;   /* 增加嘴巴宽度 */
+            height: 20px;  /* 增加嘴巴高度 */
+            border-radius: 50%;
+            /* 使用边框创建微笑形状 */
+            border-bottom: 7px solid #333; /* 增加边框粗细 */
+            position: absolute;
+            bottom: -8px;  /* 调整位置 */
+            left: 30px;    /* 调整位置 */
+            transition: all 0.3s ease;
+        }
+
+        /* 爱心样式 */
+        .heart {
+            position: absolute;
+            width: 30px;   /* 增加爱心大小 */
+            height: 30px;  /* 增加爱心大小 */
+            background: #ff6b6b;
+            /* 旋转45度创建爱心形状 */
+            transform: rotate(45deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 爱心伪元素 - 用于创建心形 */
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 30px;   /* 增加爱心伪元素大小 */
+            height: 30px;  /* 增加爱心伪元素大小 */
+            background: #ff6b6b;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        /* 爱心左侧圆形 */
+        .heart:before {
+            left: -15px;   /* 调整位置 */
+        }
+
+        /* 爱心上方圆形 */
+        .heart:after {
+            top: -15px;    /* 调整位置 */
+        }
+
+        /* 浮动动画定义 */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* 亲吻动画定义 */
+        @keyframes kiss {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-30px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* 爱心浮动动画定义 */
+        @keyframes heartFloat {
+            0% {
+                transform: rotate(45deg) translateY(0) scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 鼠标悬停时的动画效果 */
+        .container:hover .ball.left {
+            animation: kiss 1s ease-in-out infinite;
+        }
+
+        .container:hover .ball.right {
+            animation: kiss 1s ease-in-out infinite reverse;
+        }
+
+        /* 鼠标悬停时眼睛变化 */
+        .container:hover .eye {
+            border-bottom: 0;
+            border-top: 5px solid #333;
+        }
+
+        /* 鼠标悬停时嘴巴变化 */
+        .container:hover .mouth {
+            transform: scale(0.8);
+            border-radius: 50%;
+            border: 3px solid #333;
+        }
+
+        /* 鼠标悬停时爱心动画 */
+        .container:hover .heart {
+            animation: heartFloat 1.5s ease-in-out infinite;
+        }
+
+        /* 装饰元素样式 */
+        .decoration {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* 为每个装饰元素设置不同的动画延迟和位置 */
+        .decoration:nth-child(1) { top: 20%; left: 20%; animation: float 4s ease-in-out infinite; }
+        .decoration:nth-child(2) { top: 60%; left: 80%; animation: float 3s ease-in-out infinite; }
+        .decoration:nth-child(3) { top: 80%; left: 30%; animation: float 5s ease-in-out infinite; }
+        .decoration:nth-child(4) { top: 30%; left: 70%; animation: float 4.5s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 装饰元素 - 半透明浮动小球 -->
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+
+        <!-- 左侧表情球 -->
+        <div class="ball left">
+            <div class="face">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+
+        <!-- 右侧表情球 -->
+        <div class="ball right">
+            <div class="face">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+
+        <!-- 爱心元素 - 亲吻时出现 -->
+        <div class="heart"></div>
+        <div class="heart" style="animation-delay: 0.5s"></div>
+        <div class="heart" style="animation-delay: 1s"></div>
+    </div>
+</body>
+</html> 
