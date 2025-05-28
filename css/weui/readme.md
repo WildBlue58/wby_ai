@@ -34,3 +34,8 @@
   .weui-btn_loading
   .weui-btn_plain
   .weui-btn_plain_primary
+- BEM 规范让我们一起大厂协作
+      - 页面由blocks构成 .weui-{block}
+      - block 包含一些elements .weui-{block}__{element}
+      - element 会有些状态
+        .weui-{block}__{element}_{modifier}
