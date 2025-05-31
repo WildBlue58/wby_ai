@@ -3,45 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电商数据可视化大屏</title>
+    <title>京东电商数据可视化大屏</title>
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js"></script>
 </head>
 <body>
     <div id="app">
         <header class="header">
-            <h1>电商平台实时数据监控</h1>
-            <div class="time">{{ currentTime }}</div>
+            <h1>京东电商平台实时数据监控</h1>
+            <div class="header-info">
+                <div class="time">{{ currentTime }}</div>
+                <div class="data-status" :class="{ 'loading': dataStatus.isLoading }">
+                    <span class="status-text">
+                        数据更新: {{ formatTime(dataStatus.lastUpdate) }}
+                    </span>
+                    <button 
+                        class="refresh-btn" 
+                        @click="refreshData"
+                        :disabled="dataStatus.isLoading"
+                    >
+                        {{ dataStatus.isLoading ? '更新中...' : '刷新数据' }}
+                    </button>
+                </div>
+            </div>
         </header>
         
         <main class="dashboard">
             <div class="card sales-card">
                 <h2>实时销售额</h2>
                 <div class="flip-number">{{ formatNumber(totalSales) }}</div>
+                <div class="card-subtitle">
+                    <span class="indicator online" v-if="totalSales > 0"></span>
+                    {{ totalSales > 0 ? '数据实时' : '等待数据' }}
+                </div>
             </div>
             
             <div class="card category-card">
                 <h2>品类销售占比</h2>
                 <div id="categoryChart" class="chart"></div>
+                <div class="card-subtitle">
+                    <span class="indicator" :class="dataStatus.hasData?.categories ? 'online' : 'offline'"></span>
+                    {{ dataStatus.hasData?.categories ? '京东实时数据' : '等待数据加载' }}
+                </div>
             </div>
             
             <div class="card trend-card">
                 <h2>24小时销售趋势</h2>
                 <div id="trendChart" class="chart"></div>
+                <div class="card-subtitle">
+                    <span class="indicator online"></span>
+                    基于购物高峰期算法
+                </div>
             </div>
             
             <div class="card top10-card">
                 <h2>热销商品TOP10</h2>
                 <div id="top10Chart" class="chart"></div>
+                <div class="card-subtitle">
+                    <span class="indicator" :class="dataStatus.hasData?.products ? 'online' : 'offline'"></span>
+                    {{ dataStatus.hasData?.products ? '京东热销商品' : '等待数据加载' }}
+                </div>
             </div>
             
             <div class="card map-card">
                 <h2>用户地域分布</h2>
                 <div id="mapChart" class="chart"></div>
+                <div class="card-subtitle">
+                    <span class="indicator online"></span>
+                    基于京东配送范围实时数据
+                </div>
             </div>
         </main>
+        
+        <footer class="footer">
+            <div class="footer-info">
+                <p>数据来源: 京东商城实时抓取 | 更新频率: 每10分钟 | 技术栈: Vue3 + ECharts + Puppeteer</p>
+            </div>
+        </footer>
     </div>
     <script src="./js/main.js"></script>
 </body>
