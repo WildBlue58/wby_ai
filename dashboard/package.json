@@ -1,0 +1,38 @@
+{
+  "name": "jd-dashboard",
+  "version": "1.0.0",
+  "description": "🛒 京东数据可视化仪表板 - 专业级电商数据分析平台",
+  "main": "server/server.js",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
+    "build": "echo 'Static files ready for deployment'",
+    "deploy": "npm run build"
+  },
+  "keywords": [
+    "数据可视化",
+    "电商分析",
+    "ECharts",
+    "Vue3",
+    "仪表板",
+    "大数据",
+    "实时监控"
+  ],
+  "author": "您的名字",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "node-cron": "^3.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/你的用户名/jd-dashboard.git"
+  },
+  "homepage": "https://你的项目.vercel.app"
+} 
