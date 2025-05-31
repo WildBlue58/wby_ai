@@ -5,9 +5,10 @@
 }
 
 body {
-    font-family: "Microsoft YaHei", sans-serif;
-    background-color: #0f1c3c;
-    color: #fff;
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    overflow-x: hidden;
     min-height: 100vh;
 }
 
@@ -18,77 +19,225 @@ body {
 .header {
     text-align: center;
     padding: 20px 0;
-    margin-bottom: 30px;
-    background: linear-gradient(90deg, #1a237e, #0d47a1);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
-    background: linear-gradient(45deg, #fff, #64b5f6);
+    background: linear-gradient(45deg, #FFD700, #FFA500);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .time {
     font-size: 1.2em;
-    color: #90caf9;
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.data-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-text {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.refresh-btn {
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.refresh-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.data-status.loading .refresh-btn {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
 }
 
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 20px;
     padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
 }
 
 .card h2 {
-    font-size: 1.2em;
+    font-size: 1.4em;
     margin-bottom: 15px;
-    color: #90caf9;
-    text-align: center;
+    color: #FFD700;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 8px;
 }
 
-.chart {
-    width: 100%;
-    height: 300px;
+.card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #ccc;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.indicator.online {
+    background: #4ECDC4;
+    box-shadow: 0 0 10px #4ECDC4;
+    animation: blink 2s infinite;
+}
+
+.indicator.offline {
+    background: #FF6B6B;
+    box-shadow: 0 0 10px #FF6B6B;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.sales-card {
+    grid-column: span 2;
+    text-align: center;
 }
 
 .flip-number {
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
-    text-align: center;
-    color: #4fc3f7;
-    text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
 }
 
-/* 响应式布局调整 */
-@media screen and (max-width: 768px) {
+.chart {
+    height: 300px;
+    width: 100%;
+}
+
+.sales-card .chart {
+    height: 200px;
+}
+
+.footer {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 0;
+    margin-top: 40px;
+}
+
+.footer-info {
+    text-align: center;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
     .dashboard {
         grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    
+    .sales-card {
+        grid-column: span 1;
     }
     
     .header h1 {
+        font-size: 1.8em;
+    }
+    
+    .header-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .flip-number {
         font-size: 2em;
     }
     
     .chart {
         height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 15px;
+    }
+    
+    .flip-number {
+        font-size: 1.5em;
+    }
+    
+    .chart {
+        height: 200px;
+    }
+    
+    .data-status {
+        flex-direction: column;
+        gap: 8px;
     }
 }
 
