@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电商数据可视化大屏</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <h1>电商平台实时数据监控</h1>
+            <div class="time">{{ currentTime }}</div>
+        </header>
+        
+        <main class="dashboard">
+            <div class="card sales-card">
+                <h2>实时销售额</h2>
+                <div class="flip-number">{{ formatNumber(totalSales) }}</div>
+            </div>
+            
+            <div class="card category-card">
+                <h2>品类销售占比</h2>
+                <div id="categoryChart" class="chart"></div>
+            </div>
+            
+            <div class="card trend-card">
+                <h2>24小时销售趋势</h2>
+                <div id="trendChart" class="chart"></div>
+            </div>
+            
+            <div class="card top10-card">
+                <h2>热销商品TOP10</h2>
+                <div id="top10Chart" class="chart"></div>
+            </div>
+            
+            <div class="card map-card">
+                <h2>用户地域分布</h2>
+                <div id="mapChart" class="chart"></div>
+            </div>
+        </main>
+    </div>
+    <script src="./js/main.js"></script>
+</body>
+</html> 
