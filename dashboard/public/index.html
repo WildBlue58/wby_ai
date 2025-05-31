@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 京东数据可视化仪表板</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>🛒 京东数据可视化仪表板</h1>
+            <p>实时电商数据分析与展示平台</p>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">📡 服务器状态:</span>
+                    <span id="serverStatus" class="status-value connecting">连接中...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">⏰ 最后更新:</span>
+                    <span id="lastUpdate" class="status-value">--:--:--</span>
+                </div>
+                <div class="status-item">
+                    <button id="refreshBtn" class="refresh-btn">🔄 手动刷新</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-content">
+                    <h3>今日总销售额</h3>
+                    <div class="stat-value" id="totalSales">¥0</div>
+                    <div class="stat-change">较昨日 <span id="salesChange">+0%</span></div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-content">
+                    <h3>订单总数</h3>
+                    <div class="stat-value" id="orderCount">0</div>
+                    <div class="stat-change">实时更新中...</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <h3>活跃用户</h3>
+                    <div class="stat-value" id="activeUsers">0</div>
+                    <div class="stat-change">在线购物用户</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3>📊 品类销售占比</h3>
+                <div id="categoryChart" class="chart"></div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>📈 24小时销售趋势</h3>
+                <div id="trendChart" class="chart"></div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>🏆 热销商品TOP10</h3>
+                <div id="top10Chart" class="chart"></div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <h3>🗺️ 用户地域分布</h3>
+            <div id="mapChart" class="map-chart"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>🎉 专业级数据可视化仪表板 | 技术栈: Vue3 + ECharts + Node.js</p>
+        <p>🚀 实时数据展示 | 智能分析算法</p>
+    </footer>
+
+    <!-- 外部库 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- 本地脚本 -->
+    <script src="js/main.js"></script>
+</body>
+</html> 
