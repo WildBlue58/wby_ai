@@ -166,7 +166,7 @@ dashboard/
 
 ### 🤝 **联系方式**
 - 📧 Email: 2398205893@qq.com
-- 🔗 GitHub: [@你的用户名](https://github.com/WildBlue58)
+- 🔗 GitHub: [@WildBlue58](https://github.com/WildBlue58)
 
 ---
 
