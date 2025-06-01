@@ -86,16 +86,20 @@
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 32px;
+            margin-bottom: 40px;
+            justify-items: center;
         }
 
         .chart-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 25px;
+            padding: 32px 25px 25px 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 340px;
+            max-width: 500px;
+            width: 100%;
         }
 
         .chart-container h3 {
@@ -108,27 +112,6 @@
         .chart {
             width: 100%;
             height: 300px;
-        }
-
-        .map-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .map-container h3 {
-            color: #4ECDC4;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5rem;
-        }
-
-        #mapChart {
-            width: 100%;
-            height: 500px;
         }
 
         .footer {
@@ -155,6 +138,34 @@
             text-align: center;
         }
 
+        .refresh-btn {
+            background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .refresh-btn i {
+            font-size: 1.2rem;
+        }
+
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -177,7 +188,10 @@
             <p>实时电商数据分析与展示平台</p>
             <div class="data-info">
                 <p>⏰ 当前时间: {{ currentTime }}</p>
-                <p>📊 数据更新: 实时模拟 | 🎯 展示版本: CodePen</p>
+                <p>📊 数据更新: 实时模拟 | 🤩🤩🤩 展示版本: CodePen</p>
+                <button class="refresh-btn" @click="refreshData">
+                    <i>🔄</i> 刷新数据
+                </button>
             </div>
         </div>
 
@@ -218,11 +232,6 @@
             </div>
         </div>
 
-        <div class="map-container">
-            <h3>🗺️ 用户地域分布</h3>
-            <div id="mapChart"></div>
-        </div>
-
         <div class="footer">
             <p>🎉 专业级数据可视化仪表板 | 技术栈: Vue3 + ECharts + 智能数据处理</p>
             <p>🚀 展示项目 - 展现数据分析与前端开发能力</p>
@@ -235,80 +244,125 @@
         const app = createApp({
             setup() {
                 const currentTime = ref('');
-                const totalSales = ref(12850000);
-                const orderCount = ref(45678);
-                const activeUsers = ref(23456);
+                const totalSales = ref(25678945.67);
+                const orderCount = ref(89234);
+                const activeUsers = ref(45678);
                 
                 // 模拟数据
                 const categoryData = ref([
-                    { value: 35, name: '电子产品' },
-                    { value: 25, name: '服装配饰' },
-                    { value: 18, name: '家居用品' },
-                    { value: 12, name: '食品饮料' },
-                    { value: 10, name: '其他' }
+                    { value: 42.3, name: '电子产品' },
+                    { value: 28.7, name: '服装配饰' },
+                    { value: 15.2, name: '家居用品' },
+                    { value: 8.5, name: '食品饮料' },
+                    { value: 5.3, name: '其他' }
                 ]);
 
                 const trendData = ref([
-                    { time: '00:00', value: 1200000 },
-                    { time: '02:00', value: 800000 },
-                    { time: '04:00', value: 600000 },
-                    { time: '06:00', value: 900000 },
-                    { time: '08:00', value: 1500000 },
-                    { time: '10:00', value: 2100000 },
-                    { time: '12:00', value: 1800000 },
-                    { time: '14:00', value: 2300000 },
-                    { time: '16:00', value: 1950000 },
-                    { time: '18:00', value: 2800000 },
-                    { time: '20:00', value: 3200000 },
-                    { time: '22:00', value: 2600000 }
+                    { time: '00:00', value: 856789.45 },
+                    { time: '02:00', value: 456789.32 },
+                    { time: '04:00', value: 325678.91 },
+                    { time: '06:00', value: 687654.23 },
+                    { time: '08:00', value: 1856789.56 },
+                    { time: '10:00', value: 2856789.34 },
+                    { time: '12:00', value: 3256789.78 },
+                    { time: '14:00', value: 2756789.45 },
+                    { time: '16:00', value: 2956789.12 },
+                    { time: '18:00', value: 3567890.23 },
+                    { time: '20:00', value: 4256789.67 },
+                    { time: '22:00', value: 2856789.34 }
                 ]);
 
                 const top10Data = ref([
-                    { name: 'iPhone 15 Pro Max', value: 8520 },
-                    { name: '华为Mate60 Pro', value: 7340 },
-                    { name: '小米14 Ultra', value: 6890 },
-                    { name: 'MacBook Pro M3', value: 5670 },
-                    { name: '戴森吸尘器V15', value: 4320 },
-                    { name: 'AirPods Pro 2', value: 3890 },
-                    { name: '联想拯救者Y9000P', value: 3540 },
-                    { name: '海尔冰箱BCD-520', value: 2890 },
-                    { name: '茅台飞天53度', value: 2340 },
-                    { name: '耐克Air Jordan', value: 1980 }
+                    { name: 'iPhone 15 Pro Max', value: 12580 },
+                    { name: '华为Mate60 Pro', value: 10890 },
+                    { name: '小米14 Ultra', value: 9560 },
+                    { name: 'MacBook Pro M3', value: 7890 },
+                    { name: '戴森吸尘器V15', value: 6520 },
+                    { name: 'AirPods Pro 2', value: 5890 },
+                    { name: '联想拯救者Y9000P', value: 4780 },
+                    { name: '海尔冰箱BCD-520', value: 3890 },
+                    { name: '茅台飞天53度', value: 3240 },
+                    { name: '耐克Air Jordan', value: 2980 }
                 ]);
 
                 const mapData = ref([
-                    { name: '北京市', value: 25000 },
-                    { name: '上海市', value: 28000 },
-                    { name: '广东省', value: 35000 },
-                    { name: '江苏省', value: 22000 },
-                    { name: '浙江省', value: 20000 },
-                    { name: '山东省', value: 18000 },
-                    { name: '河南省', value: 15000 },
-                    { name: '四川省', value: 12000 },
-                    { name: '湖北省', value: 10000 },
-                    { name: '湖南省', value: 9000 },
-                    { name: '福建省', value: 8500 },
-                    { name: '安徽省', value: 8000 },
-                    { name: '河北省', value: 7500 },
-                    { name: '陕西省', value: 7000 },
-                    { name: '重庆市', value: 6500 },
-                    { name: '江西省', value: 6000 },
-                    { name: '辽宁省', value: 5500 },
-                    { name: '云南省', value: 5000 },
-                    { name: '山西省', value: 4500 },
-                    { name: '广西壮族自治区', value: 4000 },
-                    { name: '贵州省', value: 3500 },
-                    { name: '吉林省', value: 3000 },
-                    { name: '黑龙江省', value: 2500 },
-                    { name: '内蒙古自治区', value: 2200 },
-                    { name: '新疆维吾尔自治区', value: 2000 },
-                    { name: '甘肃省', value: 1800 },
-                    { name: '海南省', value: 1600 },
-                    { name: '宁夏回族自治区', value: 1400 },
-                    { name: '青海省', value: 1200 },
-                    { name: '西藏自治区', value: 1000 },
-                    { name: '天津市', value: 4800 }
+                    { name: '北京市', value: 45678 },
+                    { name: '上海市', value: 52345 },
+                    { name: '广东省', value: 68789 },
+                    { name: '江苏省', value: 42345 },
+                    { name: '浙江省', value: 38765 },
+                    { name: '山东省', value: 32456 },
+                    { name: '河南省', value: 28765 },
+                    { name: '四川省', value: 25678 },
+                    { name: '湖北省', value: 22345 },
+                    { name: '湖南省', value: 20345 },
+                    { name: '福建省', value: 18765 },
+                    { name: '安徽省', value: 16789 },
+                    { name: '河北省', value: 15678 },
+                    { name: '陕西省', value: 14567 },
+                    { name: '重庆市', value: 13456 },
+                    { name: '江西省', value: 12345 },
+                    { name: '辽宁省', value: 11567 },
+                    { name: '云南省', value: 10345 },
+                    { name: '山西省', value: 9876 },
+                    { name: '广西壮族自治区', value: 8765 },
+                    { name: '贵州省', value: 8234 },
+                    { name: '吉林省', value: 7654 },
+                    { name: '黑龙江省', value: 7234 },
+                    { name: '内蒙古自治区', value: 6789 },
+                    { name: '新疆维吾尔自治区', value: 6234 },
+                    { name: '甘肃省', value: 5678 },
+                    { name: '海南省', value: 5234 },
+                    { name: '宁夏回族自治区', value: 4789 },
+                    { name: '青海省', value: 4234 },
+                    { name: '西藏自治区', value: 3789 },
+                    { name: '天津市', value: 8765 }
                 ]);
+
+                // 生成随机波动值
+                const getRandomFluctuation = (base, percentage = 0.1) => {
+                    const fluctuation = base * percentage;
+                    return base + (Math.random() * 2 - 1) * fluctuation;
+                };
+
+                // 刷新数据
+                const refreshData = () => {
+                    // 更新销售额（保留两位小数）
+                    totalSales.value = Math.round(getRandomFluctuation(25678945.67, 0.05) * 100) / 100;
+                    
+                    // 更新订单数（整数）
+                    orderCount.value = Math.round(getRandomFluctuation(89234, 0.03));
+                    
+                    // 更新活跃用户（整数）
+                    activeUsers.value = Math.round(getRandomFluctuation(45678, 0.02));
+
+                    // 更新品类数据
+                    categoryData.value = categoryData.value.map(item => ({
+                        ...item,
+                        value: Math.round(getRandomFluctuation(item.value, 0.05) * 10) / 10
+                    }));
+
+                    // 更新趋势数据
+                    trendData.value = trendData.value.map(item => ({
+                        ...item,
+                        value: Math.round(getRandomFluctuation(item.value, 0.08) * 100) / 100
+                    }));
+
+                    // 更新热销商品数据（整数）
+                    top10Data.value = top10Data.value.map(item => ({
+                        ...item,
+                        value: Math.round(getRandomFluctuation(item.value, 0.04))
+                    }));
+
+                    // 更新地图数据（整数）
+                    mapData.value = mapData.value.map(item => ({
+                        ...item,
+                        value: Math.round(getRandomFluctuation(item.value, 0.03))
+                    }));
+
+                    // 重新初始化图表
+                    initCharts();
+                };
 
                 // 更新当前时间
                 const updateTime = () => {
@@ -330,13 +384,6 @@
                         style: 'currency',
                         currency: 'CNY'
                     }).format(num);
-                };
-
-                // 动态更新数据
-                const updateData = () => {
-                    totalSales.value += Math.random() * 100000;
-                    orderCount.value += Math.floor(Math.random() * 10);
-                    activeUsers.value += Math.floor(Math.random() * 50 - 25);
                 };
 
                 // 加载中国地图数据
@@ -537,7 +584,7 @@
                 onMounted(async () => {
                     updateTime();
                     setInterval(updateTime, 1000);
-                    setInterval(updateData, 5000);
+                    setInterval(refreshData, 5000);
                     
                     setTimeout(initCharts, 1000);
                 });
@@ -547,7 +594,8 @@
                     totalSales,
                     orderCount,
                     activeUsers,
-                    formatNumber
+                    formatNumber,
+                    refreshData
                 };
             }
         });
