@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 设置视口，确保在移动设备上正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEUI 示例</title>
+    <!-- 引入WEUI样式文件 -->
+    <link rel="stylesheet" href="weui.css">
+</head>
+<body>
+    <!-- 页面容器，使用BEM命名规范 -->
+    <div class="weui-page">
+        <!-- 页面头部区域 -->
+        <div class="weui-page__header">
+            <!-- 页面标题 -->
+            <h1 class="weui-page__title">WEUI 组件示例</h1>
+            <!-- 页面描述文本 -->
+            <p class="weui-page__desc">基于BEM命名规范的微信风格UI组件</p>
+        </div>
+
+        <!-- 页面内容区域 -->
+        <div class="weui-page__content">
+            <!-- 基础按钮示例 -->
+            <h2>按钮示例</h2>
+            <div>
+                <!-- 主要按钮 -->
+                <button class="weui-btn weui-btn_primary">主要按钮</button>
+                <!-- 默认按钮 -->
+                <button class="weui-btn weui-btn_default">默认按钮</button>
+                <!-- 警告按钮 -->
+                <button class="weui-btn weui-btn_warn">警告按钮</button>
+            </div>
+
+            <!-- 禁用状态按钮示例 -->
+            <h2>禁用状态</h2>
+            <div>
+                <!-- 禁用状态的主按钮 -->
+                <button class="weui-btn weui-btn_primary weui-btn_disabled">禁用按钮</button>
+            </div>
+
+            <!-- 加载状态按钮示例 -->
+            <h2>加载状态</h2>
+            <div>
+                <!-- 加载状态的主按钮 -->
+                <button class="weui-btn weui-btn_primary weui-btn_loading">加载中</button>
+            </div>
+
+            <!-- 镂空按钮示例 -->
+            <h2>镂空按钮</h2>
+            <div>
+                <!-- 默认镂空按钮 -->
+                <button class="weui-btn weui-btn_plain">镂空按钮</button>
+                <!-- 主要镂空按钮 -->
+                <button class="weui-btn weui-btn_plain_primary">镂空主按钮</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
