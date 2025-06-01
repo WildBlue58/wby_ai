@@ -2,7 +2,7 @@
 
 > 🚀 **专业级电商数据分析与可视化平台** | 实时监控 | 智能分析 | 现代化设计
 
-[![Demo](https://img.shields.io/badge/Demo-在线预览-blue)](https://你的项目.vercel.app)
+[![Demo](https://img.shields.io/badge/Demo-在线预览-blue)](https://jd-dashboard-fckgkuu47-wildblues-projects.vercel.app/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen.svg)](https://vuejs.org/)
 [![ECharts](https://img.shields.io/badge/ECharts-5.x-red.svg)](https://echarts.apache.org/)
@@ -159,15 +159,14 @@ dashboard/
 
 ## 👨‍💻 开发者信息
 
-**项目创建者**: [您的名字]  
+**项目创建者**: [WildBlue58]  
 **技术栈**: Vue3 + ECharts + Node.js + Express  
 **开发周期**: 精心打磨，注重细节  
 **更新频率**: 持续优化，功能迭代  
 
 ### 🤝 **联系方式**
-- 📧 Email: your.email@example.com
-- 🔗 GitHub: [@你的用户名](https://github.com/你的用户名)
-- 💼 LinkedIn: [您的LinkedIn](https://linkedin.com/in/您的资料)
+- 📧 Email: 2398205893@qq.com
+- 🔗 GitHub: [@你的用户名](https://github.com/WildBlue58)
 
 ---
 
