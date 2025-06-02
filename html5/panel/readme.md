@@ -16,6 +16,8 @@
   - align-items 纵轴
   - justify-content 主轴
   - .container 弹性布局的容器 居中
+  - 父元素和子元素们之间的布局方案
+    - 子元素们不会换行
 
 -100vh 相对单位
   view height 不同设备但是等比例单位 100vh 屏幕高度
