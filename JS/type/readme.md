@@ -17,8 +17,13 @@ Object
 JS 有哪些数据类型
 七种
 
-
 ## ECMAScript 标准
 
 - JS 是ECMA 语法规范的一个版本
 - Javascript 和 Java 没有关系
+
+## Symbol
+
+ES6 新增的一种数据类型
+
+- 唯一值
