@@ -40,4 +40,5 @@
       - element 会有些状态
         .weui-{block}__{element}_{modifier}
 
-## 5.30来写
+## 这篇博客已写完
+
