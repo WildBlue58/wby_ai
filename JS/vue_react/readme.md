@@ -52,5 +52,4 @@ table
 
 - 创建React 应用
   - npm init vite 初始化一个项目
-
   
