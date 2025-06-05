@@ -130,11 +130,13 @@ window.WebLLMConfig = {
 
     // API 配置（用于连接真实的 AI 服务）
     api: {
-        enabled: false,
-        endpoint: '',
-        apiKey: '',
-        model: '',
+        enabled: true,
+        endpoint: 'https://api.deepseek.com/chat/completions',
+        apiKey: 'sk-20a0fdcb8551407d816d53546b5053db',
+        model: 'deepseek-chat',
         timeout: 30000,
+        temperature: 0.7,
+        max_tokens: 2000,
         headers: {
             'Content-Type': 'application/json'
         }
