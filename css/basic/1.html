@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签选择器</title>
+    <style>
+        /* 3个CSS Rule */
+        /* CSS Rules CSS cascading Style Sheet */
+        /* 标签选择器 */
+        p{
+            color:blue;
+        }
+        /* 最后的元素优先级最高 */
+
+        .container p{
+            color:red;
+        }
+        #main p{
+            color:green;
+        }
+    </style>
+</head>
+<body>
+    <p>Hello</p>
+    <div id="main" class="container">
+        <p>这是一个段落</p>
+    </div>
+</body>
+</html>
