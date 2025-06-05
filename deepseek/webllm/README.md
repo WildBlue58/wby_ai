@@ -1,16 +1,17 @@
 # WebLLM 智能应用
 
-一个现代化的原生 HTML/CSS/JavaScript 聊天应用，提供智能对话体验。
+一个现代化的原生 HTML/CSS/JavaScript 聊天应用，集成 **Deepseek API**，提供真实的 AI 智能对话体验。
 
 ## 🌟 特性
 
-- **💬 智能对话**：支持实时聊天交互
+- **🤖 真实 AI 对话**：集成 Deepseek API，提供智能、自然的对话体验
 - **🎨 现代化UI**：美观的渐变背景和毛玻璃效果
 - **🌙 主题切换**：支持明暗主题切换
-- **💾 数据持久化**：自动保存聊天历史
+- **💾 数据持久化**：自动保存聊天历史和对话上下文
 - **⌨️ 快捷键支持**：提供便捷的键盘操作
 - **📱 响应式设计**：完美适配各种设备
 - **✨ 动画效果**：流畅的交互动画
+- **🔄 上下文感知**：保持对话连贯性，支持多轮对话
 
 ## 🚀 快速开始
 
@@ -37,12 +38,23 @@
 ```
 webllm/
 ├── index.html          # 主页面
+├── config.js          # 配置文件（包含 API 设置）
 ├── css/
 │   └── style.css      # 样式文件
 ├── js/
-│   └── app.js         # 应用逻辑
+│   └── app.js         # 应用逻辑（集成 Deepseek API）
 └── README.md          # 项目说明
 ```
+
+## 🤖 AI 功能
+
+本应用集成了 **Deepseek API**，具备以下 AI 能力：
+
+- **自然语言理解**：准确理解用户意图和问题
+- **智能回答**：基于上下文提供有用、准确的回答
+- **多轮对话**：维持对话连贯性，支持复杂的多轮交互
+- **中文优化**：针对中文对话进行优化
+- **实时响应**：快速的 API 调用和响应处理
 
 ## ⌨️ 快捷键
 
@@ -59,6 +71,7 @@ webllm/
 - **HTML5**：语义化结构
 - **CSS3**：现代化样式和动画
 - **Vanilla JavaScript**：原生 JavaScript，无依赖
+- **Deepseek API**：真实的 AI 对话能力
 - **LocalStorage**：本地数据存储
 - **Web APIs**：现代浏览器 API
 
@@ -71,7 +84,22 @@ webllm/
 - **滚动条美化**：自定义滚动条样式
 - **响应式布局**：适配移动端和桌面端
 
-## 🔧 自定义配置
+## 🔧 配置说明
+
+### API 配置
+
+在 `config.js` 文件中可以配置 API 相关参数：
+
+```javascript
+api: {
+    enabled: true,
+    endpoint: 'https://api.deepseek.com/chat/completions',
+    apiKey: 'your-api-key-here',
+    model: 'deepseek-chat',
+    temperature: 0.7,
+    max_tokens: 2000
+}
+```
 
 ### 修改主题颜色
 
@@ -83,31 +111,22 @@ body {
 }
 ```
 
-### 添加新的响应逻辑
+### 自定义系统提示
 
-在 `js/app.js` 的 `getResponseForMessage` 方法中添加：
+在 `js/app.js` 的 `getRecentMessagesForAPI` 方法中修改系统角色设置：
 
 ```javascript
-if (lowerMessage.includes('你的关键词')) {
-    return ['你的回复内容'];
+{
+    role: "system",
+    content: "你的自定义系统提示"
 }
 ```
 
-### 连接真实 AI API
+## 🔐 安全说明
 
-替换 `processMessage` 方法中的模拟逻辑：
-
-```javascript
-async processMessage(userMessage) {
-    const response = await fetch('你的API端点', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage })
-    });
-    const data = await response.json();
-    return data.reply;
-}
-```
+- **API 密钥**：请妥善保管您的 Deepseek API 密钥
+- **生产环境**：在生产环境中，建议通过后端服务器代理 API 调用
+- **请求限制**：注意 API 的调用频率和配额限制
 
 ## 🌐 浏览器支持
 
@@ -132,7 +151,9 @@ MIT License
 - [ ] 多语言国际化
 - [ ] PWA 支持
 - [ ] 云端同步
+- [ ] 支持更多 AI 模型
+- [ ] 流式响应支持
 
 ---
 
-**享受与 WebLLM 的智能对话体验！** 🎉 
+**享受与 WebLLM + Deepseek 的智能对话体验！** 🤖💬 
