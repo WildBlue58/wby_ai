@@ -10,6 +10,7 @@ var yang = new Person('羽球扬', 19)
 console.log('修改前的原型：', yang.__proto__);
 var a = {
     name: '孔子',
+    eee:'鹅',
     country: '中国'
 }
 // yang.__proto__ = a
@@ -20,5 +21,6 @@ Object.setPrototypeOf(yang, a)
 console.log('修改后的原型：', yang.__proto__);
 // 测试是否能访问 a 的属性
 console.log('访问 country 属性：', yang.country);
-console.log(Person.prototype);
-console.log(Person.prototype.constructor === Person);
+console.log(Person.prototype);// 原型对象
+console.log(Person.prototype.constructor === Person);// true
+console.log(yang.eee,yang.name);// undefined 原型链的尽头是null
