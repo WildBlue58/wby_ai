@@ -31,3 +31,5 @@
 
 new -> {} -> constructor 运行 -> this -> {} -> 完成了构造
 -> __proto__属性 -> constructor.prototype -> Object 原型链 -> 原型链的尽头是null
+
+## 这篇博客已写完
