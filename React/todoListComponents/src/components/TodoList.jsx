@@ -30,25 +30,36 @@ function TodoList() {
             completed: false
         }
     ])
-    setTimeout(() => {
+    // setTimeout(() => {
+    //     setTodos([
+    //     ...todos,
+    //         {
+    //             id: 2,
+    //             text: '睡觉',
+    //             completed: false
+    //         } 
+    //     ])
+    //     // 找到DOM,设置innerHTML
+    //     // 更新业务 setTitle 
+    //     setTitle('Todo List 2')
+    //     setHi('奥利给')
+    // },3000)
+    
+    const handleAdd = (text) => { 
         setTodos([
-        ...todos,
+            ...todos,
             {
-                id: 2,
-                text: '睡觉',
+                id: todos.length+1,
+                text,
                 completed: false
             } 
         ])
-        // 找到DOM,设置innerHTML
-        // 更新业务 setTitle 
-        setTitle('Todo List 2')
-        setHi('奥利给')
-    },3000)
+    }
     return (
       <div className="container">
             <h1 className="title">{title} {hi}</h1>
             {/* 表单 */}
-            <TodoForm />
+            <TodoForm onAdd={handleAdd}/>
             {/* 列表 */}
             <Todos todos = {todos}/>
             {
