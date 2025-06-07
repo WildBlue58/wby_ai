@@ -16,6 +16,12 @@ function TodoList() {
     // { todos.map }
     // setTodos DOM 及动态更新
     // 响应式界面开发 
+    // hi 数据状态 setHi 修改数据状态的方法
+    // ES6 解构
+    
+    // const hi = useState('嗨嗨嗨~')[0]
+    // const setHi = useState('嗨嗨嗨~')[1]
+    const [hi, setHi] = useState('嗨嗨嗨~')
     const [title, setTitle] = useState('Todo List')
     const [todos, setTodos] = useState([
         {
@@ -36,14 +42,15 @@ function TodoList() {
         // 找到DOM,设置innerHTML
         // 更新业务 setTitle 
         setTitle('Todo List 2')
+        setHi('奥利给')
     },3000)
     return (
       <div className="container">
-            <h1 className="title">{title}</h1>
+            <h1 className="title">{title} {hi}</h1>
             {/* 表单 */}
             <TodoForm />
             {/* 列表 */}
-            <Todos todos = { todos }/>
+            <Todos todos = {todos}/>
             {
                 // 当下这个位置
                 // 数据为王 界面是被驱动的 
