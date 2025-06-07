@@ -9,7 +9,6 @@ function App() {
     <>
       <div></div>
       <TodoList />
-      <TodoList />
     </>
   )
 }
