@@ -137,31 +137,6 @@ li:hover {
     font-weight: 500;
 }
 
-.todo-item.completed .edit-input {
-    text-decoration: none !important;
-    color: #222 !important;
-    opacity: 1 !important;
-    font-weight: normal !important;
-}
-
-/* 强制确保编辑输入框样式 */
-input.edit-input {
-    background: #ffffff !important;
-    color: #000000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    text-decoration: none !important;
-    font-weight: normal !important;
-    text-shadow: none !important;
-    -webkit-text-fill-color: #000000 !important;
-    -webkit-appearance: none !important;
-    border: 3px solid #ff0000 !important;
-    font-size: 16px !important;
-    height: 40px !important;
-    padding: 10px !important;
-}
-
 .todo-actions {
     display: flex;
     gap: 0.6rem;
@@ -210,75 +185,6 @@ input.error {
     background: #fff0f2;
 }
 
-/* 动画：待办事项进出动画 */
-.todo-item-anim-enter {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.95);
-}
-.todo-item-anim-enter-active {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    transition: all 350ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-.todo-item-anim-exit {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-.todo-item-anim-exit-active {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: all 350ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-/* 按钮粒子特效容器 */
-.btn-particles {
-    position: relative;
-    overflow: visible;
-}
-.particle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10;
-    opacity: 0.8;
-    animation: particle-explode 600ms forwards;
-}
-@keyframes particle-explode {
-    0% {
-        transform: scale(0.5) translate(0,0);
-        opacity: 1;
-    }
-    80% {
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.2) translate(var(--dx), var(--dy));
-        opacity: 0;
-    }
-}
-
-.todos-area {
-    min-height: 160px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-}
-
-.empty-tip {
-    color: #b0b8c1;
-    font-size: 1.15rem;
-    text-align: center;
-    margin-top: 2.5rem;
-    letter-spacing: 1px;
-    user-select: none;
-    width: 100%;
-}
-
 /* 搜索和筛选区域 */
 .filter-section {
     display: flex;
@@ -324,7 +230,7 @@ input.error {
     box-shadow: 0 0 0 2px #b3d8fd;
 }
 
-/* 分类标签样式优化 */
+/* 分类标签样式 */
 .category-tag {
     color: white;
     padding: 0.3rem 0.6rem;
@@ -337,47 +243,9 @@ input.error {
     white-space: nowrap;
 }
 
-/* 编辑输入框优化 */
-.edit-input {
-    flex: 1;
-    padding: 0.5rem 0.7rem;
-    border: 2px solid #368be6 !important;
-    border-radius: 6px;
-    font-size: 1rem !important;
-    background-color: white !important;
-    background: white !important;
-    color: #222 !important;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: none;
-    height: auto;
-    min-height: 34px;
-    user-select: text;
-    pointer-events: auto;
-    position: relative;
-    z-index: 2;
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    opacity: 1 !important;
-    text-decoration: none !important;
-    font-weight: normal !important;
-    font-family: 'Arial', sans-serif !important;
-    line-height: 1.4 !important;
-    text-shadow: none !important;
-    letter-spacing: normal !important;
-}
 
-.edit-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(54, 139, 230, 0.2);
-    border-color: #368be6;
-    background: white !important;
-    color: #222 !important;
-    opacity: 1 !important;
-}
 
-/* 复选框样式优化 */
+/* 复选框样式 */
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -425,5 +293,13 @@ input[type="checkbox"] {
 
 .cancel-btn:hover {
     background-color: #5a6268;
+}
+
+/* 空提示样式 */
+.empty-tip {
+    text-align: center;
+    color: #999;
+    font-size: 1rem;
+    margin-top: 2rem;
 }
 
