@@ -3,13 +3,10 @@ import './App.css'
 import TodoList from './components/TodoList'
 
 function App() {
- 
-
   return (
-    <>
-      <div></div>
+    <div className="app">
       <TodoList />
-    </>
+    </div>
   )
 }
 
