@@ -3,6 +3,7 @@ import { useState } from 'react'
 import '../TodoList.css'
 import TodoForm from './TodoForm'
 import Todos from './Todos'
+
 function TodoList() {
     // 数据驱动的界面
     // 静态页面
@@ -19,60 +20,107 @@ function TodoList() {
     // hi 数据状态 setHi 修改数据状态的方法
     // ES6 解构
     
-    // const hi = useState('嗨嗨嗨~')[0]
-    // const setHi = useState('嗨嗨嗨~')[1]
-    const [hi, setHi] = useState('嗨嗨嗨~')
-    const [title, setTitle] = useState('Todo List')
+    const [title] = useState('我的待办事项🎈')
     const [todos, setTodos] = useState([
         {
-            id:1,
-            text: '吃饭',
-            completed: false
+            id: 1,
+            text: '学习 React',
+            completed: false,
+            category: '学习'
+        },
+        {
+            id: 2,
+            text: '完成项目',
+            completed: false,
+            category: '工作'
         }
     ])
-    // setTimeout(() => {
-    //     setTodos([
-    //     ...todos,
-    //         {
-    //             id: 2,
-    //             text: '睡觉',
-    //             completed: false
-    //         } 
-    //     ])
-    //     // 找到DOM,设置innerHTML
-    //     // 更新业务 setTitle 
-    //     setTitle('Todo List 2')
-    //     setHi('奥利给')
-    // },3000)
-    
-    const handleAdd = (text) => { 
+
+    // 新增状态：搜索关键词和当前筛选的分类
+    const [searchTerm, setSearchTerm] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('全部')
+
+    // 预定义的分类选项
+    const categories = ['全部', '工作', '学习', '生活', '其他']
+
+    // 添加待办事项
+    const handleAdd = (text, category) => { 
         setTodos([
             ...todos,
             {
-                id: todos.length+1,
+                id: Date.now(), // 使用时间戳作为唯一ID
                 text,
-                completed: false
+                completed: false,
+                category: category || '其他'
             } 
         ])
     }
+
+    // 切换待办事项完成状态
+    const handleToggle = (id) => {
+        setTodos(todos.map(todo => 
+            todo.id === id 
+                ? { ...todo, completed: !todo.completed }
+                : todo
+        ))
+    }
+
+    // 删除待办事项
+    const handleDelete = (id) => {
+        setTodos(todos.filter(todo => todo.id !== id))
+    }
+
+    // 编辑待办事项
+    const handleEdit = (id, newText) => {
+        setTodos(todos.map(todo => 
+            todo.id === id 
+                ? { ...todo, text: newText }
+                : todo
+        ))
+    }
+
+    // 过滤显示的待办事项（搜索 + 分类筛选）
+    const filteredTodos = todos.filter(todo => {
+        const matchesSearch = todo.text.toLowerCase().includes(searchTerm.toLowerCase())
+        const matchesCategory = selectedCategory === '全部' || todo.category === selectedCategory
+        return matchesSearch && matchesCategory
+    })
+
     return (
-      <div className="container">
-            <h1 className="title">{title} {hi}</h1>
-            {/* 表单 */}
-            <TodoForm onAdd={handleAdd}/>
-            {/* 列表 */}
-            <Todos todos = {todos}/>
-            {
-                // 当下这个位置
-                // 数据为王 界面是被驱动的 
-                // 数据驱动
-                // 数据绑定 data binding
-                // 发生改变后 自动的改变
-                // todos.map(todo => (
-                //     <li>{ todo.text }</li>
-                // ))
-            }
-      </div>
+        <div className="container">
+            <h1 className="title">{title}</h1>
+            
+            {/* 表单组件 */}
+            <TodoForm onAdd={handleAdd} categories={categories.slice(1)} />
+            
+            {/* 搜索和筛选区域 */}
+            <div className="filter-section">
+                <input
+                    type="text"
+                    placeholder="搜索待办事项..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-input"
+                />
+                <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="category-filter"
+                >
+                    {categories.map(category => (
+                        <option key={category} value={category}>{category}</option>
+                    ))}
+                </select>
+            </div>
+            
+            {/* 待办事项列表组件 */}
+            <Todos 
+                todos={filteredTodos}
+                onToggle={handleToggle}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+            />
+        </div>
     )
 }
 
