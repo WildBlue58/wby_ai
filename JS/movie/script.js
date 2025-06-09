@@ -33,7 +33,26 @@ const getMovies = (keyword) => {
 
 // Movie List Render 电影列表渲染
 const showMovies = (movies) => {
-    console.log(movies);
+    main.innerHTML = ''
+    // ES6 解构
+    // 右边{ } 解给左侧 { } ES6 优雅快捷
+    // 立马成为常量或变量
+    main.innerHTML = movies.map(movie => {
+        const { poster_path, title, vote_average, overview } = movie
+        return `
+        <div class="movie">
+            <img src="${IMG_PATH + poster_path}" alt="${title}">
+            <div class="movie-info">
+                <h3>${title}</h3>
+                <span>${vote_average}</span>
+            </div>
+            <div class="overview">
+                <h3>Overview</h3>
+                ${overview}
+            </div>
+        </div>
+        `
+    }).join('')
 }
 
 // 页面加载完成后执行
