@@ -3,7 +3,7 @@ import './App.css'
 
 function App() {
   // 火山引擎tts 配置文件
-  const TOKEN = 'OgyyBXBZTFFq8Ygsh9GoPcC1qVkHJ56Z'
+  const TOKEN = ''
   const APP_ID = '8258845810'
   const CLUSTER_ID = 'volcano_tts'
 
