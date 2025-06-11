@@ -1,32 +1,201 @@
-main{
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff; /* 淡蓝色背景 */
+    color: #333;
+}
+
+/* 头部搜索区域样式 */
+header {
+    background-color: #4a90e2; /* 深蓝色头部 */
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#form {
+    width: 100%;
+    max-width: 500px;
+}
+
+.search {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    background-color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+/* 主要内容区域样式 */
+main {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 2rem;
+    gap: 2rem;
 }
 
-.movie{
-    width:300px;
-    margin:1rem;
-    position:relative;
-}
-
-.movie img{
-    width:100%;
-}
-
-.overview{
+/* 电影卡片样式 */
+.movie {
+    width: 300px;
+    margin: 1rem;
+    position: relative;
     background-color: #fff;
-    padding:2rem;
-    position:absolute;
-    left:0;
-    bottom:0;
-    right:0;
-    min-height:100%;
-    transform:translateY(101%);
-    overflow-y:hidden;
-    transition:transform 0.3s ease-in;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.movie:hover {
+    transform: translateY(-5px);
+}
+
+.movie img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.movie-info h3 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.movie-info span {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* 电影简介样式 */
+.overview {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    min-height: 100%;
+    transform: translateY(101%);
+    overflow-y: auto;
+    transition: transform 0.3s ease-in;
+}
+
+.overview h3 {
+    color: #4a90e2;
+    margin-bottom: 1rem;
 }
 
 .movie:hover .overview {
-  transform: translateY(0);
+    transform: translateY(0);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .movie {
+        width: 280px;
+    }
+    
+    .movie img {
+        height: 400px;
+    }
+}
+
+/* 加载状态样式 */
+.loading {
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #4a90e2;
+}
+
+/* 错误提示样式 */
+.error {
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+    color: #e74c3c;
+    font-size: 1.2rem;
+}
+
+/* 评分样式 */
+.high-rating {
+    background-color: #2ecc71 !important;
+}
+
+.medium-rating {
+    background-color: #f1c40f !important;
+}
+
+.low-rating {
+    background-color: #e74c3c !important;
+}
+
+/* 电影简介中的日期和评分样式 */
+.release-date, .rating {
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.description {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* 添加滚动条样式 */
+.overview::-webkit-scrollbar {
+    width: 8px;
+}
+
+.overview::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.overview::-webkit-scrollbar-thumb {
+    background: #4a90e2;
+    border-radius: 4px;
+}
+
+.overview::-webkit-scrollbar-thumb:hover {
+    background: #357abd;
+}
+
+/* 添加动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
