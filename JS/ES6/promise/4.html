@@ -7,16 +7,48 @@
 </head>
 <body>
 <script>
-( async function() {
+// ===== 立即执行函数和异步操作示例 =====
+// 使用立即执行函数（IIFE - Immediately Invoked Function Expression）
+// 这种函数会在定义后立即执行
+// 使用 async 关键字声明这是一个异步函数
+(async function() {
+  // 创建一个新的 Promise 实例
+  // Promise 构造函数接收一个函数作为参数
   const p = new Promise((resolve, reject) => {
+    // 使用 setTimeout 模拟异步操作
+    // 1秒后执行回调函数
     setTimeout(() => {
+      // 调用 resolve 并传入 'success' 作为结果
+      // 这会将 Promise 的状态改为成功
       resolve('success')
-    }, 1000)
+    }, 1000)  // 1000毫秒 = 1秒
   })
+
+  // 使用 await 等待 Promise 完成
+  // await 会暂停函数的执行，直到 Promise 完成
+  // 当 Promise 成功时，res 将获得 resolve 传入的值 'success'
   const res = await p
-  console.log(res)
-  console.log('1111')
+
+  // 打印 Promise 的结果
+  console.log(res)  // 输出: 'success'
+
+  // 这行代码会在 Promise 完成后执行
+  console.log('1111')  // 输出: '1111'
 })()
+
+// 代码执行顺序说明：
+// 1. 立即执行函数开始运行
+// 2. 创建 Promise 实例
+// 3. 注册 setTimeout 回调（1秒后执行）
+// 4. 遇到 await，暂停执行
+// 5. 1秒后，Promise 完成，res 获得 'success'
+// 6. 继续执行，打印 res 和 '1111'
+
+// 注意：
+// - 立即执行函数使用 ()() 的形式
+// - async 函数内部可以使用 await
+// - await 只能在 async 函数中使用
+// - Promise 是处理异步操作的一种方式
 </script>
 </body>
 </html>
