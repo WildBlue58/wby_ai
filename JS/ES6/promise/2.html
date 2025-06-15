@@ -7,24 +7,49 @@
 </head>
 <body>
     <script>
+        // ===== Promise 基本概念和使用示例 =====
+        // Promise 是 ES6 提供的异步编程解决方案
+        // 它可以将异步操作以同步的方式表达出来，避免回调地狱
+
         // 异步
         // fetch 网络请求 then
         // ES6 的 Promise 异步变同步的解决方案
         // promise 实例化是需要的参数 传入一个函数，立即运行
-        const p = new Promise((resolve, reject) => {// 同步
-            console.log('333');// 立即执行
-            setTimeout(() => {// 定时器的注册
-                console.log('222');
+
+        // 创建一个新的 Promise 实例
+        // Promise 构造函数接收一个函数作为参数，这个函数会立即执行
+        // 这个函数有两个参数：resolve 和 reject，都是函数
+        // resolve：将 Promise 状态改为成功
+        // reject：将 Promise 状态改为失败
+        const p = new Promise((resolve, reject) => {
+            // 同步代码，会立即执行
+            console.log('333');  // 这行会最先执行
+
+            // 异步代码，注册一个定时器
+            setTimeout(() => {
+                console.log('222');  // 10毫秒后执行
+                // 调用 resolve() 表示 Promise 成功完成
+                // 这会触发 then 方法中的回调函数
                 resolve();
             }, 10);
         })
+
         // Promise 实例 prototype 上有一个 then 方法 
-        console.log(p);
+        // 打印 Promise 实例，可以看到它的状态
+        console.log(p);  // 此时 Promise 状态为 pending（进行中）
+
+        // 使用 then 方法处理 Promise 成功后的操作
+        // then 方法接收一个回调函数，这个函数会在 Promise 成功时执行
         p.then(() => {
-            console.log('1111');
+            console.log('1111');  // 在 resolve() 调用后执行
         })
     
-        // then
+        // 代码执行顺序说明：
+        // 1. 首先执行同步代码，打印 '333'
+        // 2. 打印 Promise 实例 p
+        // 3. 10毫秒后，打印 '222'
+        // 4. 调用 resolve()，触发 then 中的回调
+        // 5. 最后打印 '1111'
     </script>
 </body>
 </html>
