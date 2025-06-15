@@ -6,36 +6,74 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- 用于显示仓库列表的无序列表 -->
     <ul id="repos"></ul>
-    <button type = "button" id="btn">加载</button>
+    <!-- 触发加载操作的按钮 -->
+    <button type="button" id="btn">加载</button>
     <script>
+        // ===== 事件处理和异步请求示例 =====
         // 异步任务 网络请求
         // 事件 网页加载的一个事件 资源加载完了
-        document.getElementById('btn').addEventListener('click',() => {
+
+        // 为按钮添加点击事件监听器
+        // 当按钮被点击时，会在控制台打印 'clicked'
+        document.getElementById('btn').addEventListener('click', () => {
             console.log('clicked');
         })
       
+        // window.onload 事件
+        // 当页面所有资源（包括图片、样式表等）都加载完成后触发
         window.onload = function(){
             console.log('onload');
         }
+
+        // ===== 使用 async/await 处理异步请求 =====
         // 异步任务
         // 申明函数是async函数
-        document.addEventListener('DOMContentLoaded',async() => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // console.log('DOMContentLoaded');
             // DOM ready 了，可以尽快发送请求
             // 执行的流程
             // await 等到右边的异步任务执行完，异步变同步
-            const res = await fetch('https://api.github.com/users/WildBlue58/repos')
-            const data = await res.json()// 解析JSON完成
-            // .then(res => res.json()) // 解析JSON 完成
-            // .then(data => {// JSON 数据
+
+            try {
+                // 使用 fetch 发送 GET 请求到 GitHub API
+                // fetch 返回一个 Promise，await 会等待这个 Promise 完成
+                const res = await fetch('https://api.github.com/users/WildBlue58/repos')
+                
+                // 将响应数据解析为 JSON 格式
+                // res.json() 也返回一个 Promise，需要再次使用 await
+                const data = await res.json()  // 解析JSON完成
+
+                // 注释掉的 Promise 链式写法
+                // .then(res => res.json()) // 解析JSON 完成
+                // .then(data => {// JSON 数据
+
+                // 打印获取到的数据
                 console.log(data);
+
+                // 将数据渲染到页面上
+                // 1. 使用 map 遍历数据数组，为每个仓库创建一个列表项
+                // 2. 每个列表项包含一个链接，显示仓库名称
+                // 3. 使用 join('') 将数组转换为字符串
                 document.getElementById('repos').innerHTML = data.map(item => {
-                return `<li>
-                    <a href="${item.html_url}" target="_blank">${item.name}</a>
-                    </li>`
+                    return `<li>
+                        <a href="${item.html_url}" target="_blank">${item.name}</a>
+                        </li>`
                 }).join('');
+            } catch (error) {
+                // 错误处理
+                console.error('获取数据失败：', error);
+            }
         })
+
+        // 代码执行顺序说明：
+        // 1. 页面加载时，首先执行同步代码，设置事件监听器
+        // 2. 当 DOM 加载完成时，触发 DOMContentLoaded 事件
+        // 3. 开始执行异步请求，获取 GitHub 仓库数据
+        // 4. 数据获取完成后，将数据渲染到页面上
+        // 5. 当用户点击按钮时，触发 click 事件，打印 'clicked'
+        // 6. 当所有资源加载完成时，触发 onload 事件，打印 'onload'
     </script>
 </body>
 </html>
