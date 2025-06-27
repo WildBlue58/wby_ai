@@ -41,5 +41,5 @@
 }
 .container .more::hover::before {
   transform: scaleX(1);
-  trnasform-origin: bottom right;
+  transform-origin: bottom right;
 }
