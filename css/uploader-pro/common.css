@@ -1,0 +1,473 @@
+/* ===== 全局样式重置 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 使用更现代的盒模型 */
+}
+
+/* ===== 页面基础样式 ===== */
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f7f7f7; /* 更柔和的背景色 */
+  overflow-y: auto; /* 只允许垂直滚动 */
+  -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* 页面头部样式 */
+.page .page__hd {
+  padding: 20px 16px; /* 响应式内边距 */
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.page .page__hd .page__title {
+  text-align: left;
+  font-size: 18px; /* 适中的标题大小 */
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.page .page__hd .page__desc {
+  color: rgba(0,0,0,0.6);
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ===== WEUI 组件样式 ===== */
+
+/* 单元格容器 */
+.weui-cells {
+  margin-top: 8px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px; /* 圆角设计 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* 轻微阴影 */
+}
+
+/* 单元格顶部边框 */
+.weui-cells::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background-color: rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+/* 单个单元格样式 */
+.weui-cell {
+  padding: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+  transition: background-color 0.2s ease; /* 平滑过渡效果 */
+}
+
+.weui-cell:hover {
+  background-color: #f8f9fa; /* 悬停效果 */
+}
+
+.weui-cell .weui-cell__bd {
+  flex: 1;
+}
+
+/* 上传器专用单元格样式 */
+.weui-cell__uploader {
+  padding-bottom: 24px;
+}
+
+/* ===== 上传器组件样式 ===== */
+
+/* 上传器主容器 */
+.weui-uploader {
+  width: 100%;
+  transition: all 0.3s ease; /* 拖拽效果过渡 */
+}
+
+/* 拖拽状态样式 */
+.weui-uploader.weui-uploader_dragover {
+  background: rgba(0,122,255,0.05);
+  border: 2px dashed #007aff;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.weui-uploader.weui-uploader_dragover .weui-uploader__input-box {
+  border-color: #007aff;
+  background: rgba(0,122,255,0.1);
+}
+
+/* 上传器头部 */
+.weui-uploader .weui-uploader__hd {
+  display: flex;
+  padding-bottom: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.weui-uploader .weui-uploader__hd .weui-uploader__title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.weui-uploader .weui-uploader__hd .weui-uploader__info {
+  color: rgba(0,0,0,0.5);
+  font-size: 14px;
+}
+
+/* 上传器主体 */
+.weui-uploader .weui-uploader__bd {
+  margin-bottom: -8px;
+  margin-right: -8px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* 文件列表容器 */
+.weui-uploader .weui-uploader__bd .weui-uploader__files {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+/* 单个文件项样式 */
+.weui-uploader .weui-uploader__bd .weui-uploader__files .weui-uploader__file {
+  position: relative;
+  float: left;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  width: 96px;
+  height: 96px;
+  background: #f8f9fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'%3E%3C/circle%3E%3Cpolyline points='21,15 16,10 5,21'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center;
+  background-size: 24px 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.weui-uploader__file:hover {
+  border-color: #007aff;
+  box-shadow: 0 2px 8px rgba(0,122,255,0.2);
+}
+
+/* 文件项中的图片 */
+.weui-uploader__file img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+/* 删除按钮 */
+.weui-uploader__file .weui-uploader__delete {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background: #ff3b30;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.weui-uploader__file:hover .weui-uploader__delete {
+  opacity: 1;
+}
+
+/* 上传按钮容器 */
+.weui-uploader__input-box {
+  position: relative;
+  float: left;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  width: 96px;
+  height: 96px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weui-uploader__input-box:hover {
+  border-color: #007aff;
+  background: #f0f8ff;
+}
+
+/* 隐藏的文件输入框 */
+.weui-uploader__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* 上传按钮文字内容 */
+.weui-uploader__input-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  pointer-events: none; /* 防止干扰文件选择 */
+}
+
+/* 上传按钮图标 */
+.weui-uploader__input-icon {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 4px;
+  color: #ccc;
+}
+
+/* 上传按钮标签 */
+.weui-uploader__input-label {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* 上传提示信息 */
+.weui-uploader__tips {
+  margin-top: 12px;
+  padding: 0;
+}
+
+.weui-uploader__tips p {
+  color: rgba(0,0,0,0.5);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ===== 按钮样式 ===== */
+
+/* 按钮基础样式 */
+.weui-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.weui-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 主要按钮 */
+.weui-btn_primary {
+  background: #007aff;
+  color: #fff;
+}
+
+.weui-btn_primary:hover:not(:disabled) {
+  background: #0056cc;
+}
+
+.weui-btn_primary:active:not(:disabled) {
+  background: #004499;
+}
+
+/* 默认按钮 */
+.weui-btn_default {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #e5e5e5;
+}
+
+.weui-btn_default:hover:not(:disabled) {
+  background: #e9ecef;
+}
+
+.weui-btn_default:active:not(:disabled) {
+  background: #dee2e6;
+}
+
+/* ===== 模态框样式 ===== */
+
+/* 遮罩层 */
+.weui-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* 预览容器 */
+.weui-preview {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* 预览头部 */
+.weui-preview__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.weui-preview__label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.weui-preview__link {
+  color: #007aff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.weui-preview__link:hover {
+  text-decoration: underline;
+}
+
+/* 预览主体 */
+.weui-preview__bd {
+  padding: 16px;
+  text-align: center;
+}
+
+.weui-preview__bd img {
+  max-width: 100%;
+  max-height: 60vh;
+  border-radius: 8px;
+}
+
+/* ===== 响应式设计 ===== */
+
+/* 平板设备 */
+@media (min-width: 768px) {
+  .page .page__hd {
+    padding: 30px 24px;
+  }
+  
+  .weui-uploader__file,
+  .weui-uploader__input-box {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .weui-btn {
+    width: auto;
+    min-width: 120px;
+    display: inline-block;
+    margin: 8px;
+  }
+}
+
+/* 桌面设备 */
+@media (min-width: 1024px) {
+  .page .page__hd {
+    padding: 40px 32px;
+  }
+  
+  .weui-uploader__file,
+  .weui-uploader__input-box {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* ===== 动画效果 ===== */
+
+/* 文件项进入动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.weui-uploader__file {
+  animation: fadeInUp 0.3s ease;
+}
+
+/* 加载状态 */
+.weui-uploader__file.weui-uploader__file_loading {
+  background: #f8f9fa;
+  position: relative;
+}
+
+.weui-uploader__file.weui-uploader__file_loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #e5e5e5;
+  border-top-color: #007aff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
