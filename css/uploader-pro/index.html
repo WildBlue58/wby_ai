@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEUI Uploader 组件 - 图片上传示例</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+    <!-- 页面主容器 -->
+    <div class="page">
+        <!-- 页面头部 -->
+        <header class="page__hd">
+            <h1 class="page__title">WEUI Uploader 组件</h1>
+            <p class="page__desc">
+                一个功能完整的图片上传组件，支持拖拽上传、预览、删除等功能
+            </p>
+        </header>
+        
+        <!-- 页面主体内容 -->
+        <main class="page__bd">
+            <!-- 上传组件容器 -->
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell weui-cell_uploader">
+                    <div class="weui-cell__bd">
+                        <!-- 上传器主容器 -->
+                        <div class="weui-uploader" id="uploader">
+                            <!-- 上传器头部：标题和计数 -->
+                            <div class="weui-uploader__hd">
+                                <p class="weui-uploader__title">图片上传</p>
+                                <div class="weui-uploader__info">
+                                    <span id="uploaded-count">0</span> /
+                                    <span id="max-count">9</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 上传器主体：文件列表和上传按钮 -->
+                            <div class="weui-uploader__bd">
+                                <!-- 文件列表容器 -->
+                                <ul class="weui-uploader__files" id="file-list">
+                                    <!-- 动态生成的图片项将在这里显示 -->
+                                </ul>
+                                
+                                <!-- 上传按钮 -->
+                                <div class="weui-uploader__input-box" id="upload-btn">
+                                    <input type="file" 
+                                           class="weui-uploader__input" 
+                                           id="file-input"
+                                           accept="image/*"
+                                           multiple>
+                                    <div class="weui-uploader__input-text">
+                                        <span class="weui-uploader__input-icon">+</span>
+                                        <span class="weui-uploader__input-label">添加图片</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 上传提示信息 -->
+                            <div class="weui-uploader__tips">
+                                <p>支持 jpg、png、gif 格式，单个文件不超过 5MB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 操作按钮区域 -->
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <button class="weui-btn weui-btn_primary" id="submit-btn" disabled>
+                            提交上传
+                        </button>
+                        <button class="weui-btn weui-btn_default" id="clear-btn">
+                            清空所有
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 图片预览模态框 -->
+    <div class="weui-mask" id="preview-mask" style="display: none;">
+        <div class="weui-preview">
+            <div class="weui-preview__hd">
+                <div class="weui-preview__item">
+                    <span class="weui-preview__label">图片预览</span>
+                </div>
+                <a class="weui-preview__link" id="close-preview">关闭</a>
+            </div>
+            <div class="weui-preview__bd">
+                <img id="preview-image" src="" alt="预览图片">
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <script src="./uploader.js"></script>
+</body>
+</html>
