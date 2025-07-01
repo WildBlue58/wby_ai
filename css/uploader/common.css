@@ -1,86 +1,159 @@
+/* 全局重置样式：清除所有元素的默认边距和内边距 */
 * {
   margin: 0;
   padding: 0;
 }
+
+/* 页面主容器样式 */
 .page {
+  /* 绝对定位，占满整个视口 */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  /* 设置背景色为浅灰色 */
   background-color: #ededed;
+  /* 允许内容滚动 */
   overflow: scroll;
+  /* iOS设备滚动优化 */
   -webkit-overflow-scrolling: touch;
+  /* 盒模型设置 */
   box-sizing: border-box;
+  /* 层级设置 */
   z-index: 1;
 }
+
+/* 页面头部样式 */
 .page .page__hd {
+  /* 头部内边距 */
   padding: 40px;
 }
+
+/* 页面标题样式 */
 .page .page__hd .page__title {
+  /* 左对齐 */
   text-align: left;
+  /* 字体大小 */
   font-size: 20px;
+  /* 字体粗细 */
   font-weight: 400;
 }
+
+/* 页面描述样式 */
 .page .page__hd .page__desc {
+  /* 顶部外边距 */
   margin-top: 4px;
+  /* 半透明黑色文字 */
   color: rgba(0,0,0,0.55);
+  /* 左对齐 */
   text-align: left;
+  /* 字体大小 */
   font-size: 14px;
 }
+
+/* WEUI单元格容器样式 */
 .weui-cells {
+  /* 顶部外边距 */
   margin-top: 8px;
+  /* 白色背景 */
   background: #fff;
+  /* 相对定位，为伪元素定位提供参考 */
   position: relative;
+  /* 隐藏溢出内容 */
   overflow: hidden;
 }
+
+/* 单元格容器顶部边框线（使用伪元素实现） */
 .weui-cells::before {
   content: "";
+  /* 绝对定位 */
   position: absolute;
   left: 0;
   right: 0;
+  /* 边框线高度 */
   height: 1px;
+  /* 半透明黑色边框 */
   background-color: rgba(0,0,0,0.1);
+  /* 层级设置 */
   z-index: 2;
 }
+
+/* 单个单元格样式 */
 .weui-cell {
+  /* 内边距 */
   padding: 16px;
+  /* 相对定位 */
   position: relative;
+  /* 弹性布局 */
   display: flex;
+  /* 垂直居中对齐 */
   align-items: center;
+  /* 行高设置 */
   line-height: 1.41176471;
 }
+
+/* 单元格主体内容区域 */
 .weui-cell .weui-cell__bd {
+  /* 弹性增长，占据剩余空间 */
   flex: 1;
 }
+
+/* 上传器单元格特殊样式 */
 .weui-cell__uploader {
+  /* 底部增加内边距，为上传器内容留出更多空间 */
   padding-bottom: 24px;
 }
+
+/* 上传器头部样式 */
 .weui-uploader .weui-uploader__hd {
+  /* 弹性布局 */
   display: flex;
+  /* 底部内边距 */
   padding-bottom: 12px;
+  /* 垂直居中对齐 */
   align-items: center;
 }
+
+/* 上传器标题样式 */
 .weui-uploader .weui-uploader__hd .weui-uploader__title {
+  /* 弹性增长，占据剩余空间 */
   flex: 1;
 }
+
+/* 上传器信息（计数）样式 */
 .weui-uploader .weui-uploader__hd .weui-uploader__info {
+  /* 半透明灰色文字 */
   color: rgba(0,0,0,0.3);
 }
+
+/* 上传器主体样式 */
 .weui-uploader .weui-uploader__bd {
+  /* 负边距，用于抵消文件项的外边距，实现紧凑布局 */
   margin-bottom: -8px;
   margin-right: -8px;
+  /* 隐藏溢出内容 */
   overflow: hidden;
 }
+
+/* 文件列表容器样式 */
 .weui-uploader .weui-uploader__bd .weui-uploader__files {
+  /* 移除列表默认样式 */
   list-style: none;
 }
+
+/* 文件项样式 */
 .weui-uploader .weui-uploader__bd .weui-uploader__files .weui-uploader__file {
+  /* 左浮动，实现网格布局 */
   float: left;
+  /* 右边距和下边距，创建文件项之间的间距 */
   margin-right: 8px;
   margin-bottom: 8px;
+  /* 文件项尺寸：96x96像素的正方形 */
   width: 96px;
   height: 96px;
+  /* 背景图片：使用WEUI提供的默认图片占位符 */
   background: url("https://weui.io/images/pic_160.png") no-repeat 50%;
+  /* 背景图片覆盖整个区域 */
   background-size: cover;
 }
