@@ -20,7 +20,7 @@ function App() {
     // 异步操作
     reader.onload = () => {
       // console.log(reader.result);
-      setImageBase64Data(reader.result)
+      setImgBase64Data(reader.result)
       setIsValid(true);
     }
   }
@@ -33,6 +33,7 @@ function App() {
       // 授权码 Bearer 一般都会带
       'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`
     }
+
     // 实时反馈给用户
     setContent('正在生成...')
     const response = await fetch(
@@ -62,6 +63,11 @@ function App() {
         })
       }
     )
+
+    // 二进制字节流 json 也是异步的
+    const data = await response.json();
+    setContent(data.choices[0].message.content);
+
   }
   return (
     <div className='container'>
