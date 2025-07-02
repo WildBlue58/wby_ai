@@ -44,3 +44,5 @@ predictions = detector(
     candidate_labels=["boy"]
 )
 predictions
+
+## 这篇博客已完成
