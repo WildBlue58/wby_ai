@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFC</title>
+    <style>
+        .container{
+            background-color: lightblue;
+            /* width: 400px; */
+            overflow: hidden;/* 触发BFC */
+        }
+        .box{
+            margin: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            float: left;
+            /* position: absolute;
+            top:0;
+            left:0; */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box"></div>
+         <div>20050308 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦 我爱杜 我爱羽毛球 我爱周杰伦
+         </div>
+        <!-- <div class="box"></div>
+        <div class="box"></div> -->
+    </div>
+   
+</body>
+</html>
