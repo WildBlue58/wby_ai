@@ -7,3 +7,5 @@
   - this.__proto__ Constructor.prototype
 
 - 当构造函数，返回值且是对象的时候
+
+## 这篇博客待完成
