@@ -77,6 +77,7 @@ const server = http.createServer((req, res) => {
     if (req.method == 'POST' && req.url == '/login') {
         // 用户名和密码的校验
         res.writeHead(200, {
+            // 服务器端设置的
             'Set-Cookie': 'user=adimin;',
             'Content-Type': 'application/json',
         });
