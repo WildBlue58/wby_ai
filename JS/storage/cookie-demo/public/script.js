@@ -22,3 +22,19 @@ loginForm.addEventListener("submit", async (event) => {
         console.error("Login failed:", err);
     }
 });
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // 登录吗
+    try {
+        const response = await fetch("/check-login",);
+        const data = await response.json();
+        console.log(data);
+        if (data.loggedIn) {
+            loginSection.style.display = "none";
+            welcomeSection.style.display = "block";
+            userDisplay.textContent = data.username;
+        }
+    } catch (err) {
+        console.error("Check login failed:", err);
+    }
+});
