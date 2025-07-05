@@ -11,7 +11,7 @@ function App() {
   "representative_word": "图片代表的英文单词", 
   "example_sentence": "结合英文单词和图片描述，给出一个简单的例句", 
   "explanation": "结合图片解释英文单词，段落以Look at...开头，将段落分句，每一句单独一行，解释的最后给一个日常生活有关的问句", 
-  "explanation_replys": ["根据explanation给出的回复1", "根据explaination给出的回复2"]
+  "explanation_replys": ["根据explanation给出的回复1", "根据explanation给出的回复2"]
   }`;
 
   // 上传图片的状态 
