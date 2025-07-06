@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax</title>
+</head>
+<body>
+    <ul id="repos"></ul>
+    <script>
+        // https://api.github.com/users/WildBlue58/repos
+        // 前后端分离 JS 主动的请求接口(异步任务)，拿到数据
+        // xhr 对象
+        // 实例化 xhr 对象
+        // 早期接口请求的对象
+        const xhr = new XMLHttpRequest()// 实例化
+        // 打开一个连接
+        // http 请求 GET 打开一个数据传输的通道
+        // 底层 好理解 浏览器网络请求的通道被打开
+        xhr.open('GET', 'https://api.github.com/users/WildBlue58/repos')
+        console.log(xhr.readyState);
+        // 发送请求
+        xhr.send()// 发送请求
+        // ES6 之前的 对象 连 promise 都没有，更没有then
+        // 事件监听 回调函数
+        xhr.onreadystatechange = function(){
+            // console.log(xhr.readyState);
+            if(xhr.readyState === 4){
+                // 响应内容到达了
+                // 后端数据接口的格式是XML HTML 也是 XML 的一种格式 <song><author>周杰伦</author><title>七里香</title></song>
+                console.log(xhr.responseText,typeof xhr.responseText);
+            }
+        }
+    </script>
+</body>
+</html>
