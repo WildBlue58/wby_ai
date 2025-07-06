@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS 请求</title>
+    <script>
+        // 阻塞
+        // window.onload 有点晚
+        document.addEventListener("DOMContentLoaded", () =>{
+            console.log(document.getElementById("repos"));
+        })
+    </script>
+</head>
+<body>
+    <ul id="repos"></ul>
+    <script>
+        // console.log(document.getElementById('repos'));
+        // then 的链式调用有点繁琐
+        // ES6 
+        // document.addEventListener('DOMContentLoaded', async() => {
+        //     const repos = document.getElementById('repos');
+        //     fetch('https://api.github.com/users/WildBlue58/repos')
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         // console.log(data);
+        //         document.getElementById('repos').innerHTML = data.map(item => `<li>${item.name}</li>`).join('')
+        //     })
+        // })
+        // 同步代码一样
+        // ES8 async await
+        // await promise 实例
+        // new Promise Promise {} fetch本质是 返回 promise 实例
+        // pending 状态 等待 
+        console.log(fetch('https://api.github.com/users/WildBlue58/repos'));
+        // resolve fullfilled 完成了
+        // reject() rejected 失败
+        const result = await fetch('https://api.github.com/users/WildBlue58/repos')
+        const data = await result.json()
+        // console.log(data);
+        
+        document.getElementById('repos').innerHTML = data.map(item => `<li>${item.name}</li>`).join('')
+
+        // API 接口地址
+        // www.bilibili.com 网站地址,用户访问的
+        // https://api.github.com/users/WildBlue58 Url
+        // - JSON 数据返回
+        //   后端 node,java,go 开发
+        // - 资源
+        // 前端
+        // - 通过 JS Fetch 主动拉取资源
+        // 前端 自己做主
+        // - Web 2.0 动态页面
+    </script>
+</body>
+</html>
