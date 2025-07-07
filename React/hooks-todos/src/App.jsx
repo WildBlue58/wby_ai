@@ -7,7 +7,9 @@ function App() {
   return (
     <>
       {/* 开发的任务单位就是组件 */}
-    <Todos />
+      {/* <div style={{ fontSize: '12px', width: '8.3333em', height: '8.3333em', background: 'skyblue' }}></div>
+      <div style={{fontSize:'14px',width:'3.5714em',height:'3.5714em',background:'skyblue'}}></div> */}
+      <Todos />
     </>
   )
 }
