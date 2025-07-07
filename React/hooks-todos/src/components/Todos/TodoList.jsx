@@ -4,7 +4,6 @@ const TodoList = () => {
     return (
         <>
             TodoList
-            <TodoItem />
         </>
     )
 }
