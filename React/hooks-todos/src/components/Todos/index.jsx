@@ -5,6 +5,7 @@ import {
 
 import TodoForm from './TodoForm'
 import TodoList from './TodoList'
+import TodoItem from './TodoItem'
 
 const Todos = () => {
     // 数据流管理
@@ -24,9 +25,9 @@ const Todos = () => {
     ])
 
     // 新增todo
-    const addTodo = (todo) => {
+    const addTodo = (title) => {
         // setTodo
-        setTodos([...todos, todo])
+        // setTodos([...todos, todo])
     }
     
     return (
@@ -34,7 +35,8 @@ const Todos = () => {
             Todos
             {/* 自定义事件 */}
             <TodoForm onAddTodo={addTodo}/>
-            <TodoList todos={todos}/>
+            <TodoList todos={todos} />
+            <TodoItem />
         </div>
     )
 }
