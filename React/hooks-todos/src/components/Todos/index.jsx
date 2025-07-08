@@ -14,28 +14,57 @@ const Todos = () => {
     const [todos, setTodos] = useState([
         {
             id: 1,
-            title: '学习react',
+            text: '学习react',
             isCompleted: false
         },
         {
             id: 2,
-            title: '学习vue',
+            text: '学习vue',
             isCompleted: false
         },
     ])
 
     // 新增todo
-    const addTodo = (title) => {
+    const addTodo = (text) => {
         // setTodo
         // setTodos([...todos, todo])
+        // 数据状态是对象的时候
+        setTodos([
+            ...todos,
+            {
+                id: Date.now(), // 时间戳
+                text: text,
+                isCompleted: false
+            }
+        ])
+    }
+
+    const onToggle = (id) => {
+        console.log(id);
+        // todos 数组找到id 为 id，isCompleted !isCompleted
+        // 响应式? 返回一个全新的todos map
+        // state 是对象或数组的时候
+        
+        setTodos(todos.map(
+            todo => todo.id === id
+            ? { ...todo, isCompleted: !todo.isCompleted }
+            : todo
+        ))
+    }
+
+    const onDelete = (id) => {
+        setTodos(todos.filter(todo => todo.id !== id))// 过滤器 返回一个全新的todos
     }
     
     return (
         <div className="app">
-            Todos
             {/* 自定义事件 */}
             <TodoForm onAddTodo={addTodo}/>
-            <TodoList todos={todos} />
+            <TodoList
+                todos={todos}
+                onToggle={onToggle}
+                onDelete={onDelete}
+            />
             <TodoItem />
         </div>
     )
