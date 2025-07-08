@@ -28,3 +28,5 @@
   img 太多会严重影响页面的打开速度，第一重要的
   data-original 中
   自定义属性 data- 数据属性
+  图片的原地址是 img 数据
+  original 原来
