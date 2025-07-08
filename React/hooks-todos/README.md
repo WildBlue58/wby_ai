@@ -27,4 +27,3 @@
     移动端 宽高不定的 rem(html font-size) vw/vh(viewport),em 相对单位
     使用相对单位，可以在所有设备上适配
     em 相对于自身的font-size 等比例
-    
