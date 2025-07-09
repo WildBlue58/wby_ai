@@ -18,3 +18,5 @@ Blob（Binary Large Object，二进制大对象）是 HTML5 中用于处理二�
 可以通过 FileReader、fetch、XMLHttpRequest 等 API 读取或传输 Blob 数据。
 
 Blob 的主要作用就是让前端可以像操作文件一样操作二进制数据，非常适合做文件上传、下载、预览、图片处理等场景。
+
+## 这篇博客已完成
