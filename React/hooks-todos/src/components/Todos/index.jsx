@@ -65,7 +65,6 @@ const Todos = () => {
                 onToggle={onToggle}
                 onDelete={onDelete}
             />
-            <TodoItem />
         </div>
     )
 }
