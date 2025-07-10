@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加权平均分计算器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffe0f0 0%, #ffd6ec 100%);
+      font-family: 'ZCOOL KuaiLe', '微软雅黑', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff0fa;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(255, 120, 180, 0.15);
+      padding: 32px 24px 24px 24px;
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .left {
+      flex: 2;
+      min-width: 320px;
+    }
+    .right {
+      flex: 1;
+      min-width: 220px;
+      background: #fff6fb;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      box-shadow: 0 2px 8px rgba(255, 120, 180, 0.08);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.6rem;
+      color: #ff5fa2;
+      margin-bottom: 0.2em;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    .subtitle {
+      text-align: center;
+      color: #b85c8e;
+      margin-bottom: 2em;
+      font-size: 1.2em;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+    }
+    th, td {
+      text-align: center;
+      padding: 10px 6px;
+    }
+    th {
+      color: #ff5fa2;
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+    input[type="text"], input[type="number"] {
+      width: 90%;
+      padding: 8px 6px;
+      border: 1.5px solid #ffb6d5;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 1em;
+      transition: border 0.2s;
+      outline: none;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+      border: 1.5px solid #ff5fa2;
+    }
+    .add-btn {
+      margin: 18px 0 0 0;
+      background: #ffb6d5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(255, 120, 180, 0.08);
+    }
+    .add-btn:hover {
+      background: #ff5fa2;
+    }
+    .del-btn {
+      background: #fff0fa;
+      color: #ff5fa2;
+      border: 1px solid #ffb6d5;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-left: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .del-btn:hover {
+      background: #ffb6d5;
+      color: #fff;
+    }
+    .score {
+      font-size: 2.8em;
+      color: #ff5fa2;
+      font-weight: bold;
+      margin: 0.2em 0 0.1em 0;
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      color: #b85c8e;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 1em;
+      text-decoration: underline dotted;
+      transition: color 0.2s;
+    }
+    .copy-btn:hover {
+      color: #ff5fa2;
+    }
+    .explain {
+      color: #b85c8e;
+      font-size: 0.98em;
+      margin-top: 1.5em;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .container { flex-direction: column; gap: 0; }
+      .right { margin-top: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>加权平均分计算器</h1>
+  <div class="subtitle">计算成绩单或证书的加权平均分，数据自动保存，刷新不丢失！</div>
+  <div class="container">
+    <div class="left">
+      <table id="course-table">
+        <thead>
+          <tr>
+            <th>课程名称</th>
+            <th>学分</th>
+            <th>成绩</th>
+            <th>学分绩点</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+      <button class="add-btn" onclick="addRow()">+ 添加课程</button>
+    </div>
+    <div class="right">
+      <div style="font-size:1.2em; color:#b85c8e;">平均分数是:</div>
+      <div class="score" id="avg-score">0</div>
+      <button class="copy-btn" onclick="copyScore()">复制</button>
+      <div style="font-size:1.1em; color:#b85c8e; margin-top:1em;">平均学分绩点:</div>
+      <div class="score" id="avg-gpa" style="font-size:2em;">0</div>
+      <div class="explain">
+        计算公式：<br>加权平均分 = (每门课成绩 × 相应的学分) 的总和 ÷ (所有学分的总和)
+      </div>
+    </div>
+  </div>
+  <script>
+    // 本地存储键
+    const STORAGE_KEY = 'weighted_score_courses';
+
+    // 初始化数据
+    function getInitCourses() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          // 兼容老数据结构
+          const arr = JSON.parse(saved);
+          return arr.map(c => ({
+            name: c.name || '',
+            credit: c.credit || '',
+            score: c.score || '',
+            gpa: c.gpa || ''
+          }));
+        } catch {
+          return [{ name: '', credit: '', score: '', gpa: '' }];
+        }
+      }
+      return [{ name: '', credit: '', score: '', gpa: '' }];
+    }
+
+    let courses = getInitCourses();
+
+    function saveCourses() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(courses));
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      courses.forEach((course, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="text" value="${course.name || ''}" placeholder="如：高等数学" onchange="updateCourse(${idx}, 'name', this.value)"></td>
+          <td><input type="number" min="0" step="0.1" value="${course.credit || ''}" placeholder="学分" onchange="updateCourse(${idx}, 'credit', this.value)"></td>
+          <td><input type="number" min="0" max="100" step="0.1" value="${course.score || ''}" placeholder="成绩" onchange="updateCourse(${idx}, 'score', this.value)"></td>
+          <td><input type="number" min="0" max="5" step="0.01" value="${course.gpa || ''}" placeholder="绩点" onchange="updateCourse(${idx}, 'gpa', this.value)"></td>
+          <td>${courses.length > 1 ? `<button class='del-btn' onclick='deleteRow(${idx})'>删除</button>` : ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      calcAvg();
+    }
+
+    function addRow() {
+      courses.push({ name: '', credit: '', score: '', gpa: '' });
+      saveCourses();
+      renderTable();
+    }
+
+    function deleteRow(idx) {
+      courses.splice(idx, 1);
+      saveCourses();
+      renderTable();
+    }
+
+    function updateCourse(idx, key, value) {
+      courses[idx][key] = value;
+      saveCourses();
+      calcAvg();
+    }
+
+    function calcAvg() {
+      let total = 0, creditSum = 0;
+      let gpaTotal = 0;
+      courses.forEach(c => {
+        const credit = parseFloat(c.credit);
+        const score = parseFloat(c.score);
+        const gpa = parseFloat(c.gpa);
+        if (!isNaN(credit) && !isNaN(score)) {
+          total += credit * score;
+          creditSum += credit;
+        }
+        if (!isNaN(gpa)) {
+          gpaTotal += gpa;
+        }
+      });
+      const avg = creditSum > 0 ? (total / creditSum).toFixed(2) : 0;
+      const avgGpa = creditSum > 0 ? (gpaTotal / creditSum).toFixed(3) : 0;
+      document.getElementById('avg-score').innerText = avg;
+      document.getElementById('avg-gpa').innerText = avgGpa;
+    }
+
+    function copyScore() {
+      const avg = document.getElementById('avg-score').innerText;
+      navigator.clipboard.writeText(avg);
+      const btn = document.querySelector('.copy-btn');
+      btn.innerText = '已复制!';
+      setTimeout(() => { btn.innerText = '复制'; }, 1200);
+    }
+
+    // 页面加载时渲染
+    renderTable();
+  </script>
+</body>
+</html>
