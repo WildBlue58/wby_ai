@@ -22,4 +22,5 @@
 ## react 开发全家桶
 
 - react 19
+- react-dom 19
 - react-router-dom 7.6.3
