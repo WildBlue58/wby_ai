@@ -40,3 +40,5 @@
   - observer 观察 异步的，不是同步的 浏览器的后台
   - intersection rect 和 可视区域交叉
   - 不再需要 onscroll 不需要节流
+
+## 这篇博客已写完
