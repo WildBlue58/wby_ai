@@ -9,6 +9,7 @@ import { useState } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
