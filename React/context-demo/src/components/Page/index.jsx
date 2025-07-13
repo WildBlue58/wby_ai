@@ -1,4 +1,4 @@
-import Child from "../Child";
+import Child from "../Child/index1";
 import { useTheme } from "../../hooks/useTheme";
 
 const Page = () => {
