@@ -206,6 +206,4 @@ A: Context 的值变化会导致所有消费组件重新渲染，因此要避免
 - [React Hooks 官方文档](https://react.dev/reference/react/hooks)
 - [自定义 Hooks 最佳实践](https://react.dev/learn/reusing-logic-with-custom-hooks)
 
-## 许可证
-
-MIT License
+## 这篇博客已完成
