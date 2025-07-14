@@ -37,7 +37,7 @@ hash
   不去重新发送请求,
   事件,JS 动态加载
 
-- 事件 hashChange/pushState
+- 事件 hashchange/pushState
 - 根据当前的url，取对应的组件
   替换之前的页面级别组件
 - 体验是
@@ -46,4 +46,13 @@ hash
   页面很快
   About
   Home 全是前端组件
-  
+
+## url 改变，但不重新渲染的解决方案
+
+- hash 的改变 很早就有
+  原来是用来做页面锚点，长页面的电梯
+  不会刷新页面
+  #/
+  #/about
+- 事件
+  hashchange
