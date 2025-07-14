@@ -3,33 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>table 布局，不推荐</title>
-</head>
-<body>
-    <table>
-        <tr>
-            <td class="sidebar">左侧边栏</td>
-            <td class="main">主侧内容</td>
-            <td class="sidebar">右侧边栏</td>
-        </tr>
-    </table>
+    <title>回流重绘演示-乡乡</title>
     <style>
-        table{
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        .demo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        /* Table布局 - 不推荐，容易触发回流 */
+        .table-layout {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        td{
+        
+        .table-layout td {
             border: 1px solid #ccc;
             padding: 10px;
+            text-align: center;
         }
-        .sidebar{
+        
+        .sidebar {
             width: 20%;
             background-color: #f0f0f0;
         }
-        .main{
+        
+        .main {
             width: 60%;
             background-color: #e0e0e0;
         }
+        
+        /* 现代布局 - 推荐，减少回流 */
+        .modern-layout {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .modern-sidebar {
+            flex: 0 0 20%;
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        
+        .modern-main {
+            flex: 1;
+            background-color: #e0e0e0;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        
+        /* 回流触发演示 */
+        .reflow-demo {
+            border: 2px solid #ff6b6b;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .reflow-demo:hover {
+            width: 300px;
+            height: 100px;
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        /* 重绘演示 */
+        .repaint-demo {
+            border: 2px solid #4ecdc4;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .repaint-demo:hover {
+            background-color: #4ecdc4;
+            color: white;
+        }
+        
+        /* GPU加速演示 */
+        .gpu-demo {
+            border: 2px solid #45b7d1;
+            padding: 15px;
+            margin: 10px 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .gpu-demo:hover {
+            transform: translateX(20px);
+            opacity: 0.8;
+        }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+        }
     </style>
+</head>
+<body>
+    <h1>回流重绘演示-乡乡</h1>
+    
+    <!-- Table布局演示 -->
+    <div class="demo-section">
+        <h2>1. Table布局（不推荐）</h2>
+        <div class="info">
+            <strong>问题：</strong>table布局中局部的改变会触发整个table的回流重排，性能差
+        </div>
+        <table class="table-layout">
+            <tr>
+                <td class="sidebar">左侧边栏</td>
+                <td class="main">主内容区域</td>
+                <td class="sidebar">右侧边栏</td>
+            </tr>
+        </table>
+        <button class="btn" onclick="changeTableContent()">改变Table内容（触发回流）</button>
+    </div>
+    
+    <!-- 现代布局演示 -->
+    <div class="demo-section">
+        <h2>2. 现代Flex布局（推荐）</h2>
+        <div class="info">
+            <strong>优势：</strong>使用flex布局，局部改变不会影响整体布局，性能更好
+        </div>
+        <div class="modern-layout">
+            <div class="modern-sidebar">左侧边栏</div>
+            <div class="modern-main">主内容区域</div>
+            <div class="modern-sidebar">右侧边栏</div>
+        </div>
+        <button class="btn" onclick="changeFlexContent()">改变Flex内容（影响较小）</button>
+    </div>
+    
+    <!-- 回流演示 -->
+    <div class="demo-section">
+        <h2>3. 回流（Reflow）演示</h2>
+        <div class="info">
+            <strong>回流：</strong>元素尺寸、结构或位置改变时，浏览器重新计算布局
+        </div>
+        <div class="reflow-demo" id="reflowDemo">
+            悬停我查看回流效果（改变尺寸和位置）
+        </div>
+        <button class="btn" onclick="triggerReflow()">触发回流</button>
+    </div>
+    
+    <!-- 重绘演示 -->
+    <div class="demo-section">
+        <h2>4. 重绘（Repaint）演示</h2>
+        <div class="info">
+            <strong>重绘：</strong>元素样式改变但不影响文档流位置时，只重新绘制
+        </div>
+        <div class="repaint-demo" id="repaintDemo">
+            悬停我查看重绘效果（只改变颜色）
+        </div>
+        <button class="btn" onclick="triggerRepaint()">触发重绘</button>
+    </div>
+    
+    <!-- GPU加速演示 -->
+    <div class="demo-section">
+        <h2>5. GPU加速演示</h2>
+        <div class="info">
+            <strong>GPU加速：</strong>使用transform和opacity创建新图层，避免回流重绘
+        </div>
+        <div class="gpu-demo" id="gpuDemo">
+            悬停我查看GPU加速效果（transform + opacity）
+        </div>
+        <button class="btn" onclick="triggerGPU()">触发GPU加速动画</button>
+    </div>
+    
+    <!-- 性能对比 -->
+    <div class="demo-section">
+        <h2>6. 性能优化建议</h2>
+        <div class="info">
+            <ul>
+                <li><strong>避免使用table布局</strong> - 局部改变会触发整个table回流</li>
+                <li><strong>使用transform代替改变位置</strong> - 创建新图层，GPU加速</li>
+                <li><strong>批量修改DOM</strong> - 减少回流次数</li>
+                <li><strong>使用display:none隐藏元素</strong> - 不参与回流重绘</li>
+                <li><strong>避免频繁查询布局信息</strong> - getBoundingClientRect()会触发回流</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 改变table内容，触发回流
+        function changeTableContent() {
+            const table = document.querySelector('.table-layout');
+            const mainCell = table.querySelector('.main');
+            mainCell.textContent = '内容已改变 - 整个table重新计算布局';
+            mainCell.style.backgroundColor = '#ffcccc';
+        }
+        
+        // 改变flex内容，影响较小
+        function changeFlexContent() {
+            const mainDiv = document.querySelector('.modern-main');
+            mainDiv.textContent = '内容已改变 - 只影响当前元素';
+            mainDiv.style.backgroundColor = '#ccffcc';
+        }
+        
+        // 触发回流
+        function triggerReflow() {
+            const demo = document.getElementById('reflowDemo');
+            demo.style.width = '400px';
+            demo.style.height = '80px';
+            demo.style.marginLeft = '50px';
+            demo.textContent = '回流已触发 - 尺寸和位置都改变了';
+        }
+        
+        // 触发重绘
+        function triggerRepaint() {
+            const demo = document.getElementById('repaintDemo');
+            demo.style.backgroundColor = '#ff6b6b';
+            demo.style.color = 'white';
+            demo.textContent = '重绘已触发 - 只改变了颜色';
+        }
+        
+        // 触发GPU加速
+        function triggerGPU() {
+            const demo = document.getElementById('gpuDemo');
+            demo.style.transform = 'translateX(100px) rotate(10deg)';
+            demo.style.opacity = '0.6';
+            demo.textContent = 'GPU加速已触发 - 使用transform和opacity';
+        }
+        
+        // 演示频繁查询布局信息的性能问题
+        function demonstrateLayoutQuery() {
+            const demo = document.getElementById('reflowDemo');
+            console.log('开始查询布局信息...');
+            
+            // 每次调用getBoundingClientRect()都会触发回流
+            for(let i = 0; i < 100; i++) {
+                const rect = demo.getBoundingClientRect();
+                console.log(`第${i+1}次查询:`, rect);
+            }
+            
+            console.log('查询完成 - 触发了100次回流！');
+        }
+        
+        // 页面加载完成后显示性能提示
+        window.addEventListener('load', function() {
+            console.log('页面加载完成');
+            console.log('提示：打开开发者工具的Performance面板可以观察回流重绘');
+        });
+    </script>
 </body>
 </html>
