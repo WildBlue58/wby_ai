@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单例模式 - Storage示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>单例模式 - Storage示例</h1>
+        
+        <div class="demo-section">
+            <h3>基本操作</h3>
+            <div>
+                <input type="text" id="keyInput" placeholder="键名" value="user">
+                <input type="text" id="valueInput" placeholder="值" value="张三">
+                <button onclick="setData()">设置数据</button>
+                <button onclick="getData()">获取数据</button>
+                <button onclick="removeData()">删除数据</button>
+            </div>
+            <div id="basicResult" class="result"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>复杂数据类型</h3>
+            <div>
+                <button onclick="setObject()">存储对象</button>
+                <button onclick="setArray()">存储数组</button>
+                <button onclick="getObject()">获取对象</button>
+                <button onclick="getArray()">获取数组</button>
+            </div>
+            <div id="complexResult" class="result"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>单例验证</h3>
+            <div>
+                <button onclick="testSingleton()">测试单例</button>
+                <button onclick="showAllData()">显示所有数据</button>
+                <button onclick="clearAll()">清空所有</button>
+            </div>
+            <div id="singletonResult" class="result"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // 导入单例Storage
+        import storage from './Storage.js';
+
+        // 将storage挂载到window对象，方便在HTML中调用
+        window.storage = storage;
+
+        // 基本操作函数
+        window.setData = function() {
+            const key = document.getElementById('keyInput').value;
+            const value = document.getElementById('valueInput').value;
+            
+            if (!key) {
+                showResult('basicResult', '请输入键名', 'error');
+                return;
+            }
+
+            const success = storage.setItem(key, value);
+            if (success) {
+                showResult('basicResult', `成功设置: ${key} = ${value}`, 'success');
+            } else {
+                showResult('basicResult', '设置失败', 'error');
+            }
+        };
+
+        window.getData = function() {
+            const key = document.getElementById('keyInput').value;
+            
+            if (!key) {
+                showResult('basicResult', '请输入键名', 'error');
+                return;
+            }
+
+            const value = storage.getItem(key);
+            if (value !== null) {
+                showResult('basicResult', `获取成功: ${key} = ${JSON.stringify(value)}`, 'success');
+            } else {
+                showResult('basicResult', `键 ${key} 不存在`, 'error');
+            }
+        };
+
+        window.removeData = function() {
+            const key = document.getElementById('keyInput').value;
+            
+            if (!key) {
+                showResult('basicResult', '请输入键名', 'error');
+                return;
+            }
+
+            const success = storage.removeItem(key);
+            if (success) {
+                showResult('basicResult', `成功删除: ${key}`, 'success');
+            } else {
+                showResult('basicResult', '删除失败', 'error');
+            }
+        };
+
+        // 复杂数据类型操作
+        window.setObject = function() {
+            const user = {
+                name: '李四',
+                age: 25,
+                email: 'lisi@example.com',
+                hobbies: ['读书', '游泳']
+            };
+            
+            const success = storage.setItem('userObject', user);
+            if (success) {
+                showResult('complexResult', `成功存储对象: ${JSON.stringify(user, null, 2)}`, 'success');
+            } else {
+                showResult('complexResult', '存储对象失败', 'error');
+            }
+        };
+
+        window.setArray = function() {
+            const numbers = [1, 2, 3, 4, 5];
+            
+            const success = storage.setItem('numbersArray', numbers);
+            if (success) {
+                showResult('complexResult', `成功存储数组: ${JSON.stringify(numbers)}`, 'success');
+            } else {
+                showResult('complexResult', '存储数组失败', 'error');
+            }
+        };
+
+        window.getObject = function() {
+            const user = storage.getItem('userObject');
+            if (user) {
+                showResult('complexResult', `获取对象成功: ${JSON.stringify(user, null, 2)}`, 'success');
+            } else {
+                showResult('complexResult', '对象不存在', 'error');
+            }
+        };
+
+        window.getArray = function() {
+            const numbers = storage.getItem('numbersArray');
+            if (numbers) {
+                showResult('complexResult', `获取数组成功: ${JSON.stringify(numbers)}`, 'success');
+            } else {
+                showResult('complexResult', '数组不存在', 'error');
+            }
+        };
+
+        // 单例验证
+        window.testSingleton = function() {
+            // 创建多个Storage实例
+            const storage1 = new Storage();
+            const storage2 = new Storage();
+            const storage3 = new Storage();
+
+            // 验证是否为同一个实例
+            const isSingleton = storage1 === storage2 && storage2 === storage3;
+            
+            if (isSingleton) {
+                showResult('singletonResult', '✅ 单例模式验证成功！所有实例都是同一个对象', 'success');
+            } else {
+                showResult('singletonResult', '❌ 单例模式验证失败！实例不是同一个对象', 'error');
+            }
+
+            // 显示实例信息
+            showResult('singletonResult', `
+                实例1: ${storage1}<br>
+                实例2: ${storage2}<br>
+                实例3: ${storage3}<br>
+                实例1 === 实例2: ${storage1 === storage2}<br>
+                实例2 === 实例3: ${storage2 === storage3}
+            `, 'success');
+        };
+
+        window.showAllData = function() {
+            const keys = storage.keys();
+            const data = {};
+            
+            keys.forEach(key => {
+                data[key] = storage.getItem(key);
+            });
+
+            showResult('singletonResult', `所有存储的数据: ${JSON.stringify(data, null, 2)}`, 'success');
+        };
+
+        window.clearAll = function() {
+            const success = storage.clear();
+            if (success) {
+                showResult('singletonResult', '✅ 成功清空所有数据', 'success');
+            } else {
+                showResult('singletonResult', '❌ 清空数据失败', 'error');
+            }
+        };
+
+        // 辅助函数
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = message;
+            element.className = `result ${type}`;
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            showResult('basicResult', '请输入键值对进行测试', '');
+            showResult('complexResult', '点击按钮测试复杂数据类型存储', '');
+            showResult('singletonResult', '点击按钮验证单例模式', '');
+        });
+    </script>
+</body>
+</html>
