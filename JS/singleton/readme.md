@@ -22,3 +22,16 @@ setItem(key, value) 和 getItem(key)
 - 性能特别好，好管理
 
 ## 这篇博客已写完
+
+## 单例模式 全局只有一个实例
+
+- 实现一个登陆弹窗
+  - 体验
+  不用跳转路由，盖在页面上
+  z-index display none|block
+  - 性能
+  90% 用户 不登录
+  Modal html css js 比较多
+  推迟到第一次用的时候，单例
+  复用
+  
