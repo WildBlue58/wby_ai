@@ -56,3 +56,5 @@ hash
   #/about
 - 事件
   hashchange
+
+## 这篇博客已写完
