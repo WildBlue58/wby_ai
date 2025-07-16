@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录弹窗单例模式 - 闭包优化</title>
+    <style>
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .login-btn:hover {
+            background: #0056b3;
+        }
+        
+        .demo-buttons {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .demo-btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .demo-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-buttons">
+        <button class="demo-btn" onclick="showLoginModal()">显示登录弹窗</button>
+        <button class="demo-btn" onclick="checkInstance()">检查实例</button>
+        <button class="demo-btn" onclick="destroyInstance()">销毁实例</button>
+    </div>
+
+    <script>
+        // 使用闭包实现单例模式的登录弹窗
+        const LoginModal = (function() {
+            // 私有变量，存储实例
+            let instance = null;
+            
+            // 私有方法，创建DOM元素
+            function createModalHTML() {
+                return `
+                    <div class="login-modal" id="loginModal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>用户登录</h2>
+                                <button class="close-btn" onclick="LoginModal.getInstance().hide()">&times;</button>
+                            </div>
+                            <form onsubmit="LoginModal.getInstance().handleLogin(event)">
+                                <div class="form-group">
+                                    <label for="username">用户名：</label>
+                                    <input type="text" id="username" name="username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">密码：</label>
+                                    <input type="password" id="password" name="password" required>
+                                </div>
+                                <button type="submit" class="login-btn">登录</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 私有方法，初始化事件监听
+            function initEventListeners(modalElement) {
+                // 点击遮罩层关闭弹窗
+                modalElement.addEventListener('click', function(e) {
+                    if (e.target === modalElement) {
+                        instance.hide();
+                    }
+                });
+                
+                // ESC键关闭弹窗
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && instance.isVisible()) {
+                        instance.hide();
+                    }
+                });
+            }
+            
+            // 构造函数
+            function LoginModalInstance() {
+                this.element = null;
+                this.isInitialized = false;
+            }
+            
+            // 原型方法
+            LoginModalInstance.prototype.init = function() {
+                if (this.isInitialized) {
+                    console.log('弹窗已经初始化过了');
+                    return this;
+                }
+                
+                // 懒加载：只有在第一次使用时才创建DOM
+                if (!this.element) {
+                    const modalHTML = createModalHTML();
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                    this.element = document.getElementById('loginModal');
+                    initEventListeners(this.element);
+                }
+                
+                this.isInitialized = true;
+                console.log('登录弹窗初始化完成');
+                return this;
+            };
+            
+            LoginModalInstance.prototype.show = function() {
+                if (!this.isInitialized) {
+                    this.init();
+                }
+                
+                if (this.element) {
+                    this.element.style.display = 'block';
+                    // 聚焦到用户名输入框
+                    const usernameInput = this.element.querySelector('#username');
+                    if (usernameInput) {
+                        usernameInput.focus();
+                    }
+                    console.log('登录弹窗已显示');
+                }
+            };
+            
+            LoginModalInstance.prototype.hide = function() {
+                if (this.element) {
+                    this.element.style.display = 'none';
+                    // 清空表单
+                    const form = this.element.querySelector('form');
+                    if (form) {
+                        form.reset();
+                    }
+                    console.log('登录弹窗已隐藏');
+                }
+            };
+            
+            LoginModalInstance.prototype.isVisible = function() {
+                return this.element && this.element.style.display === 'block';
+            };
+            
+            LoginModalInstance.prototype.handleLogin = function(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const username = formData.get('username');
+                const password = formData.get('password');
+                
+                console.log('登录信息：', { username, password });
+                
+                // 模拟登录请求
+                setTimeout(() => {
+                    alert(`欢迎回来，${username}！`);
+                    this.hide();
+                }, 1000);
+            };
+            
+            LoginModalInstance.prototype.destroy = function() {
+                if (this.element) {
+                    this.element.remove();
+                    this.element = null;
+                    this.isInitialized = false;
+                    instance = null;
+                    console.log('登录弹窗实例已销毁');
+                }
+            };
+            
+            // 返回公共接口
+            return {
+                getInstance: function() {
+                    if (!instance) {
+                        instance = new LoginModalInstance();
+                        console.log('创建新的登录弹窗实例');
+                    } else {
+                        console.log('返回已存在的登录弹窗实例');
+                    }
+                    return instance;
+                },
+                
+                // 用于测试的公共方法
+                getInstanceCount: function() {
+                    return instance ? 1 : 0;
+                }
+            };
+        })();
+        
+        // 全局函数，方便在HTML中调用
+        function showLoginModal() {
+            LoginModal.getInstance().show();
+        }
+        
+        function checkInstance() {
+            const count = LoginModal.getInstanceCount();
+            alert(`当前实例数量：${count}`);
+        }
+        
+        function destroyInstance() {
+            const modal = LoginModal.getInstance();
+            modal.destroy();
+        }
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，登录弹窗单例模式已准备就绪');
+            console.log('性能优化特点：');
+            console.log('1. 懒加载：只有在第一次使用时才创建DOM');
+            console.log('2. 闭包保护：私有变量instance不会被外部访问');
+            console.log('3. 单例保证：全局只有一个实例');
+            console.log('4. 内存优化：提供destroy方法清理资源');
+        });
+    </script>
+</body>
+</html>
