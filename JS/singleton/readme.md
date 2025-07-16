@@ -20,3 +20,5 @@ setItem(key, value) 和 getItem(key)
 - static getInstance 方法 判断 instance 并返回
   实例的时候一定要这样
 - 性能特别好，好管理
+
+## 这篇博客已写完
