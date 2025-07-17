@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>history SPA</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>SPA路由模拟</h1>
     <button onclick="navigate('/home')">首页</button>
     <button onclick="navigate('/about')">关于我们</button>
     <button onclick="navigate('/contact')">联系我们</button>
-    <a href="/home">首页</a>
-    <a href="/about">关于我们</a>
-    <a href="/contact">联系我们</a>
+    <button onclick="navigate('/login')">登录</button>
+    <button onclick="repalce('/pay')">支付</button>
+    <a href="http://www.zhihu.com">知乎</a>
+    <a href="http://www.baidu.com">百度</a>
+    <a href="http://www.sina.com">新浪</a>
     <div id="view">当前视图</div>
     <script>
-        function navigate(url) {
-            window.history.pushState({}, '', url);
-            updateView();
-        }
+      function render(path) {
+        const view = document.getElementById("view");
+        view.innerHTML = `当前视图是${path}`;
+      }
+
+      function replace(path) {
+        window.history.replaceState({ path }, "", path);
+        render(path);
+      }
+
+      function navigate(path) {
+        // url 含义，持有数据状态 state
+        // 入history 栈，不更新
+        window.history.pushState({ path }, "", path);
+        render(path);
+      }
+      
+      // 监听浏览器前进/后退事件
+      window.addEventListener("popstate", (event) => {
+        console.log("pop state fired:", event.state);
+        const path = event.state?.path || "/";
+        render(path);
+      });
+      render(window.location.pathname);
     </script>
-</body>
+  </body>
 </html>
