@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>history SPA</title>
+  </head>
+  <body>
+    <h1>SPA路由模拟</h1>
+    <button onclick="navigate('/home')">首页</button>
+    <button onclick="navigate('/about')">关于我们</button>
+    <button onclick="navigate('/contact')">联系我们</button>
+    <button onclick="navigate('/login')">登录</button>
+    <button onclick="replace('/pay')">支付</button>
+    <a href="http://www.zhihu.com">知乎</a>
+    <a href="http://www.baidu.com">百度</a>
+    <a href="http://www.sina.com">新浪</a>
+    <div id="view">当前视图</div>
+    <script>
+      // 路由配置
+      const routes = {
+        "/home": {
+          title: "首页",
+          content: "欢迎来到我们的网站首页！这里展示了最新的内容和功能。",
+        },
+        "/about": {
+          title: "关于我们",
+          content: "我们是一个专业的团队，致力于为用户提供最好的服务。",
+        },
+        "/contact": {
+          title: "联系我们",
+          content:
+            "您可以通过以下方式联系我们：<br>邮箱：contact@example.com<br>电话：123-456-7890",
+        },
+        "/login": {
+          title: "登录",
+          content: "请在此页面登录您的账号。",
+        },
+        "/pay": {
+          title: "支付",
+          content: "这里是支付页面，请选择支付方式。",
+        },
+      };
+
+      function render(path) {
+        const view = document.getElementById("view");
+        const route = routes[path] || { title: "404", content: "页面未找到" };
+        view.innerHTML = `<h2>${route.title}</h2><p>${route.content}</p><small>当前路径: ${path}</small>`;
+      }
+
+      function navigate(path) {
+        window.history.pushState({ path }, "", path);
+        render(path);
+      }
+
+      function replace(path) {
+        window.history.replaceState({ path }, "", path);
+        render(path);
+      }
+
+      // 监听浏览器前进/后退事件
+      window.addEventListener("popstate", (event) => {
+        const path = event.state?.path || "/home";
+        render(path);
+      });
+
+      // 初始化
+      (function () {
+        const path = window.location.pathname;
+        render(routes[path] ? path : "/home");
+      })();
+    </script>
+  </body>
+</html>
