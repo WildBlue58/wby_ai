@@ -1,26 +1,18 @@
-import { createContext, useReducer } from "react";
-
-// 1. 定义初始状态
-const initialState = {
-  count: 0,
-};
-
-// 2. 定义 reducer 函数
-function reducer(state, action) {
-  switch (action.type) {
-    case "INCREMENT":
-      return { ...state, count: state.count + 1 };
-    case "DECREMENT":
-      return { ...state, count: state.count - 1 };
-    default:
-      return state;
-  }
-}
+import { useReducer, createContext } from "react";
+import { repoReducer } from "@/reducers/repoReducer";
 
 export const GlobalContext = createContext();
+
+const initialState = {
+  repos: [],
+  loading: false,
+  error: null,
+};
+
 export const GlobalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(repoReducer, initialState);
   return (
+    // state 应用状态
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
     </GlobalContext.Provider>
