@@ -3,10 +3,20 @@ import './App.css'
 
 function ControlledInput({onSubmit}) {
   const [value, setValue] = useState('')// 响应式状态
+  const [error, setError] = useState('')
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(value,'???')
     onSubmit(value)
+  }
+  const handleChange = (e) => {
+    setValue(e.target.value)
+    // 频繁触发 实时判断表单是否合格
+    if (e.target.value.length < 6) {
+      setError('请输入至少6个字符')
+    } else {
+      setError('')
+    }
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -14,9 +24,11 @@ function ControlledInput({onSubmit}) {
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
         placeholder="请输入内容"
+        required
       />
+      {error && <p>{error}</p>}
       <button type="submit">提交</button>
     </form>
   )
