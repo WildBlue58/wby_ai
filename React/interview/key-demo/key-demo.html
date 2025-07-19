@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Key 的重要性演示</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .demo-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .warning {
+        background-color: #fff3cd;
+        border-color: #ffeaa7;
+        color: #856404;
+      }
+      .success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+      button {
+        margin: 5px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .item {
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+      }
+      .item input {
+        margin-right: 10px;
+      }
+      .explanation {
+        background-color: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>React Key 的重要性演示</h1>
+
+    <div class="explanation">
+      <h3>为什么React需要key？</h3>
+      <p>
+        Key帮助React识别哪些元素发生了变化、被添加或被删除，从而高效地更新DOM。
+      </p>
+    </div>
+
+    <div class="demo-section warning">
+      <h3>❌ 没有key的情况（问题演示）</h3>
+      <p>
+        点击按钮在列表开头添加新项目，然后勾选一些复选框，再点击添加按钮。你会发现复选框状态会"漂移"！
+      </p>
+      <button onclick="addItemWithoutKey()">在开头添加项目</button>
+      <button onclick="resetWithoutKey()">重置</button>
+      <div id="listWithoutKey"></div>
+    </div>
+
+    <div class="demo-section success">
+      <h3>✅ 有key的情况（正确做法）</h3>
+      <p>同样的操作，但每个项目都有唯一的key，复选框状态会正确保持。</p>
+      <button onclick="addItemWithKey()">在开头添加项目</button>
+      <button onclick="resetWithKey()">重置</button>
+      <div id="listWithKey"></div>
+    </div>
+
+    <div class="explanation">
+      <h3>问题分析</h3>
+      <p>
+        <strong>没有key时：</strong
+        >React无法准确识别每个元素，当在开头插入新元素时，React会错误地认为所有元素都发生了变化，导致状态"漂移"。
+      </p>
+      <p>
+        <strong>有key时：</strong
+        >React可以通过key准确识别每个元素，只更新真正变化的元素，保持其他元素的状态不变。
+      </p>
+    </div>
+
+    <script>
+      let withoutKeyCounter = 3;
+      let withKeyCounter = 3;
+
+      let withoutKeyItems = [
+        { id: 1, text: "项目 1" },
+        { id: 2, text: "项目 2" },
+        { id: 3, text: "项目 3" },
+      ];
+
+      let withKeyItems = [
+        { id: 1, text: "项目 1" },
+        { id: 2, text: "项目 2" },
+        { id: 3, text: "项目 3" },
+      ];
+
+      function renderWithoutKey() {
+        const container = document.getElementById("listWithoutKey");
+        container.innerHTML = withoutKeyItems
+          .map(
+            (item, index) => `
+                <div class="item">
+                    <input type="checkbox" id="without-${index}">
+                    <label for="without-${index}">${item.text}</label>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderWithKey() {
+        const container = document.getElementById("listWithKey");
+        container.innerHTML = withKeyItems
+          .map(
+            (item) => `
+                <div class="item">
+                    <input type="checkbox" id="with-${item.id}">
+                    <label for="with-${item.id}">${item.text}</label>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function addItemWithoutKey() {
+        withoutKeyCounter++;
+        withoutKeyItems.unshift({
+          id: withoutKeyCounter,
+          text: `新项目 ${withoutKeyCounter}`,
+        });
+        renderWithoutKey();
+      }
+
+      function addItemWithKey() {
+        withKeyCounter++;
+        withKeyItems.unshift({
+          id: withKeyCounter,
+          text: `新项目 ${withKeyCounter}`,
+        });
+        renderWithKey();
+      }
+
+      function resetWithoutKey() {
+        withoutKeyCounter = 3;
+        withoutKeyItems = [
+          { id: 1, text: "项目 1" },
+          { id: 2, text: "项目 2" },
+          { id: 3, text: "项目 3" },
+        ];
+        renderWithoutKey();
+      }
+
+      function resetWithKey() {
+        withKeyCounter = 3;
+        withKeyItems = [
+          { id: 1, text: "项目 1" },
+          { id: 2, text: "项目 2" },
+          { id: 3, text: "项目 3" },
+        ];
+        renderWithKey();
+      }
+
+      // 初始化渲染
+      renderWithoutKey();
+      renderWithKey();
+    </script>
+  </body>
+</html>
