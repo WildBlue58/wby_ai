@@ -15,6 +15,7 @@ function Guang(props,ref) {
 }
 
 // 高阶组件 返回一个全新的组件，ref 向下传递的能力
+// 高阶组件
 const WrappedGuang = forwardRef(Guang);
 
 function App() {
