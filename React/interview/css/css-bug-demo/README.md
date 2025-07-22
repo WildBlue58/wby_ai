@@ -29,4 +29,6 @@
   npm run build
   npm run test 测试一下
   aliyun ngnix 跑起来 dist/
+
+  ## 这篇博客已写完
   
