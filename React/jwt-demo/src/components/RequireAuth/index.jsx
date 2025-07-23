@@ -1,0 +1,20 @@
+import { useUserStore } from "../../store/user";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
+const RequireAuth = ({ children }) => {
+  const { isLogin } = useUserStore();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login", { from: pathname });
+    }
+  }, [isLogin, navigate, pathname]);
+  if (!isLogin) {
+    return null;
+  }
+  return <>{children}</>;
+};
+
+export default RequireAuth;
