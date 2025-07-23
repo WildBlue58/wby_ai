@@ -14,7 +14,9 @@
     "jsonwebtoken": "^9.0.2",
     "jwt": "^0.2.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.7.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
