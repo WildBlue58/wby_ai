@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 // 安全性 编码的时候加密
 // 解码的时候用于解密
+// 加盐
 const secret = "!$123asdfg";
 
 // login 模块 mock
@@ -37,8 +38,11 @@ export default [
       // 生成token 颁发令牌
       return {
         token,
-        username,
-        password,
+        data: {
+          id: "001",
+          username: "admin",
+          level: 4,
+        },
       };
     },
   },
@@ -46,25 +50,33 @@ export default [
     url: "/api/user",
     method: "get",
     response: (req, res) => {
-      // 用户端 token headers 
-      const token = req.headers["authorization"];
+      // 用户端 token headers
+      const authHeader = req.headers["authorization"];
+      if (!authHeader) {
+        return {
+          code: 1,
+          message: "未携带 token",
+        };
+      }
+      const token = authHeader.split(" ")[1];
+      console.log(token, "----token");
       try {
-        const decode = jwt.decode(token, secret)
+        const decode = jwt.decode(token, secret);
         console.log(decode, "----decode");
         return {
           code: 0,
           data: decode.user,
           message: "获取用户信息成功",
-        }
+        };
       } catch (err) {
         return {
           code: 1,
           message: "Invalid token",
-        }
-       }
-      return {
-        token
+        };
       }
+      return {
+        token,
+      };
     },
-  }
+  },
 ];
