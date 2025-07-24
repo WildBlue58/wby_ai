@@ -102,6 +102,9 @@ README.md 很重要 方便面试官
   - 频繁的单位 260 / 75 换算
   - 自动化?
     postcss + postcss-pxtorem
+    postcss 是 css 预编译器，很强大
+    vite 自动读取 postcss.config.js 将 css 内容编译
+    px -> rem 自动转换
 
 ## git 提交规范
 
@@ -109,4 +112,28 @@ README.md 很重要 方便面试官
 
 ## 功能模块
 
+- UI 组件库
+  - react-vant 第三方组件库 70%的组件已经有了，不用写
+  - 选择一个适合业务的UI组件库 或者 公司内部的组件库
 - 配置路由及懒加载
+  - 懒加载
+  - 路由守卫
+  - Layout组件
+    - 嵌套路由Outlet 分组路由配置
+    - 网页有几个模板 Layout
+      - Route 不加path 对应的路由自动选择
+      - TabBar 模板
+      - Blank 模板
+    - tabbar
+      - react-vant + @react-vant/icons
+      - value + onChange 响应式
+      - 直接点击链接分享 active 的设置
+
+- 自定义Hooks
+  - useTitle 设置网页标题 一定要设置
+
+- ES6 特性使用
+  tabbar 的高亮
+  - arr.findIndex
+  - string.startsWith
+  - promise
