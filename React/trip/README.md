@@ -106,6 +106,8 @@ README.md 很重要 方便面试官
     vite 自动读取 postcss.config.js 将 css 内容编译
     px -> rem 自动转换
 
+### 项目亮点已写博客
+
 ## git 提交规范
 
 - 项目初始化
