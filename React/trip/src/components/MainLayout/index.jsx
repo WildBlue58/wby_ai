@@ -25,8 +25,10 @@ const MainLayout = () => {
     setActive(index);
   }, []);
   return (
-    <>
-      <Outlet />
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto">
+        <Outlet />
+      </div>
       {/* tabbar */}
       <Tabbar
         value={active}
@@ -41,7 +43,7 @@ const MainLayout = () => {
           </Tabbar.Item>
         ))}
       </Tabbar>
-    </>
+    </div>
   );
 };
 
