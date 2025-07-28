@@ -1,0 +1,36 @@
+.wrapper>div{
+    position: fixed;/* static 静态定位*/
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #d44439;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* 关键帧动画 */
+    /* animation-name 动画脚本 animation-duration */
+    /* animation-iteration-count:动画次数 infinite 无限次 */
+    /* animation-timing-function:运动速率 linear 匀速 */
+    animation: loading 1.4s infinite ease-in;
+}
+.wrapper>div:nth-child(2){
+    background-color: aqua;
+    animation-delay: -0.7s;
+}
+@keyframes loading{
+    /* 1.4s 你设计多少个动作 */
+    0%,100%{
+        transform: scale(0);
+    }
+    /* 25%{
+        background-color: pink;
+    } */
+    50%{
+        transform: scale(1);
+    }
+    /* 75%{
+        background-color: skyblue;
+    } */
+}
