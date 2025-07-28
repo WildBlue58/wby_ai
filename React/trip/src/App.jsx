@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "@/components/MainLayout";
 import BlankLayout from "@/components/BlankLayout";
+import Loading from "@/components/Loading";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Search = lazy(() => import("@/pages/Search"));
@@ -14,7 +15,7 @@ const Account = lazy(() => import("@/pages/Account"));
 function App() {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           {/* 带有 TabBar 的 Layout MainLayout 包裹的页面 */}
           <Route element={<MainLayout />}>
