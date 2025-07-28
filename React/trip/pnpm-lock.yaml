@@ -20,6 +20,9 @@ importers:
       mock:
         specifier: ^0.1.1
         version: 0.1.1
+      mockjs:
+        specifier: ^1.1.0
+        version: 1.1.0
       react:
         specifier: ^19.1.0
         version: 19.1.0
