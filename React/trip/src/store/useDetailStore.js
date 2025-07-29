@@ -1,24 +1,26 @@
 import { create } from "zustand";
 import { getDetail } from "@/api/detail";
 
-export const useDetailStore = create((set) => ({
-  detail: {},
+const useDetailStore = create((set) => ({
+  detail: {
+    title: "",
+    price: 0,
+    desc: "",
+    images: [
+      {
+        alt: "",
+        url: "https://dummyimage.com/300x200/79f291/fff&text=%E5%9B%BE%E7%89%87",
+      },
+    ],
+  },
   loading: false,
   setDetail: async (id) => {
     set({ loading: true });
-    try {
-      const res = await getDetail(id);
-      set({
-        loading: false,
-        detail: res.data.data,
-      });
-    } catch (error) {
-      console.error("获取详情失败:", error);
-      set({
-        loading: false,
-        detail: {},
-      });
-    }
+    const res = await getDetail(id);
+    set({
+      loading: false,
+      detail: res.data,
+    });
   },
 }));
 
