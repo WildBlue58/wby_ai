@@ -14,11 +14,31 @@ import {
   StarO,
   SettingO,
   UserCircleO,
+  AddO,
+  CartO,
+  ChatO,
+  FireO,
+  LikeO,
+  Search,
+  HomeO,
+  UserO,
 } from "@react-vant/icons";
 import styles from "./account.module.css";
 import { generateAvatar } from "@/llm";
 
 const Account = () => {
+  const gridData = [
+    { icon: <AddO />, text: "添加" },
+    { icon: <CartO />, text: "购物车" },
+    { icon: <ChatO />, text: "聊天" },
+    { icon: <FireO />, text: "热门" },
+    { icon: <LikeO />, text: "喜欢" },
+    { icon: <StarO />, text: "收藏" },
+    { icon: <Search />, text: "搜索" },
+    { icon: <HomeO />, text: "首页" },
+    { icon: <UserO />, text: "我的" },
+  ];
+
   const [userInfo, setUserInfo] = useState({
     nickname: "WildBlue",
     level: "4级",
@@ -89,6 +109,14 @@ const Account = () => {
         onCancel={() => setShowActionSheet(false)}
         onSelect={(e) => handleAction(e)}
       ></ActionSheet>
+      <div className={styles.gridContainer}>
+        {gridData.map((item, index) => (
+          <div key={index} className={styles.gridItem}>
+            <div className={styles.icon}>{item.icon}</div>
+            <div className={styles.text}>{item.text}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
