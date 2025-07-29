@@ -11,6 +11,7 @@ const Discount = lazy(() => import("@/pages/Discount"));
 const Collection = lazy(() => import("@/pages/Collection"));
 const Trip = lazy(() => import("@/pages/Trip"));
 const Account = lazy(() => import("@/pages/Account"));
+const Detail = lazy(() => import("@/pages/Detail"));
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           {/* 空白 的 Layout BlankLayout 包裹的页面 */}
           <Route element={<BlankLayout />}>
             <Route path="/search" element={<Search />} />
+            <Route path="/detail/:id" element={<Detail />} />
           </Route>
         </Routes>
       </Suspense>
