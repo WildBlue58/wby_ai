@@ -3,7 +3,8 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "@/components/MainLayout";
 import BlankLayout from "@/components/BlankLayout";
-import Loading from "@/components/Loading";
+import Loading from "@/components/Loading";''
+import Toast from "@/components/Toast";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Search = lazy(() => import("@/pages/Search"));
@@ -12,6 +13,7 @@ const Collection = lazy(() => import("@/pages/Collection"));
 const Trip = lazy(() => import("@/pages/Trip"));
 const Account = lazy(() => import("@/pages/Account"));
 const Detail = lazy(() => import("@/pages/Detail"));
+const WaterfallDemo = lazy(() => import("@/pages/WaterfallDemo"));
 
 function App() {
   return (
@@ -31,9 +33,11 @@ function App() {
           <Route element={<BlankLayout />}>
             <Route path="/search" element={<Search />} />
             <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/waterfall-demo" element={<WaterfallDemo />} />
           </Route>
         </Routes>
       </Suspense>
+      <Toast />
     </>
   );
 }
