@@ -11,4 +11,14 @@
   - 查询相关的媒体(设备) 做适配
     @media(条件 <600移动> <1024 IPAD PC> 1200 lg 大尺寸 1600+)
   - 多设备适配 移动时代
-  
+- drag and drop 细节
+  - 有些元素有默认的drag 特性
+  比如图片就可以拖拽到别的tab显示
+  dragStart preventDefault
+  dragEnd
+  - 元素添加draggable = true
+  - 模拟现实中的用户体验 元素,容器可以drop的
+  dragEnter preventDefault 一些样式反馈
+  dragOver preventDefault
+  drop 删除 拖拽上传
+  dragLeave
