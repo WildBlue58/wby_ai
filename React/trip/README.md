@@ -221,6 +221,14 @@ README.md 很重要 方便面试官
   - 骨架屏 不用让用户等待了
   - 文件上传的 preview html5 FileReader
 
+- 语音输入发表文章
+  - 字节的tts
+  - onMouseDown
+  - BOM html5
+  navigator.mediaDevices.getUserMedia({audio:true})
+
+  用户隐私,要授权 getLocation
+
 ## 项目遇到过什么问题，怎么解决的
 
 - chat messages 遇到 message 覆盖问题
@@ -264,3 +272,6 @@ README.md 很重要 方便面试官
   - animation
 
 uniapp Vue3 微信小程序
+
+- AI功能
+  智能前端(http 请求) + 工作流 + Coze api + ai 全新工作链路
