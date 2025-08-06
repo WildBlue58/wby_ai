@@ -4,7 +4,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "@/components/MainLayout";
 import BlankLayout from "@/components/BlankLayout";
 import Loading from "@/components/Loading";
-("");
 import Toast from "@/components/Toast";
 
 const Home = lazy(() => import("@/pages/Home"));
@@ -16,6 +15,8 @@ const Account = lazy(() => import("@/pages/Account"));
 const Detail = lazy(() => import("@/pages/Detail"));
 const WaterfallDemo = lazy(() => import("@/pages/WaterfallDemo"));
 const Coze = lazy(() => import("./pages/Coze/index.jsx"));
+const Article = lazy(() => import("./pages/Article"));
+const ArticleNew = lazy(() => import("./pages/Article/ArticleNew"));
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
           {/* 空白 的 Layout BlankLayout 包裹的页面 */}
           <Route element={<BlankLayout />}>
             <Route path="/search" element={<Search />} />
+            <Route path="/article" element={<Article />}>
+              <Route path="new" element={<ArticleNew />} />
+            </Route>
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/waterfall-demo" element={<WaterfallDemo />} />
             <Route path="/coze" element={<Coze />} />
