@@ -187,6 +187,6 @@ A: 检查 CSS 模块是否正确导入，类名是否正确
 - 访问演示页面：`/waterfall-demo`
 - 查看源码：`/components/Waterfall/EnhancedWaterfall.jsx`
 
-## 🎉 恭喜！
+## 🎉 恭喜
 
 你已经成功集成了瀑布流组件！现在可以开始构建你的图片展示应用了。
