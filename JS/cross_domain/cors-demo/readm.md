@@ -16,6 +16,7 @@
     其他的方法 安全升级
     - 预检请求
       200
+
       Access-Control-Allow-Method
       Access-Control-Allow-Headers
       ....
