@@ -77,19 +77,20 @@ function App() {
               </svg>
             </div>
             <span className="ml-1 text-xs text-gray-500">5.0</span>
-            <div class="mt-3 flex items-center justify-between">
-              <span class="text-xl font-bold text-gray-900">Best</span>
-              <span class="text-sm text-gray-500 line-through">Best</span>
-            </div>
-
-            <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-              Best Singer
-            </button>
-
-            <button class="mt-2 w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
-              Quick View
-            </button>
           </div>
+
+          <div class="mt-3 flex items-center justify-between">
+            <span class="text-xl font-bold text-gray-900">First</span>
+            <span class="text-sm text-gray-500 line-through">Second?</span>
+          </div>
+
+          <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Best Singer
+          </button>
+
+          <button class="mt-2 w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
+            Quick View
+          </button>
         </div>
       </div>
     </>
