@@ -19,21 +19,53 @@ class MyTextToSpeechPipeline {
     "https://huggingface.co/datasets/Xenova/cmu-arctic-xvectors-extracted/resolve/main/";
   // 文本-》 speecht5_tts 语音特征
   static model_id = "Xenova/speecht5_tts";
-  // 语音特征 -> sppecht5_hifigan -> 特有的角色音频文件
-  static vocoder_id = "Xenova/sppecht5_hifigan";
+  // 语音特征 -> speecht5_hifigan -> 特有的角色音频文件
+  static vocoder_id = "Xenova/speecht5_hifigan";
   // 分词器实例
   static tokenizer_instance = null;
   // 模型实例
   static model_instance = null;
   // 合成实例
-  static vocoder_instace = null;
+  static vocoder_instance = null;
   static async getInstance(progress_callback = null) {
+    // 分词器实例化
     if (this.tokenizer_instance === null) {
       // 之前处理过的大模型，被预训练过的
       this.tokenizer = AutoTokenizer.from_pretrained(this.model_id, {
         progress_callback,
       });
+      // console.log(this.tokenizer , '/////////////////');
     }
+
+    if (this.model_instance === null) {
+      // 模型下载
+      this.model_instance = SpeechT5ForTextToSpeech.from_pretrained(
+        this.model_id,
+        {
+          dtype: "fp32",
+          progress_callback,
+        }
+      );
+    }
+
+    if (this.vocoder_instance === null) {
+      this.vocoder_instance = SpeechT5HifiGan.from_pretrained(this.vocoder_id, {
+        dtype: "fp32",
+        progress_callback,
+      });
+    }
+
+    return new Promise(async (resolve, reject) => {
+      const result = await Promise.all([
+        this.tokenizer,
+        this.model_instance,
+        this.vocoder_instance,
+      ]);
+      self.postMessage({
+        status: "ready",
+      });
+      resolve(result);
+    });
   }
 }
 self.onmessage = async (e) => {
