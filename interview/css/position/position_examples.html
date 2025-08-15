@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Position 属性示例</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .section {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-box {
+        width: 150px;
+        height: 100px;
+        border: 2px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        margin: 10px;
+      }
+
+      /* Static 定位 */
+      .static-box {
+        background-color: #e74c3c;
+        position: static;
+      }
+
+      /* Relative 定位 */
+      .relative-box {
+        background-color: #3498db;
+        position: relative;
+        top: 20px;
+        left: 20px;
+      }
+
+      /* Absolute 定位 */
+      .absolute-container {
+        position: relative;
+        height: 200px;
+        border: 2px dashed #95a5a6;
+        margin: 20px 0;
+      }
+
+      .absolute-box {
+        background-color: #9b59b6;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+      }
+
+      /* Fixed 定位 */
+      .fixed-box {
+        background-color: #f39c12;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      /* Sticky 定位 */
+      .sticky-container {
+        height: 400px;
+        overflow-y: auto;
+        border: 2px solid #27ae60;
+        margin: 20px 0;
+      }
+
+      .sticky-box {
+        background-color: #27ae60;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .content {
+        height: 200px;
+        background-color: #ecf0f1;
+        margin: 10px 0;
+        padding: 20px;
+        border-radius: 4px;
+      }
+
+      .code {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        margin: 10px 0;
+        overflow-x: auto;
+      }
+
+      .note {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>CSS Position 属性详解</h1>
+
+      <!-- Static 定位 -->
+      <div class="section">
+        <h2>1. Static 定位（默认值）</h2>
+        <div class="demo-box static-box">Static</div>
+        <div class="code">
+          .static-box { position: static; /* 默认值，可以省略 */ }
+        </div>
+        <div class="note">
+          <strong>特点：</strong
+          >元素按照正常文档流排列，不受top、right、bottom、left属性影响
+        </div>
+      </div>
+
+      <!-- Relative 定位 -->
+      <div class="section">
+        <h2>2. Relative 定位</h2>
+        <div class="demo-box static-box">原始位置</div>
+        <div class="demo-box relative-box">Relative</div>
+        <div class="code">
+          .relative-box { position: relative; top: 20px; /* 向下偏移20px */
+          left: 20px; /* 向右偏移20px */ }
+        </div>
+        <div class="note">
+          <strong>特点：</strong
+          >相对于元素原本位置进行偏移，不脱离文档流，原本位置仍然保留
+        </div>
+      </div>
+
+      <!-- Absolute 定位 -->
+      <div class="section">
+        <h2>3. Absolute 定位</h2>
+        <div class="absolute-container">
+          <div class="demo-box static-box">容器内</div>
+          <div class="demo-box absolute-box">Absolute</div>
+        </div>
+        <div class="code">
+          .absolute-container { position: relative; /*
+          为absolute子元素提供定位上下文 */ } .absolute-box { position:
+          absolute; top: 50px; /* 距离容器顶部50px */ right: 50px; /*
+          距离容器右侧50px */ }
+        </div>
+        <div class="note">
+          <strong>特点：</strong
+          >相对于最近的定位祖先元素定位，完全脱离文档流，不占用空间
+        </div>
+      </div>
+
+      <!-- Fixed 定位 -->
+      <div class="section">
+        <h2>4. Fixed 定位</h2>
+        <div class="demo-box fixed-box">Fixed</div>
+        <div class="code">
+          .fixed-box { position: fixed; top: 20px; /* 距离视口顶部20px */ right:
+          20px; /* 距离视口右侧20px */ z-index: 1000; /* 确保在其他元素之上 */ }
+        </div>
+        <div class="note">
+          <strong>特点：</strong
+          >相对于浏览器视口定位，即使页面滚动位置也不变，完全脱离文档流
+        </div>
+      </div>
+
+      <!-- Sticky 定位 -->
+      <div class="section">
+        <h2>5. Sticky 定位</h2>
+        <div class="sticky-container">
+          <div class="demo-box sticky-box">Sticky</div>
+          <div class="content">内容区域1 - 向下滚动查看sticky效果</div>
+          <div class="content">内容区域2</div>
+          <div class="content">内容区域3</div>
+          <div class="content">内容区域4</div>
+          <div class="content">内容区域5</div>
+        </div>
+        <div class="code">
+          .sticky-box { position: sticky; top: 0; /*
+          当元素即将滚出视口顶部时，固定在顶部 */ }
+        </div>
+        <div class="note">
+          <strong>特点：</strong
+          >在relative和fixed之间切换，需要指定top、right、bottom、left中的至少一个值
+        </div>
+      </div>
+
+      <!-- 其他值 -->
+      <div class="section">
+        <h2>6. 其他值</h2>
+        <div class="code">
+          /* inherit - 继承父元素的position值 */ .inherit-box { position:
+          inherit; } /* initial - 设置为默认值static */ .initial-box { position:
+          initial; } /* unset - 如果是继承属性则继承，否则设置为初始值 */
+          .unset-box { position: unset; }
+        </div>
+      </div>
+
+      <!-- 使用场景 -->
+      <div class="section">
+        <h2>7. 使用场景</h2>
+        <ul>
+          <li><strong>static：</strong>默认布局，正常文档流</li>
+          <li><strong>relative：</strong>微调元素位置，不影响其他元素</li>
+          <li><strong>absolute：</strong>弹出框、工具提示、绝对定位的UI组件</li>
+          <li><strong>fixed：</strong>固定导航栏、返回顶部按钮、模态框</li>
+          <li><strong>sticky：</strong>粘性导航、表格头部固定</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
