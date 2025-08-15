@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Position 业务场景示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .section h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        /* 1. 消息提醒 - relative + absolute */
+        .notification-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .notification-trigger {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* 2. 弹出框/模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* 3. 工具提示 */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .tooltip-trigger {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+        }
+
+        /* 4. 下拉菜单 */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .dropdown-trigger {
+            background: #9b59b6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            display: none;
+            z-index: 100;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 5. 固定导航栏 */
+        .fixed-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #2c3e50;
+            color: white;
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* 6. 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e74c3c;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 7. 粘性导航 */
+        .sticky-nav {
+            position: sticky;
+            top: 80px; /* 考虑固定导航栏的高度 */
+            background: #ecf0f1;
+            padding: 15px 0;
+            margin: 20px 0;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .sticky-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .sticky-nav a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        /* 8. 表格头部固定 */
+        .table-container {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .sticky-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sticky-table th {
+            position: sticky;
+            top: 0;
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            z-index: 10;
+        }
+
+        .sticky-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sticky-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* 9. 图片水印 */
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* 10. 加载动画 */
+        .loading-container {
+            position: relative;
+            width: 200px;
+            height: 150px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 20px;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 11. 错误提示 */
+        .form-field {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .error-message {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 5px;
+            z-index: 100;
+        }
+
+        /* 12. 购物车图标 */
+        .cart-icon {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: #f39c12;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* 13. 聊天窗口 */
+        .chat-window {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .chat-header {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .chat-body {
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-top: 1px solid #eee;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* 14. 标签页 */
+        .tabs-container {
+            margin: 40px 0;
+        }
+
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button.active {
+            border-bottom-color: #3498db;
+            color: #3498db;
+        }
+
+        .tab-content {
+            position: relative;
+            min-height: 200px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+
+        .tab-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .tab-panel.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .fixed-navbar {
+                padding: 10px 0;
+            }
+            
+            .back-to-top,
+            .cart-icon {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定导航栏 -->
+    <nav class="fixed-navbar">
+        <div class="navbar-content">
+            <h3>CSS Position 业务场景</h3>
+            <div>
+                <button onclick="showModal()">打开模态框</button>
+                <button onclick="toggleChat()">聊天窗口</button>
+            </div>
+        </nav>
+
+    <div class="container" style="margin-top: 80px;">
+        <h1>CSS Position 实际业务场景示例</h1>
+
+        <!-- 1. 消息提醒 -->
+        <div class="section">
+            <h2>1. 消息提醒 (relative + absolute)</h2>
+            <div class="notification-container">
+                <button class="notification-trigger">消息</button>
+                <div class="notification-badge">5</div>
+            </div>
+            <p><strong>应用场景：</strong>未读消息数量提示、购物车商品数量、通知提醒等</p>
+        </div>
+
+        <!-- 2. 弹出框/模态框 -->
+        <div class="section">
+            <h2>2. 弹出框/模态框 (fixed + absolute)</h2>
+            <button onclick="showModal()" style="background: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">打开模态框</button>
+            <p><strong>应用场景：</strong>登录弹窗、确认对话框、图片预览等</p>
+        </div>
+
+        <!-- 3. 工具提示 -->
+        <div class="section">
+            <h2>3. 工具提示 (absolute)</h2>
+            <div class="tooltip-container">
+                <button class="tooltip-trigger" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">悬停查看提示</button>
+                <div class="tooltip">这是一个工具提示，显示额外的帮助信息</div>
+            </div>
+            <p><strong>应用场景：</strong>表单字段说明、按钮功能提示、图标解释等</p>
+        </div>
+
+        <!-- 4. 下拉菜单 -->
+        <div class="section">
+            <h2>4. 下拉菜单 (absolute)</h2>
+            <div class="dropdown-container">
+                <button class="dropdown-trigger" onclick="toggleDropdown(this)">下拉菜单 ▼</button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">选项 1</div>
+                    <div class="dropdown-item">选项 2</div>
+                    <div class="dropdown-item">选项 3</div>
+                </div>
+            </div>
+            <p><strong>应用场景：</strong>用户菜单、筛选选项、操作按钮等</p>
+        </div>
+
+        <!-- 5. 粘性导航 -->
+        <div class="section">
+            <h2>5. 粘性导航 (sticky)</h2>
+            <div class="sticky-nav">
+                <ul>
+                    <li><a href="#section1">章节一</a></li>
+                    <li><a href="#section2">章节二</a></li>
+                    <li><a href="#section3">章节三</a></li>
+                    <li><a href="#section4">章节四</a></li>
+                </ul>
+            </div>
+            <p><strong>应用场景：</strong>页面内导航、目录导航、分类筛选等</p>
+        </div>
+
+        <!-- 6. 表格头部固定 -->
+        <div class="section">
+            <h2>6. 表格头部固定 (sticky)</h2>
+            <div class="table-container">
+                <table class="sticky-table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>年龄</th>
+                            <th>职业</th>
+                            <th>城市</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>张三</td><td>25</td><td>工程师</td><td>北京</td></tr>
+                        <tr><td>李四</td><td>30</td><td>设计师</td><td>上海</td></tr>
+                        <tr><td>王五</td><td>28</td><td>产品经理</td><td>深圳</td></tr>
+                        <tr><td>赵六</td><td>32</td><td>运营</td><td>广州</td></tr>
+                        <tr><td>钱七</td><td>27</td><td>前端</td><td>杭州</td></tr>
+                        <tr><td>孙八</td><td>29</td><td>后端</td><td>成都</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>应用场景：</strong>长表格、数据列表、报表展示等</p>
+        </div>
+
+        <!-- 7. 图片水印 -->
+        <div class="section">
+            <h2>7. 图片水印 (absolute)</h2>
+            <div class="image-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWNmMGYxIi8+PHRleHQgeD0iMTAwIiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOTU5NWE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lm77niYfliqDovb3lpLHotKU8L3RleHQ+PC9zdmc+" alt="示例图片" style="width: 200px; height: 150px;">
+                <div class="watermark">水印文字</div>
+            </div>
+            <p><strong>应用场景：</strong>版权保护、品牌展示、防伪标识等</p>
+        </div>
+
+        <!-- 8. 加载动画 -->
+        <div class="section">
+            <h2>8. 加载动画 (absolute)</h2>
+            <div class="loading-container">
+                <div class="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+                <p style="padding: 20px;">内容区域</p>
+            </div>
+            <p><strong>应用场景：</strong>数据加载、图片上传、操作处理等</p>
+        </div>
+
+        <!-- 9. 错误提示 -->
+        <div class="section">
+            <h2>9. 错误提示 (absolute)</h2>
+            <div class="form-field">
+                <input type="text" class="form-input" placeholder="请输入用户名" value="错误的用户名">
+                <div class="error-message">用户名格式不正确</div>
+            </div>
+            <p><strong>应用场景：</strong>表单验证、错误反馈、提示信息等</p>
+        </div>
+
+        <!-- 10. 标签页 -->
+        <div class="section">
+            <h2>10. 标签页 (relative + absolute)</h2>
+            <div class="tabs-container">
+                <div class="tabs-nav">
+                    <button class="tab-button active" onclick="switchTab(0)">标签一</button>
+                    <button class="tab-button" onclick="switchTab(1)">标签二</button>
+                    <button class="tab-button" onclick="switchTab(2)">标签三</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-panel active">
+                        <h3>标签一内容</h3>
+                        <p>这是第一个标签页的内容...</p>
+                    </div>
+                    <div class="tab-panel">
+                        <h3>标签二内容</h3>
+                        <p>这是第二个标签页的内容...</p>
+                    </div>
+                    <div class="tab-panel">
+                        <h3>标签三内容</h3>
+                        <p>这是第三个标签页的内容...</p>
+                    </div>
+                </div>
+            </div>
+            <p><strong>应用场景：</strong>内容分类、设置页面、产品详情等</p>
+        </div>
+
+        <!-- 11. 购物车图标 -->
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒
+            <div class="cart-badge">3</div>
+        </div>
+
+        <!-- 12. 返回顶部按钮 -->
+        <div class="back-to-top" onclick="scrollToTop()">
+            ↑
+        </div>
+
+        <!-- 13. 聊天窗口 -->
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span>在线客服</span>
+                <button class="chat-close" onclick="toggleChat()">×</button>
+            </div>
+            <div class="chat-body">
+                <p>您好！有什么可以帮助您的吗？</p>
+            </div>
+            <input type="text" class="chat-input" placeholder="输入消息...">
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal-overlay" id="modalOverlay" onclick="hideModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="hideModal()">×</button>
+                <h3>模态框标题</h3>
+                <p>这是一个模态框示例，点击外部区域或关闭按钮可以关闭。</p>
+                <button onclick="hideModal()" style="background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer;">确定</button>
+            </div>
+        </div>
+
+        <!-- 长内容用于演示滚动效果 -->
+        <div style="height: 1000px; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); padding: 20px; margin: 40px 0; border-radius: 8px;">
+            <h3>长内容区域</h3>
+            <p>向下滚动查看各种定位效果...</p>
+            <p>粘性导航会在滚动时保持可见，固定元素始终在视口中...</p>
+        </div>
+    </div>
+
+    <script>
+        // 模态框控制
+        function showModal() {
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function hideModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        // 工具提示控制
+        function showTooltip(element) {
+            const tooltip = element.nextElementSibling;
+            tooltip.style.display = 'block';
+        }
+
+        function hideTooltip(element) {
+            const tooltip = element.nextElementSibling;
+            tooltip.style.display = 'none';
+        }
+
+        // 下拉菜单控制
+        function toggleDropdown(button) {
+            const menu = button.nextElementSibling;
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // 标签页切换
+        function switchTab(index) {
+            const buttons = document.querySelectorAll('.tab-button');
+            const panels = document.querySelectorAll('.tab-panel');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            buttons[index].classList.add('active');
+            panels[index].classList.add('active');
+        }
+
+        // 聊天窗口控制
+        function toggleChat() {
+            const chat = document.getElementById('chatWindow');
+            chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 购物车控制
+        function toggleCart() {
+            alert('购物车功能演示');
+        }
+
+        // 点击外部关闭下拉菜单
+        document.addEventListener('click', function(event) {
+            const dropdowns = document.querySelectorAll('.dropdown-container');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.querySelector('.dropdown-menu').style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
