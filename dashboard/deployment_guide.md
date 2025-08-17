@@ -3,9 +3,11 @@
 ## 📋 部署方案概览
 
 ### 🎯 方案1: CodePen (纯前端展示)
+
 **适合**: 快速展示、作品集
 **文件**: `codepen_version.html`
 **步骤**:
+
 1. 打开 [CodePen.io](https://codepen.io)
 2. 创建新的 Pen
 3. 复制 `codepen_version.html` 的内容：
@@ -15,9 +17,11 @@
 4. 点击保存并分享链接
 
 ### 🌟 方案2: Vercel (全栈部署) - 推荐
+
 **适合**: 完整功能、专业展示
 **免费额度**: 每月100GB流量
 **步骤**:
+
 1. 注册 [Vercel](https://vercel.com)
 2. 连接GitHub账户
 3. 推送代码到GitHub
@@ -25,18 +29,22 @@
 5. 自动部署完成
 
 ### 🔥 方案3: Render (全栈部署)
+
 **适合**: Node.js应用、稳定性好
 **免费额度**: 每月750小时
 **步骤**:
+
 1. 注册 [Render](https://render.com)
 2. 连接GitHub账户
 3. 创建Web Service
 4. 自动部署
 
 ### 🎪 方案4: Railway (全栈部署)
+
 **适合**: 数据库支持、高性能
 **免费额度**: 每月$5额度
 **步骤**:
+
 1. 注册 [Railway](https://railway.app)
 2. 连接GitHub账户
 3. 部署项目
@@ -45,6 +53,7 @@
 ## 🛠️ 准备工作
 
 ### 1. 创建GitHub仓库
+
 ```bash
 # 初始化Git仓库
 cd D:\lesson_si\dashboard
@@ -58,7 +67,8 @@ git push -u origin main
 ```
 
 ### 2. 项目结构优化
-```
+
+```bash
 dashboard/
 ├── package.json          # 依赖配置
 ├── server.js             # 服务器入口
@@ -73,6 +83,7 @@ dashboard/
 ## 🔧 Vercel部署配置
 
 ### vercel.json 配置文件
+
 ```json
 {
   "version": 2,
@@ -105,6 +116,7 @@ dashboard/
 ```
 
 ### package.json 添加启动脚本
+
 ```json
 {
   "scripts": {
@@ -120,7 +132,8 @@ dashboard/
 部署完成后，你可以这样分享：
 
 ### 📱 分享文案
-```
+
+```bash
 🚀 我的最新作品：京东数据可视化仪表板
 
 ✨ 亮点功能：
@@ -143,7 +156,8 @@ dashboard/
 
 ## 🏃‍♂️ 快速部署步骤
 
-### 选择最简单的方案：
+### 选择最简单的方案
+
 1. **CodePen展示版** (5分钟)
    - 复制 `codepen_version.html` 到CodePen
    - 立即可分享
@@ -165,6 +179,7 @@ dashboard/
 ## 🔍 监控和优化
 
 ### 部署后检查清单
+
 - [ ] 网站正常访问
 - [ ] 地图数据显示正确
 - [ ] 图表动画流畅
@@ -172,6 +187,7 @@ dashboard/
 - [ ] 加载速度理想
 
 ### 性能优化建议
+
 1. **CDN加速**: 使用unpkg.com或jsdelivr.com
 2. **图片优化**: 压缩图标和背景图
 3. **缓存策略**: 设置合理的缓存时间
@@ -179,4 +195,4 @@ dashboard/
 
 ---
 
-**🎉 恭喜！你的专业级项目即将与世界见面！** 
+**🎉 恭喜！你的专业级项目即将与世界见面！**
