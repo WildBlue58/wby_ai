@@ -26,7 +26,7 @@ function App() {
     });
 
     const onMessageReceived = (e) => {
-      console.log(e, "来自主线程");
+      // console.log(e, '来自主线程');
       switch (e.data.status) {
         case "initiate":
           // llm ready 了吗？
@@ -34,7 +34,7 @@ function App() {
           setProgressItems((prev) => [...prev, e.data]);
           break;
         case "progress":
-          console.log(e.data);
+          // console.log(e.data)
           setProgressItems((prev) =>
             prev.map((item) => {
               if (item.file === e.data.file) {
@@ -54,6 +54,12 @@ function App() {
           break;
         case "ready":
           setReady(true);
+          break;
+        case "complete":
+          setDisabled(false);
+          const blobUrl = URL.createObjectURL(e.data.output);
+          // console.log(blobUrl);
+          setOutput(blobUrl);
           break;
       }
     };
@@ -88,7 +94,7 @@ function App() {
       >
         {isLoading && (
           <label className="text-white text-xl p-3">
-            Loading models...(only run once)
+            Loading models... (only run once)
           </label>
         )}
         {progressItems.map((data) => (
