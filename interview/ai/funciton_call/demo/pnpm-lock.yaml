@@ -1,0 +1,39 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      openai:
+        specifier: ^5.12.2
+        version: 5.12.2
+      y:
+        specifier: ^0.3.2
+        version: 0.3.2
+
+packages:
+
+  openai@5.12.2:
+    resolution: {integrity: sha512-xqzHHQch5Tws5PcKR2xsZGX9xtch+JQFz5zb14dGqlshmmDAFBFEWmeIpf7wVqWV+w7Emj7jRgkNJakyKE0tYQ==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+
+  y@0.3.2:
+    resolution: {integrity: sha512-OJQTQuD3iqJqXzYKs2AgZqQrfPuTOjIFm3jvIc+2SxP6QSB5Ab9Ja9A5mWEDngjaJiEgsHbp2Q2RR/U2pTpTEw==}
+
+snapshots:
+
+  openai@5.12.2: {}
+
+  y@0.3.2: {}

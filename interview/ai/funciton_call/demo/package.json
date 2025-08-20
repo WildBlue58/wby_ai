@@ -1,0 +1,16 @@
+{
+	"dependencies": {
+		"openai": "^5.12.2",
+		"y": "^0.3.2"
+	},
+	"name": "demo",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": ""
+}
