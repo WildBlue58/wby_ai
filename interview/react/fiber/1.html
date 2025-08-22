@@ -24,6 +24,7 @@
     let start = 0;
     let allInterval = [];
     const progress = () => {
+      // 触发回流 布局相关
       bar.style.width = bar.offsetWidth + 1 + "px";
       requestAnimationFrame(progress);
     };

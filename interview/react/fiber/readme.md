@@ -13,3 +13,28 @@
   可打断可持续
   requestAnimationFrame
   requestIdleCallback
+
+- requestAnimationFrame
+  是浏览器提供的用于在下一次重绘之前执行动画代码的API，它能确保动画流畅运行并节省资源。
+  1s 执行60次
+
+- requestIdleCallback
+  - React 组件渲染低优先级任务
+    不能往死里干，需要被中断
+  - 更高优先级的任务是用户交互的交互
+
+  - react 组件树 渲染任务拆分
+    在一个时间切片里能执行
+    这个时间长度用requestIdleCallback来描述的
+    一直去问还有多少可执行时间
+
+## 总计一下
+
+- react 组件多，组件树深度，渲染耗时，复杂
+- 使用requestIdleCallback 中断渲染
+- 优先响应界面交互和核心任务
+- 当再次idle 后，继续执行渲染任务
+- requestIdleCallback 时间不定，16.67ms(刷帧) - 优先任务的耗时 = 本次执行时间
+- 没有fiber react 组件一多，就会卡，fiber 解决性能问题，主要通过中断渲染，保障用户
+  交互流畅，解决大型应用阻塞主线程的问题。
+- fiber节点，react 渲染的工作单元
