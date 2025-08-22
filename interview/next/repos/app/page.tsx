@@ -2,17 +2,12 @@
 // 事件监听、生命周期等
 
 import { useState, useEffect } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 // 定义Todo接口类型
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { type Todo } from "@/app/types/todo";
 
 export default function Home() {
   const [newTodo, setNewTodo] = useState("");
@@ -41,6 +36,28 @@ export default function Home() {
     setTodos(data);
   };
 
+  const toggleTodo = async (id: number, completed: boolean) => {
+    await fetch(`/api/todos`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, completed }),
+    });
+    fetchTodos();
+  };
+
+  const deleteTodo = async (id: number) => {
+    await fetch(`/api/todos`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+    fetchTodos();
+  };
+
   useEffect(() => {
     fetchTodos();
   }, []);
@@ -63,7 +80,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-2">
-            {todos.map((todo) => (
+            {todos.map((todo: Todo) => (
               <div
                 key={todo.id}
                 className="flex items-center justify-between p-2 border rounded"
@@ -72,14 +89,18 @@ export default function Home() {
                   <input
                     type="checkbox"
                     checked={todo.completed}
-                    onChange={() => {}} // 添加空的onChange处理器避免警告
+                    onChange={(e) => toggleTodo(todo.id, e.target.checked)} // 添加空的onChange处理器避免警告
                     className="w-4 h-4"
                   />
                   <span className={todo.completed ? "line-through" : ""}>
                     {todo.text}
                   </span>
                 </div>
-                <Button variant="destructive" size="sm">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => deleteTodo(todo.id)}
+                >
                   Delete
                 </Button>
               </div>
