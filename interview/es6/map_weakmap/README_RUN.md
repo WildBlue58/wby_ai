@@ -10,16 +10,19 @@
 ## 运行方式
 
 ### 1. 运行实际应用示例
+
 ```bash
 node practical_examples.js
 ```
 
 ### 2. 运行内存管理演示（需要特殊参数）
+
 ```bash
 node --expose-gc memory_demo.js
 ```
 
 ### 3. 运行原始示例
+
 ```bash
 node 1.js
 ```
