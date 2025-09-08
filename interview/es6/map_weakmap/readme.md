@@ -6,6 +6,20 @@
 - key 可以是对象（这是与普通对象的主要区别）
 - Map(强引用)，WeakMap(弱引用)
 
+## 垃圾回收
+
+- 也是一套程序，也是语言底层的关键机制
+- 内存的动态分配 由操作系统管理
+- 引用计数 不为0 不会回收
+- map 强引用
+- key = null,map = null 释放内存
+- global.gc(); 手动垃圾回收
+  node --expose-gc 为运行方式
+
+- Map,Set 需要手动去考虑内存的开销
+  WeakMap,WeakSet 弱引用自动实现
+  global.gc()
+
 ## Map（强引用映射）
 
 ### 基本特性
@@ -70,14 +84,14 @@ for (let [key, value] of map.entries()) {
 
 ## WeakMap（弱引用映射）
 
-### 基本特性
+### 基本特性1
 
 - 键只能是对象（不能是原始类型）
 - 弱引用：键对象被垃圾回收时，对应的值也会被回收
 - 不可遍历（没有 size 属性，没有 clear 方法）
 - 主要用于存储与对象相关的元数据
 
-### 常用方法
+### 常用方法1
 
 ```javascript
 // 创建 WeakMap
@@ -97,7 +111,7 @@ weakMap.has(obj); // true
 weakMap.delete(obj);
 ```
 
-### 使用场景
+### 使用场景1
 
 - 存储对象的私有数据
 - 缓存与对象相关的信息
