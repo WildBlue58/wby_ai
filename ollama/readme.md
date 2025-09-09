@@ -4,4 +4,6 @@
 
 Meta Llama 羊驼
 deepseek-r1:1.5b 参数的尺寸
-Qwen 
+Qwen
+
+在11434端口提供api 调用
