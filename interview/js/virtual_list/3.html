@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+    setTimeout 会白一下，requestAnimationFrame 流畅
+    requestAnimationFrame 的步伐跟着系统的刷新步伐走，它能保证回调函数在屏幕每一次的刷新间隔中被执行一次，不会丢帧了。
+    不在一个频道上
+    是浏览器提供的用于在下一次重绘之前执行动画代码的API，它能确保动画流畅运行并节省资源。
+     -->
+    <ul id="container"></ul>
+    <script>
+      let ul = document.createElement("container");
+      let total = 10000;
+      let once = 20;
+      let page = total / once;
+      let index = 0;
+      function loop(curTotal, curIndex) {
+        if (curTotal <= 0) {
+          return false;
+        }
+        let pageCount = Math.min(curTotal, once);
+        requestAnimationFrame(function () {
+          for (let i = 0; i < pageCount; i++) {
+            let li = document.createElement("li");
+            li.innerText = curIndex + i + " " + Math.random() * total;
+            ul.appendChild(li);
+          }
+        });
+        loop(curTotal - pageCount, curIndex + pageCount);
+      }
+      loop(total, index);
+      setTimeout(() => {
+        console.log("总运行时间", Date.now() - now);
+      }, 0);
+    </script>
+  </body>
+</html>
