@@ -1,0 +1,16 @@
+{
+  "name": "rag",
+  "version": "1.0.0",
+  "description": "- Function Call 给LLM 提供工具和服务\r - MCP 定义了LLM 与外部资源的通信协议\r RAG(检索增强生成)是一种通过从外部知识库检索相关信息并将其融入提示词，来增强大语言模型生成内容的准确性、时效性和相关性的技术框架。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "openai": "^5.20.2"
+  }
+}
