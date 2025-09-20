@@ -1,28 +1,31 @@
-# next.js 全栈项目
+# Next.js JWT 双Token认证项目
 
-- users & posts
-- jwt 双token 鉴权
-- 虚拟列表
-  AI 爬虫 掘金100条数据
-- 大文件上传
-- ai 工程化
-  流式输出
-  function Tool
-  mcp
-- ai 搜索
+一个基于Next.js 15的全栈项目，实现了安全的JWT双Token认证系统。
 
-## 双token
+## 🚀 功能特性
 
-单token localStorage 长期，第三方拦截 不安全
-安全 + 无感刷新登录
-双token
+- ✅ **用户认证系统** - 注册、登录、JWT双Token认证
+- ✅ **文章管理系统** - 创建、查看文章
+- ✅ **安全中间件** - 路由保护和自动Token刷新
+- ✅ **数据库集成** - Prisma ORM + MySQL
+- ✅ **类型安全** - 完整的TypeScript支持
+- ✅ **现代化UI** - Tailwind CSS响应式设计
 
-- accessToken 检验身份 重要 时间有效期变短 h小时为单位 cookie
-  过期怎么办？
-- refreshToken 刷新 7d 时间长
-  没有过期，refreshToken 发到服务器 /api/auth/refresh
-  返回新的accessToken 无感刷新
-- refreshToken 过期后，去登录
+## 🔐 双Token认证机制
+
+### 为什么使用双Token？
+
+单Token存储在localStorage中长期保存容易被第三方拦截，存在安全风险。双Token机制提供了更好的安全性：
+
+- **AccessToken** - 用于身份验证，有效期短（15分钟），存储在HttpOnly Cookie中
+- **RefreshToken** - 用于刷新AccessToken，有效期长（7天），存储在HttpOnly Cookie中
+
+### 工作流程
+
+1. 用户登录后获得两个Token
+2. AccessToken过期时，自动使用RefreshToken刷新
+3. RefreshToken过期时，用户需要重新登录
+4. 所有Token都存储在HttpOnly Cookie中，防止XSS攻击
 
 ## 开发流程
 
@@ -88,6 +91,10 @@
   - some startWith
   - response.next() 放行
   - response.redirect() 跳转
+
+  - 通过jwt verify方法拿到payload后，添加了自定义的请求头
+    x-user-id
+    后续页面就可以拿到这个值
 
 - JWT 的构成
   - 头部

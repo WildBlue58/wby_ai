@@ -43,13 +43,15 @@ export const setAuthCookies = async (
     maxAge: 60 * 15,
     sameSite: "strict",
     path: "/",
+    secure: process.env.NODE_ENV === "production", // 生产环境使用HTTPS
   });
-  cookieStore.set("access_token", refreshToken, {
+  cookieStore.set("refresh_token", refreshToken, {
     // 黑客XSS 攻击js 试图获得cookie
     httpOnly: true, // 不能用JavaScript 操作cookie
     maxAge: 60 * 60 * 24 * 7, // 7天
     sameSite: "strict",
     path: "/",
+    secure: process.env.NODE_ENV === "production", // 生产环境使用HTTPS
   });
 };
 
