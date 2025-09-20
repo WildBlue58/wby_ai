@@ -33,10 +33,13 @@ const Login = () => {
         setError(data?.error || "登录失败，请稍后再试");
         return;
       }
-      // 登录成功，展示非阻塞提示，不跳转
+      // 登录成功，展示提示并跳转
       setSuccess("登录成功");
       setPassword("");
-      setTimeout(() => setSuccess(null), 1500);
+      setTimeout(() => {
+        setSuccess(null);
+        router.push("/dashboard");
+      }, 1500);
     } catch (err) {
       setError("网络错误，请检查网络后重试");
     } finally {
