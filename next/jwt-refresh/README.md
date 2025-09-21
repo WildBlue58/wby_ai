@@ -122,3 +122,105 @@
     where:{},
     data:{}
   })
+
+## 大文件上传
+
+当文件比较大的时候，由于各种原因，容易失败，而且上传速度慢。
+一旦失败，需要重新上传，会让用户沮丧。
+
+采用分片上传策略（ 并发，并发限流 ），将文件切分为多个小块,并行上传，提升稳定性和效率。上传前通过Web Worker 计算文件整体以及分片的 hash，向服务器校验，若文件已存在则直接秒传。前端记录上传进度和已成功分片，支持断点续传，避免重复上传。服务器按序接受分片，存储后进行合并，并检验最终文件的完整性，结合唯一标志和分片索引，确保上传可靠。整个过程配合进度条和错误重试机制，提升用户体验与系统健壮性。
+
+- worker hash计算
+- 性能优化
+  上传文件的处理函数 handleFile 使用useCallback 缓存，避免重复创建
+- typescript 的使用
+  - 主线程和worker 线程间的通信，数据约定
+  HashWorkerIn
+  HashWorkerOut
+  as 断言
+  非空断言 ! file!.size
+
+- useRef的高级使用场景
+  可变对象
+  - DOM对象
+  - 对象
+  - 值
+  AbortController 取消请求对象，推迟到上传再实例化
+  暂停的值也用 ref 保存
+
+- es6 特性
+  - Set 已经上传的分片索引
+  - ?? 空值合并操作符
+  - Promise.all 并发
+
+## 项目的难点
+
+- 分片上传的并发控制
+  Promise.all + 递归
+  并发限流的核心是：一开始只启动不超过 MAX_CONCURRENCY 个工人函数，每个工人执行完一个任务后会递归调用 next()，继续从队列取下一个任务，从而保证始终只有固定数量的工人在运行。这样既避免了同时创建过多 Promise 占用资源，又能充分利用并行度；等所有工人都把队列清空才 resolve，Promise.all 就能精确等待整个批次完成。
+
+## 🛠️ 项目设置
+
+### 环境变量配置
+
+1. 在项目根目录创建 `.env.local` 文件：
+
+```bash
+# 数据库连接字符串
+DATABASE_URL="mysql://root:password@localhost:3306/jwt"
+
+# JWT 密钥 (请使用一个长随机字符串)
+JWT_SECRET_KEY="your-super-secret-jwt-key-here-make-it-long-and-random"
+
+# 环境变量
+NODE_ENV="development"
+```
+
+### 数据库设置
+
+1. 创建 MySQL 数据库：
+
+```sql
+CREATE DATABASE jwt;
+```
+
+2. 运行 Prisma 迁移：
+
+```bash
+npx prisma migrate dev --name init
+```
+
+3. 生成 Prisma 客户端：
+
+```bash
+npx prisma generate
+```
+
+### 启动项目
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建生产版本
+npm run build
+```
+
+## 🔧 故障排除
+
+### 字体加载错误修复
+
+如果遇到 `Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'` 错误：
+
+1. **已修复**：项目已移除 Turbopack 配置，使用标准 Next.js 构建
+2. **字体问题**：已替换 Google Fonts 为系统字体，避免网络连接问题
+
+### 网络连接问题
+
+如果遇到字体获取失败的错误：
+
+- 项目现在使用系统字体，无需网络连接
+- 如需使用 Google Fonts，请确保网络连接正常
