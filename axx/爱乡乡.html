@@ -58,16 +58,18 @@
         background: rgba(255, 255, 255, 0.8);
         border-radius: 50%;
         animation: float 6s infinite ease-in-out;
+        will-change: transform, opacity;
+        transform: translate3d(0, 0, 0); /* 启用硬件加速 */
       }
 
       @keyframes float {
         0%,
         100% {
-          transform: translateY(0px) rotate(0deg);
+          transform: translate3d(0, 0px, 0) rotate(0deg);
           opacity: 1;
         }
         50% {
-          transform: translateY(-100px) rotate(180deg);
+          transform: translate3d(0, -100px, 0) rotate(180deg);
           opacity: 0.5;
         }
       }
@@ -95,6 +97,8 @@
         animation: glow 2s ease-in-out infinite alternate,
           bounce 3s ease-in-out infinite;
         transform-style: preserve-3d;
+        will-change: transform, text-shadow;
+        transform: translate3d(0, 0, 0); /* 启用硬件加速 */
       }
 
       @keyframes glow {
@@ -114,13 +118,13 @@
         50%,
         80%,
         100% {
-          transform: translateY(0);
+          transform: translate3d(0, 0, 0);
         }
         40% {
-          transform: translateY(-20px);
+          transform: translate3d(0, -20px, 0);
         }
         60% {
-          transform: translateY(-10px);
+          transform: translate3d(0, -10px, 0);
         }
       }
 
@@ -137,6 +141,8 @@
         margin: 0 20px;
         animation: heartbeat 1.5s ease-in-out infinite;
         filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8));
+        will-change: transform;
+        transform: translate3d(0, 0, 0); /* 启用硬件加速 */
       }
 
       .heart:nth-child(2) {
@@ -149,10 +155,10 @@
       @keyframes heartbeat {
         0%,
         100% {
-          transform: scale(1);
+          transform: translate3d(0, 0, 0) scale(1);
         }
         50% {
-          transform: scale(1.3);
+          transform: translate3d(0, 0, 0) scale(1.3);
         }
       }
 
@@ -163,16 +169,18 @@
         margin: 30px 0;
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
         animation: fadeInUp 2s ease-out, textShine 3s ease-in-out infinite;
+        will-change: transform, opacity, color;
+        transform: translate3d(0, 0, 0); /* 启用硬件加速 */
       }
 
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(50px);
+          transform: translate3d(0, 50px, 0);
         }
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: translate3d(0, 0, 0);
         }
       }
 
@@ -205,6 +213,8 @@
         animation: rainbowText 4s ease-in-out infinite,
           scaleText 3s ease-in-out infinite;
         margin: 20px 0;
+        will-change: transform, background-position;
+        transform: translate3d(0, 0, 0); /* 启用硬件加速 */
       }
 
       @keyframes rainbowText {
@@ -220,10 +230,10 @@
       @keyframes scaleText {
         0%,
         100% {
-          transform: scale(1);
+          transform: translate3d(0, 0, 0) scale(1);
         }
         50% {
-          transform: scale(1.1);
+          transform: translate3d(0, 0, 0) scale(1.1);
         }
       }
 
@@ -519,10 +529,11 @@
     </div>
 
     <script>
-      // 创建粒子效果
+      // 优化的粒子效果创建
       function createParticles() {
         const particlesContainer = document.querySelector(".particles");
-        const particleCount = 50;
+        const particleCount = 40; // 减少粒子数量以提升性能
+        const fragment = document.createDocumentFragment(); // 使用文档片段减少DOM操作
 
         for (let i = 0; i < particleCount; i++) {
           const particle = document.createElement("div");
@@ -533,89 +544,119 @@
             particle.classList.add("pink");
           }
 
-          const size = Math.random() * 8 + 2;
-          particle.style.width = size + "px";
-          particle.style.height = size + "px";
-          particle.style.left = Math.random() * 100 + "%";
-          particle.style.top = Math.random() * 100 + "%";
-          particle.style.animationDelay = Math.random() * 6 + "s";
-          particle.style.animationDuration = Math.random() * 4 + 4 + "s";
+          const size = Math.random() * 6 + 2; // 稍微减小粒子尺寸
+          // 使用 cssText 一次性设置多个样式，减少重排
+          particle.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation-delay: ${Math.random() * 6}s;
+            animation-duration: ${Math.random() * 3 + 4}s;
+          `;
 
-          particlesContainer.appendChild(particle);
+          fragment.appendChild(particle);
         }
+
+        // 一次性添加所有粒子
+        particlesContainer.appendChild(fragment);
       }
 
-      // 创建飘落花瓣
+      // 优化的飘落花瓣效果
       function createPetals() {
-        const petalCount = 20;
+        const petalCount = 15; // 减少数量
 
         for (let i = 0; i < petalCount; i++) {
-          setTimeout(() => {
+          TimerManager.setTimeout(() => {
             const petal = document.createElement("div");
             petal.classList.add("petal");
 
-            const size = Math.random() * 20 + 10;
-            petal.style.width = size + "px";
-            petal.style.height = size + "px";
-            petal.style.left = Math.random() * 100 + "%";
-            petal.style.animationDuration = Math.random() * 3 + 6 + "s";
+            const size = Math.random() * 15 + 8; // 稍微减小尺寸
+            // 使用 cssText 一次性设置样式
+            petal.style.cssText = `
+              width: ${size}px;
+              height: ${size}px;
+              left: ${Math.random() * 100}%;
+              animation-duration: ${Math.random() * 2 + 5}s;
+              will-change: transform, opacity;
+            `;
 
             document.body.appendChild(petal);
 
-            setTimeout(() => {
-              petal.remove();
-            }, 8000);
-          }, i * 200);
+            TimerManager.setTimeout(() => {
+              if (petal.parentNode) {
+                petal.remove();
+              }
+            }, 7000); // 稍微减少存在时间
+          }, i * 300); // 增加间隔以减少同时存在的元素
         }
       }
 
-      // 创建烟花效果
+      // 优化的烟花效果
       function createFireworks() {
-        const fireworksCount = 15;
+        const fireworksCount = 12; // 减少数量
 
         for (let i = 0; i < fireworksCount; i++) {
-          setTimeout(() => {
+          TimerManager.setTimeout(() => {
             const firework = document.createElement("div");
             firework.classList.add("firework");
 
-            firework.style.left = Math.random() * 100 + "%";
-            firework.style.top = Math.random() * 100 + "%";
-            firework.style.backgroundColor = `hsl(${
-              Math.random() * 360
-            }, 100%, 50%)`;
+            // 使用 cssText 一次性设置样式
+            firework.style.cssText = `
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background-color: hsl(${Math.random() * 360}, 100%, 50%);
+              will-change: transform, opacity;
+            `;
 
             document.body.appendChild(firework);
 
-            setTimeout(() => {
-              firework.remove();
+            TimerManager.setTimeout(() => {
+              if (firework.parentNode) {
+                firework.remove();
+              }
             }, 2000);
-          }, i * 100);
+          }, i * 80); // 稍微减少间隔
         }
       }
 
-      // 惊喜效果
+      // 优化的惊喜效果（加入防抖机制）
+      let surpriseInProgress = false;
       function showSurprise() {
-        // 创建更多爱心雨
-        for (let i = 0; i < 30; i++) {
-          setTimeout(() => {
+        // 防抖：如果惊喜效果正在进行中，则忽略
+        if (surpriseInProgress) return;
+        surpriseInProgress = true;
+
+        // 创建优化的爱心雨
+        const heartCount = 25; // 减少数量
+        const heartSymbols = ["💖", "💕", "💗", "💘", "💝", "💞", "💟", "💌"];
+
+        for (let i = 0; i < heartCount; i++) {
+          TimerManager.setTimeout(() => {
             const heart = document.createElement("div");
-            heart.innerHTML = ["💖", "💕", "💗", "💘", "💝", "💞", "💟", "💌"][
-              Math.floor(Math.random() * 8)
-            ];
-            heart.style.position = "absolute";
-            heart.style.left = Math.random() * 100 + "%";
-            heart.style.top = "-50px";
-            heart.style.fontSize = Math.random() * 30 + 20 + "px";
-            heart.style.pointerEvents = "none";
-            heart.style.zIndex = "100";
-            heart.style.animation = "petalFall 3s linear forwards";
+            heart.innerHTML =
+              heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+
+            // 使用 cssText 一次性设置样式
+            heart.style.cssText = `
+              position: absolute;
+              left: ${Math.random() * 100}%;
+              top: -50px;
+              font-size: ${Math.random() * 25 + 18}px;
+              pointer-events: none;
+              z-index: 100;
+              animation: petalFall 3s linear forwards;
+              will-change: transform, opacity;
+            `;
 
             document.body.appendChild(heart);
 
-            setTimeout(() => {
-              heart.remove();
+            TimerManager.setTimeout(() => {
+              if (heart.parentNode) {
+                heart.remove();
+              }
             }, 3000);
-          }, i * 50);
+          }, i * 40); // 稍微减少间隔
         }
 
         // 创建烟花
@@ -626,65 +667,135 @@
         createPinkHalos();
 
         // 显示特殊消息
-        setTimeout(() => {
+        TimerManager.setTimeout(() => {
           const specialMessage = document.createElement("div");
           specialMessage.innerHTML = "🌸 乡乡，你就是我的整个世界！🌸";
-          specialMessage.style.position = "fixed";
-          specialMessage.style.top = "20%";
-          specialMessage.style.left = "50%";
-          specialMessage.style.transform = "translateX(-50%)";
-          specialMessage.style.fontSize = "3rem";
-          specialMessage.style.color = "#ff69b4";
-          specialMessage.style.textShadow =
-            "0 0 20px rgba(255, 105, 180, 0.8), 0 0 40px rgba(255, 182, 193, 0.6)";
-          specialMessage.style.zIndex = "200";
-          specialMessage.style.animation =
-            "fadeInUp 2s ease-out, glow 1s ease-in-out infinite alternate";
-          specialMessage.style.textAlign = "center";
+
+          // 使用 cssText 一次性设置样式
+          specialMessage.style.cssText = `
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: #ff69b4;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.8), 0 0 40px rgba(255, 182, 193, 0.6);
+            z-index: 200;
+            animation: fadeInUp 2s ease-out, glow 1s ease-in-out infinite alternate;
+            text-align: center;
+            will-change: transform, opacity;
+          `;
 
           document.body.appendChild(specialMessage);
 
-          setTimeout(() => {
-            specialMessage.remove();
+          TimerManager.setTimeout(() => {
+            if (specialMessage.parentNode) {
+              specialMessage.remove();
+            }
+            // 重置防抖标志
+            surpriseInProgress = false;
           }, 4000);
         }, 500);
       }
 
-      // 初始化效果
-      document.addEventListener("DOMContentLoaded", function () {
-        createParticles();
-
-        // 定期创建花瓣
-        setInterval(createPetals, 3000);
-
-        // 定期创建烟花
-        setInterval(createFireworks, 8000);
-
-        // 添加鼠标跟踪效果
-        document.addEventListener("mousemove", function (e) {
-          if (Math.random() < 0.1) {
-            const trail = document.createElement("div");
-            trail.innerHTML = "✨";
-            trail.style.position = "absolute";
-            trail.style.left = e.clientX + "px";
-            trail.style.top = e.clientY + "px";
-            trail.style.pointerEvents = "none";
-            trail.style.fontSize = "20px";
-            trail.style.zIndex = "50";
-            trail.style.animation = "fadeInUp 1s ease-out forwards";
-
-            document.body.appendChild(trail);
-
-            setTimeout(() => {
-              trail.remove();
-            }, 1000);
+      // 性能优化：节流函数
+      function throttle(func, limit) {
+        let inThrottle;
+        return function () {
+          const args = arguments;
+          const context = this;
+          if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => (inThrottle = false), limit);
           }
-        });
-      });
+        };
+      }
 
-      // 添加点击页面创建爱心效果
-      document.addEventListener("click", function (e) {
-        const clickHeart = document.createElement("div");
+      // 元素池管理，避免频繁创建销毁DOM元素
+      class ElementPool {
+        constructor(className, maxSize = 50) {
+          this.pool = [];
+          this.active = new Set();
+          this.className = className;
+          this.maxSize = maxSize;
+        }
+
+        get() {
+          let element;
+          if (this.pool.length > 0) {
+            element = this.pool.pop();
+          } else {
+            element = document.createElement("div");
+            element.className = this.className;
+          }
+          this.active.add(element);
+          return element;
+        }
+
+        release(element) {
+          if (this.active.has(element)) {
+            this.active.delete(element);
+            element.style.cssText = "";
+            element.className = this.className;
+            if (element.parentNode) {
+              element.parentNode.removeChild(element);
+            }
+            if (this.pool.length < this.maxSize) {
+              this.pool.push(element);
+            }
+          }
+        }
+
+        cleanup() {
+          this.pool = [];
+          this.active.clear();
+        }
+      }
+
+      // 创建元素池
+      const trailPool = new ElementPool("trail-effect");
+      const heartPool = new ElementPool("heart-effect");
+
+      // 定时器管理器
+      const TimerManager = {
+        timers: new Set(),
+
+        setInterval(callback, delay) {
+          const timer = setInterval(callback, delay);
+          this.timers.add(timer);
+          return timer;
+        },
+
+        setTimeout(callback, delay) {
+          const timer = setTimeout(() => {
+            callback();
+            this.timers.delete(timer);
+          }, delay);
+          this.timers.add(timer);
+          return timer;
+        },
+
+        clear(timer) {
+          if (this.timers.has(timer)) {
+            clearInterval(timer);
+            clearTimeout(timer);
+            this.timers.delete(timer);
+          }
+        },
+
+        clearAll() {
+          this.timers.forEach((timer) => {
+            clearInterval(timer);
+            clearTimeout(timer);
+          });
+          this.timers.clear();
+        },
+      };
+
+      // 优化的点击事件处理
+      const handleClick = throttle(function (e) {
+        const clickHeart = heartPool.get();
         clickHeart.innerHTML = "💖";
         clickHeart.style.position = "absolute";
         clickHeart.style.left = e.clientX + "px";
@@ -697,40 +808,45 @@
 
         document.body.appendChild(clickHeart);
 
-        setTimeout(() => {
-          clickHeart.remove();
+        TimerManager.setTimeout(() => {
+          heartPool.release(clickHeart);
         }, 2000);
-      });
+      }, 100);
 
-      // 创建粉色泡泡效果
+      document.addEventListener("click", handleClick);
+
+      // 优化的粉色泡泡效果
       function createBubbles() {
-        const bubbleCount = 8;
+        const bubbleCount = Math.min(6, 8); // 减少数量以提升性能
 
         for (let i = 0; i < bubbleCount; i++) {
-          setTimeout(() => {
+          TimerManager.setTimeout(() => {
             const bubble = document.createElement("div");
             bubble.classList.add("bubble");
 
-            const size = Math.random() * 60 + 20;
+            const size = Math.random() * 50 + 15; // 稍微减小尺寸
             bubble.style.width = size + "px";
             bubble.style.height = size + "px";
             bubble.style.left = Math.random() * 100 + "%";
-            bubble.style.animationDuration = Math.random() * 4 + 6 + "s";
-            bubble.style.animationDelay = Math.random() * 2 + "s";
+            bubble.style.animationDuration = Math.random() * 3 + 5 + "s"; // 稍微减少持续时间
+            bubble.style.animationDelay = Math.random() * 1.5 + "s";
+            bubble.style.willChange = "transform, opacity"; // 优化动画性能
 
             document.body.appendChild(bubble);
 
-            setTimeout(() => {
-              bubble.remove();
-            }, 10000);
-          }, i * 800);
+            TimerManager.setTimeout(() => {
+              if (bubble.parentNode) {
+                bubble.remove();
+              }
+            }, 8000);
+          }, i * 600); // 减少间隔时间
         }
       }
 
-      // 创建粉色星光效果
+      // 优化的粉色星光效果
       function createStarlights() {
-        const starlightCount = 15;
-        const starSymbols = ["✨", "⭐", "🌟", "💫", "⚡"];
+        const starlightCount = 12; // 减少数量
+        const starSymbols = ["✨", "⭐", "🌟", "💫"];
 
         for (let i = 0; i < starlightCount; i++) {
           const starlight = document.createElement("div");
@@ -741,35 +857,38 @@
           starlight.style.left = Math.random() * 100 + "%";
           starlight.style.top = Math.random() * 100 + "%";
           starlight.style.animationDelay = Math.random() * 3 + "s";
+          starlight.style.willChange = "transform, opacity";
 
           document.body.appendChild(starlight);
         }
       }
 
-      // 创建粉色光环效果
+      // 优化的粉色光环效果
       function createPinkHalos() {
-        const haloCount = 5;
+        const haloCount = 4; // 减少数量
 
         for (let i = 0; i < haloCount; i++) {
-          setTimeout(() => {
+          TimerManager.setTimeout(() => {
             const halo = document.createElement("div");
             halo.classList.add("pink-halo");
-
             halo.style.left = Math.random() * 100 + "%";
             halo.style.top = Math.random() * 100 + "%";
+            halo.style.willChange = "transform, opacity";
 
             document.body.appendChild(halo);
 
-            setTimeout(() => {
-              halo.remove();
+            TimerManager.setTimeout(() => {
+              if (halo.parentNode) {
+                halo.remove();
+              }
             }, 4000);
-          }, i * 800);
+          }, i * 700); // 稍微减少间隔
         }
       }
 
-      // 创建粉色闪烁点
+      // 优化的粉色闪烁点
       function createSparkles() {
-        const sparkleCount = 25;
+        const sparkleCount = 20; // 减少数量
 
         for (let i = 0; i < sparkleCount; i++) {
           const sparkle = document.createElement("div");
@@ -778,56 +897,80 @@
           sparkle.style.left = Math.random() * 100 + "%";
           sparkle.style.top = Math.random() * 100 + "%";
           sparkle.style.animationDelay = Math.random() * 2 + "s";
+          sparkle.style.willChange = "transform, opacity";
 
           document.body.appendChild(sparkle);
         }
       }
 
-      // 初始化所有粉色特效
+      // 优化的初始化粉色特效
       function initPinkEffects() {
         createStarlights();
         createSparkles();
 
-        // 定期创建泡泡和光环
-        setInterval(createBubbles, 4000);
-        setInterval(createPinkHalos, 6000);
+        // 使用TimerManager管理定时器
+        TimerManager.setInterval(createBubbles, 5000); // 增加间隔以减少性能开销
+        TimerManager.setInterval(createPinkHalos, 7000);
       }
 
-      // 更新初始化函数
+      // 优化的鼠标移动处理
+      const handleMouseMove = throttle(function (e) {
+        if (Math.random() < 0.1) {
+          // 降低触发频率
+          const trail = trailPool.get();
+          const trailSymbols = ["✨", "💖", "💕", "🌸"];
+          trail.innerHTML =
+            trailSymbols[Math.floor(Math.random() * trailSymbols.length)];
+          trail.style.position = "absolute";
+          trail.style.left = e.clientX + "px";
+          trail.style.top = e.clientY + "px";
+          trail.style.pointerEvents = "none";
+          trail.style.fontSize = "20px";
+          trail.style.zIndex = "50";
+          trail.style.color = "#ff69b4";
+          trail.style.filter = "drop-shadow(0 0 10px rgba(255, 105, 180, 0.8))";
+          trail.style.animation = "fadeInUp 1s ease-out forwards";
+          trail.style.willChange = "transform, opacity";
+
+          document.body.appendChild(trail);
+
+          TimerManager.setTimeout(() => {
+            trailPool.release(trail);
+          }, 1000);
+        }
+      }, 50); // 50ms节流间隔
+
+      // 统一的初始化函数
       document.addEventListener("DOMContentLoaded", function () {
+        // 基础初始化
         createParticles();
-        initPinkEffects(); // 添加粉色特效初始化
+        initPinkEffects();
 
-        // 定期创建花瓣
-        setInterval(createPetals, 3000);
+        // 使用TimerManager管理所有定时器
+        TimerManager.setInterval(createPetals, 4000); // 增加间隔
+        TimerManager.setInterval(createFireworks, 10000); // 增加间隔
 
-        // 定期创建烟花
-        setInterval(createFireworks, 8000);
+        // 添加优化的鼠标跟踪效果
+        document.addEventListener("mousemove", handleMouseMove);
 
-        // 添加鼠标跟踪效果 - 增强为粉色
-        document.addEventListener("mousemove", function (e) {
-          if (Math.random() < 0.15) {
-            const trail = document.createElement("div");
-            const trailSymbols = ["✨", "💖", "💕", "🌸"];
-            trail.innerHTML =
-              trailSymbols[Math.floor(Math.random() * trailSymbols.length)];
-            trail.style.position = "absolute";
-            trail.style.left = e.clientX + "px";
-            trail.style.top = e.clientY + "px";
-            trail.style.pointerEvents = "none";
-            trail.style.fontSize = "20px";
-            trail.style.zIndex = "50";
-            trail.style.color = "#ff69b4";
-            trail.style.filter =
-              "drop-shadow(0 0 10px rgba(255, 105, 180, 0.8))";
-            trail.style.animation = "fadeInUp 1s ease-out forwards";
-
-            document.body.appendChild(trail);
-
-            setTimeout(() => {
-              trail.remove();
-            }, 1000);
+        // 页面可见性API - 当页面不可见时暂停动画
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) {
+            // 页面隐藏时清理定时器
+            TimerManager.clearAll();
+          } else {
+            // 页面显示时重新初始化
+            initPinkEffects();
+            TimerManager.setInterval(createPetals, 4000);
+            TimerManager.setInterval(createFireworks, 10000);
           }
+        });
+
+        // 页面卸载时清理资源
+        window.addEventListener("beforeunload", function () {
+          TimerManager.clearAll();
+          trailPool.cleanup();
+          heartPool.cleanup();
         });
       });
     </script>
