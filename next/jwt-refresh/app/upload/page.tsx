@@ -81,6 +81,11 @@ const Upload = () => {
     return res.json() as Promise<InitResp>;
   };
 
+  const uploadChunk = async (index:number, signal:AbortSignal) => {
+    const start = index * CHUNK_SIZE;
+    const end = Math.min(file!.size,start)
+  }
+
   const startUpload = async () => {
     if (!file) return;
     setStatus("初始化上传...");
