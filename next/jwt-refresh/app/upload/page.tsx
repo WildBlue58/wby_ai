@@ -81,10 +81,24 @@ const Upload = () => {
     return res.json() as Promise<InitResp>;
   };
 
-  const uploadChunk = async (index:number, signal:AbortSignal) => {
+  const uploadChunk = async (index: number, signal: AbortSignal) => {
     const start = index * CHUNK_SIZE;
-    const end = Math.min(file!.size,start)
-  }
+    const end = Math.min(file!.size, start);
+    const blob = file!.slice(start, end);
+
+    const res = await fetch("/api/upload/chunk", {
+      method: "PUT",
+      headers: {
+        "x-file-hash": hash,
+        "x-chunk-index": String(index),
+      },
+      body: blob,
+      signal,
+    });
+
+    if (!res.ok) throw new Error(`分片${index}上传失败`);
+    return res.json();
+  };
 
   const startUpload = async () => {
     if (!file) return;
@@ -123,7 +137,7 @@ const Upload = () => {
     const next = async () => {
       if (pausedRef.current) return; // 暂停
       const idx = queue.shift();
-      if (!idx === undefined) return;
+      if (idx === undefined) return;
       try {
         await uploadChunk(idx, abortRef.current!.signal);
         done++;
@@ -138,9 +152,7 @@ const Upload = () => {
     setStatus("分布上传中...");
     try {
       await Promise.all(workers);
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
 
   return (
