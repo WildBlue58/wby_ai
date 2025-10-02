@@ -171,9 +171,17 @@ const Login = () => {
               </button>
             </form>
 
-            <p className="mt-6 text-center text-xs text-slate-500">
-              还没有账户？请先注册。
-            </p>
+            <div className="mt-6 text-center">
+              <p className="text-xs text-slate-500">
+                还没有账户？{" "}
+                <a
+                  href="/register"
+                  className="font-medium text-slate-900 hover:text-slate-700 transition-colors"
+                >
+                  立即注册
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   readFileSync,
   writeFileSync,
   readdirSync,
+  statSync,
 } from "fs";
 import { join } from "path";
 // process.cwd() 是运行命令的当前工作目录
@@ -77,4 +78,33 @@ export function listUploadedChunks(fileHash: string): number[] {
     .filter((n) => Number.isInteger(n))
     .sort((a, b) => a - b);
   return ids;
+}
+
+export function finalFilePath(fileHash: string, fileName: string) {
+  return join(getUploadDir(fileHash).dir, fileName);
+}
+
+export function fileAlreadyExist(fileHash: string, fileName: string) {
+  const p = finalFilePath(fileHash, fileName);
+  return existsSync(p) && statSync(p).size;
+}
+
+export function mergeChunks(
+  fileHash: string,
+  fileName: string,
+  totalChunks: number
+) {
+  const { chunkDir } = getUploadDir(fileHash);
+  const finalPath = join(chunkDir, fileName);
+  const ws = createWriteStream(finalPath);
+  for (let i = 0; i < totalChunks; i++) {
+    const chunkPath = join(chunkDir, `${i}.part`);
+    const chunk = readFileSync(chunkPath);
+    ws.write(chunk);
+  }
+  ws.end();
+  return new Promise((resolve, reject) => {
+    ws.on("finish", () => resolve(finalPath));
+    ws.on("error", reject);
+  })
 }
