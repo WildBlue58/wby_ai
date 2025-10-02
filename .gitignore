@@ -2,3 +2,4 @@ node_modules/
 .env.local
 vibe/eshop1/wildblue
 D:\lesson_si\.spec-workflow\session.json
+.spec-workflow/session.json
