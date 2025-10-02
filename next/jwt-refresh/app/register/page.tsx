@@ -2,20 +2,25 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { emailRegex, passwordRegex } from "@/lib/regexp";
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const isEmailValid = emailRegex.test(email || "");
   const isPasswordValid = passwordRegex.test(password || "");
-  const isFormValid = isEmailValid && isPasswordValid;
+  const isConfirmPasswordValid =
+    confirmPassword === password && confirmPassword.length > 0;
+  const isFormValid = isEmailValid && isPasswordValid && isConfirmPasswordValid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,23 +28,24 @@ const Login = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data?.error || "登录失败，请稍后再试");
+        setError(data?.error || "注册失败，请稍后再试");
         return;
       }
-      // 登录成功，展示提示并跳转
-      setSuccess("登录成功");
+      // 注册成功，展示提示并跳转到登录页
+      setSuccess("注册成功！正在跳转到登录页面...");
       setPassword("");
+      setConfirmPassword("");
       setTimeout(() => {
         setSuccess(null);
-        router.push("/dashboard");
-      }, 1500);
+        router.push("/login");
+      }, 2000);
     } catch (err) {
       setError("网络错误，请检查网络后重试");
     } finally {
@@ -61,10 +67,10 @@ const Login = () => {
             )}
             <div className="mb-8 text-center">
               <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-                登录
+                注册账户
               </h1>
               <p className="mt-2 text-sm text-slate-500">
-                使用您的邮箱与密码登录账户
+                创建您的SmartApp账户，开始使用我们的服务
               </p>
             </div>
 
@@ -77,7 +83,7 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-700">
-                  邮箱
+                  邮箱地址
                 </label>
                 <input
                   type="email"
@@ -133,6 +139,42 @@ const Login = () => {
                 )}
               </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700">
+                  确认密码
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="请再次输入密码"
+                    className={`w-full rounded-lg border px-3 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-600 outline-none transition focus:ring-2 ${
+                      confirmPassword.length === 0
+                        ? "border-slate-300 focus:ring-slate-300"
+                        : isConfirmPasswordValid
+                        ? "border-emerald-300 focus:ring-emerald-300"
+                        : "border-red-300 focus:ring-red-300"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    className="absolute inset-y-0 right-2 my-auto rounded px-2 text-xs text-slate-500 hover:text-slate-700"
+                    aria-label={
+                      showConfirmPassword ? "隐藏确认密码" : "显示确认密码"
+                    }
+                  >
+                    {showConfirmPassword ? "隐藏" : "显示"}
+                  </button>
+                </div>
+                {confirmPassword.length > 0 && !isConfirmPasswordValid && (
+                  <p className="mt-1 text-xs text-red-600">
+                    两次输入的密码不一致
+                  </p>
+                )}
+              </div>
+
               <button
                 type="submit"
                 disabled={!isFormValid || loading}
@@ -163,22 +205,42 @@ const Login = () => {
                         d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                       ></path>
                     </svg>
-                    正在登录...
+                    正在注册...
                   </span>
                 ) : (
-                  "登录"
+                  "注册账户"
                 )}
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-xs text-slate-500">
-                还没有账户？{" "}
-                <a
-                  href="/register"
+                已有账户？{" "}
+                <Link
+                  href="/login"
                   className="font-medium text-slate-900 hover:text-slate-700 transition-colors"
                 >
-                  立即注册
+                  立即登录
+                </Link>
+              </p>
+            </div>
+
+            {/* 服务条款和隐私政策 */}
+            <div className="mt-6 text-center">
+              <p className="text-xs text-slate-400">
+                注册即表示您同意我们的{" "}
+                <a
+                  href="#"
+                  className="text-slate-600 hover:text-slate-800 underline transition-colors"
+                >
+                  服务条款
+                </a>{" "}
+                和{" "}
+                <a
+                  href="#"
+                  className="text-slate-600 hover:text-slate-800 underline transition-colors"
+                >
+                  隐私政策
                 </a>
               </p>
             </div>
@@ -189,4 +251,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
