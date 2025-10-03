@@ -1,0 +1,41 @@
+{
+  "name": "diff-algorithms",
+  "version": "1.0.0",
+  "description": "Diff算法实现和演示",
+  "main": "example.js",
+  "scripts": {
+    "start": "node example.js",
+    "test": "node performance-test.js",
+    "demo": "node example.js",
+    "lint": "eslint *.js",
+    "format": "prettier --write *.js *.html *.md"
+  },
+  "keywords": [
+    "diff",
+    "algorithm",
+    "lcs",
+    "myers",
+    "patience",
+    "react",
+    "virtual-dom",
+    "comparison"
+  ],
+  "author": "Diff Algorithm Demo",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.0.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/diff-algorithms.git"
+  },
+  "bugs": {
+    "url": "https://github.com/example/diff-algorithms/issues"
+  },
+  "homepage": "https://github.com/example/diff-algorithms#readme"
+}

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可视化Diff算法演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .input-container {
+            flex: 1;
+        }
+
+        .input-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .input-container textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-container textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .diff-container {
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .diff-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e1e5e9;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .diff-content {
+            display: flex;
+            min-height: 300px;
+        }
+
+        .diff-side {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .diff-old {
+            background: #fff5f5;
+            border-right: 1px solid #e1e5e9;
+        }
+
+        .diff-new {
+            background: #f0fff4;
+        }
+
+        .diff-line {
+            padding: 5px 10px;
+            margin: 2px 0;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .diff-line.added {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .diff-line.removed {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .diff-line.unchanged {
+            background: transparent;
+        }
+
+        .diff-line-number {
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            color: #999;
+            font-size: 12px;
+            width: 25px;
+            text-align: right;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .algorithm-selector {
+            margin-bottom: 30px;
+        }
+
+        .algorithm-selector label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .algorithm-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .algorithm-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .performance-chart {
+            background: #f8f9fa;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            height: 200px;
+            position: relative;
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .chart-bar {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 5px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-bar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .legend-color.added {
+            background: #28a745;
+        }
+
+        .legend-color.removed {
+            background: #dc3545;
+        }
+
+        .legend-color.unchanged {
+            background: #6c757d;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>可视化Diff算法演示</h1>
+            <p>体验不同diff算法的性能和效果</p>
+        </div>
+
+        <div class="content">
+            <!-- 输入区域 -->
+            <div class="section">
+                <h2>输入文本</h2>
+                <div class="input-group">
+                    <div class="input-container">
+                        <label for="oldText">原始文本</label>
+                        <textarea id="oldText" placeholder="请输入原始文本...">function hello() {
+    console.log("Hello World");
+    return "success";
+}</textarea>
+                    </div>
+                    <div class="input-container">
+                        <label for="newText">修改后文本</label>
+                        <textarea id="newText" placeholder="请输入修改后的文本...">function hello() {
+    console.log("Hello Beautiful World");
+    return "success";
+    // Added new comment
+}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 控制区域 -->
+            <div class="section">
+                <h2>算法选择</h2>
+                <div class="algorithm-selector">
+                    <label for="algorithm">选择Diff算法</label>
+                    <select id="algorithm">
+                        <option value="basic">基础LCS算法</option>
+                        <option value="myers">Myers算法</option>
+                        <option value="hunt-mcilroy">Hunt-McIlroy算法</option>
+                        <option value="patience">Patience Diff算法</option>
+                        <option value="react">React Diff算法</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="section">
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="runDiff()">运行Diff算法</button>
+                    <button class="btn btn-secondary" onclick="clearResults()">清除结果</button>
+                    <button class="btn btn-secondary" onclick="loadSample()">加载示例</button>
+                    <button class="btn btn-secondary" onclick="runPerformanceTest()">性能测试</button>
+                </div>
+            </div>
+
+            <!-- 加载状态 -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>正在计算差异...</p>
+            </div>
+
+            <!-- 结果显示区域 -->
+            <div id="results" style="display: none;">
+                <!-- 统计信息 -->
+                <div class="section">
+                    <h2>统计信息</h2>
+                    <div class="stats" id="stats">
+                        <!-- 统计卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 差异显示 -->
+                <div class="section">
+                    <h2>差异对比</h2>
+                    <div class="diff-container">
+                        <div class="diff-header">
+                            <span>差异结果</span>
+                        </div>
+                        <div class="diff-content">
+                            <div class="diff-side diff-old">
+                                <div class="diff-header">原始版本</div>
+                                <div id="diffOldContent"></div>
+                            </div>
+                            <div class="diff-side diff-new">
+                                <div class="diff-header">修改版本</div>
+                                <div id="diffNewContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 性能图表 -->
+                <div class="section">
+                    <h2>性能分析</h2>
+                    <div class="performance-chart">
+                        <h3>算法性能对比</h3>
+                        <div class="chart-container" id="performanceChart">
+                            <!-- 性能图表将通过JavaScript动态生成 -->
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #667eea;"></div>
+                                <span>执行时间 (ms)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Diff算法实现
+        class DiffAlgorithms {
+            // 基础LCS算法
+            static basicLCS(oldText, newText) {
+                const oldLines = oldText.split('\n');
+                const newLines = newText.split('\n');
+                const m = oldLines.length;
+                const n = newLines.length;
+                
+                // 构建DP表
+                const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+                
+                for (let i = 1; i <= m; i++) {
+                    for (let j = 1; j <= n; j++) {
+                        if (oldLines[i-1] === newLines[j-1]) {
+                            dp[i][j] = dp[i-1][j-1] + 1;
+                        } else {
+                            dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                        }
+                    }
+                }
+                
+                // 回溯构建差异
+                const diff = [];
+                let i = m, j = n;
+                
+                while (i > 0 || j > 0) {
+                    if (i > 0 && j > 0 && oldLines[i-1] === newLines[j-1]) {
+                        diff.unshift({ type: 'unchanged', oldLine: i, newLine: j, content: oldLines[i-1] });
+                        i--;
+                        j--;
+                    } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
+                        diff.unshift({ type: 'added', newLine: j, content: newLines[j-1] });
+                        j--;
+                    } else {
+                        diff.unshift({ type: 'removed', oldLine: i, content: oldLines[i-1] });
+                        i--;
+                    }
+                }
+                
+                return diff;
+            }
+
+            // Myers算法（简化版）
+            static myersDiff(oldText, newText) {
+                const oldLines = oldText.split('\n');
+                const newLines = newText.split('\n');
+                const N = oldLines.length;
+                const M = newLines.length;
+                const MAX = N + M;
+                
+                const V = new Array(2 * MAX + 1);
+                for (let i = 0; i < V.length; i++) {
+                    V[i] = -1;
+                }
+                
+                const diff = [];
+                
+                for (let d = 0; d <= MAX; d++) {
+                    for (let k = -d; k <= d; k += 2) {
+                        let x;
+                        if (k === -d || (k !== d && V[k - 1] < V[k + 1])) {
+                            x = V[k + 1];
+                        } else {
+                            x = V[k - 1] + 1;
+                        }
+                        
+                        let y = x - k;
+                        
+                        while (x < N && y < M && oldLines[x] === newLines[y]) {
+                            x++;
+                            y++;
+                        }
+                        
+                        V[k] = x;
+                        
+                        if (x >= N && y >= M) {
+                            // 找到路径，构建差异
+                            return this.buildMyersDiff(oldLines, newLines, V, d);
+                        }
+                    }
+                }
+                
+                return diff;
+            }
+
+            // 构建Myers差异
+            static buildMyersDiff(oldLines, newLines, V, d) {
+                const diff = [];
+                // 简化的Myers差异构建
+                let i = 0, j = 0;
+                
+                while (i < oldLines.length || j < newLines.length) {
+                    if (i < oldLines.length && j < newLines.length && oldLines[i] === newLines[j]) {
+                        diff.push({ type: 'unchanged', oldLine: i + 1, newLine: j + 1, content: oldLines[i] });
+                        i++;
+                        j++;
+                    } else if (j < newLines.length && (i >= oldLines.length || oldLines[i] !== newLines[j])) {
+                        diff.push({ type: 'added', newLine: j + 1, content: newLines[j] });
+                        j++;
+                    } else {
+                        diff.push({ type: 'removed', oldLine: i + 1, content: oldLines[i] });
+                        i++;
+                    }
+                }
+                
+                return diff;
+            }
+
+            // Hunt-McIlroy算法
+            static huntMcIlroy(oldText, newText) {
+                const oldLines = oldText.split('\n');
+                const newLines = newText.split('\n');
+                
+                // 构建哈希表
+                const oldHash = new Map();
+                const newHash = new Map();
+                
+                oldLines.forEach((line, index) => {
+                    if (!oldHash.has(line)) {
+                        oldHash.set(line, []);
+                    }
+                    oldHash.get(line).push(index);
+                });
+                
+                newLines.forEach((line, index) => {
+                    if (!newHash.has(line)) {
+                        newHash.set(line, []);
+                    }
+                    newHash.get(line).push(index);
+                });
+                
+                // 找到公共子序列
+                const common = [];
+                for (const [line, oldPositions] of oldHash) {
+                    if (newHash.has(line)) {
+                        const newPositions = newHash.get(line);
+                        for (const oldPos of oldPositions) {
+                            for (const newPos of newPositions) {
+                                common.push({ oldPos, newPos, line });
+                            }
+                        }
+                    }
+                }
+                
+                // 生成差异
+                const diff = [];
+                let oldIndex = 0, newIndex = 0;
+                let commonIndex = 0;
+                
+                while (oldIndex < oldLines.length || newIndex < newLines.length) {
+                    // 处理删除的行
+                    while (oldIndex < oldLines.length && 
+                           (commonIndex >= common.length || oldIndex < common[commonIndex].oldPos)) {
+                        diff.push({ type: 'removed', oldLine: oldIndex + 1, content: oldLines[oldIndex] });
+                        oldIndex++;
+                    }
+                    
+                    // 处理插入的行
+                    while (newIndex < newLines.length && 
+                           (commonIndex >= common.length || newIndex < common[commonIndex].newPos)) {
+                        diff.push({ type: 'added', newLine: newIndex + 1, content: newLines[newIndex] });
+                        newIndex++;
+                    }
+                    
+                    // 处理相等的行
+                    if (commonIndex < common.length) {
+                        const commonItem = common[commonIndex];
+                        diff.push({ 
+                            type: 'unchanged', 
+                            oldLine: commonItem.oldPos + 1, 
+                            newLine: commonItem.newPos + 1, 
+                            content: commonItem.line 
+                        });
+                        oldIndex = commonItem.oldPos + 1;
+                        newIndex = commonItem.newPos + 1;
+                        commonIndex++;
+                    }
+                }
+                
+                return diff;
+            }
+
+            // Patience Diff算法
+            static patienceDiff(oldText, newText) {
+                const oldLines = oldText.split('\n');
+                const newLines = newText.split('\n');
+                
+                // 找到唯一匹配
+                const oldHash = new Map();
+                const newHash = new Map();
+                
+                oldLines.forEach((line, index) => {
+                    if (!oldHash.has(line)) {
+                        oldHash.set(line, []);
+                    }
+                    oldHash.get(line).push(index);
+                });
+                
+                newLines.forEach((line, index) => {
+                    if (!newHash.has(line)) {
+                        newHash.set(line, []);
+                    }
+                    newHash.get(line).push(index);
+                });
+                
+                const uniqueMatches = [];
+                for (const [line, oldPositions] of oldHash) {
+                    if (newHash.has(line)) {
+                        const newPositions = newHash.get(line);
+                        if (oldPositions.length === 1 && newPositions.length === 1) {
+                            uniqueMatches.push({
+                                oldPos: oldPositions[0],
+                                newPos: newPositions[0],
+                                line: line
+                            });
+                        }
+                    }
+                }
+                
+                // 构建LIS
+                uniqueMatches.sort((a, b) => a.oldPos - b.oldPos);
+                const lcs = this.buildLIS(uniqueMatches);
+                
+                // 生成差异
+                const diff = [];
+                let oldIndex = 0, newIndex = 0;
+                let lcsIndex = 0;
+                
+                while (oldIndex < oldLines.length || newIndex < newLines.length) {
+                    // 处理删除的行
+                    while (oldIndex < oldLines.length && 
+                           (lcsIndex >= lcs.length || oldIndex < lcs[lcsIndex].oldPos)) {
+                        diff.push({ type: 'removed', oldLine: oldIndex + 1, content: oldLines[oldIndex] });
+                        oldIndex++;
+                    }
+                    
+                    // 处理插入的行
+                    while (newIndex < newLines.length && 
+                           (lcsIndex >= lcs.length || newIndex < lcs[lcsIndex].newPos)) {
+                        diff.push({ type: 'added', newLine: newIndex + 1, content: newLines[newIndex] });
+                        newIndex++;
+                    }
+                    
+                    // 处理相等的行
+                    if (lcsIndex < lcs.length) {
+                        const lcsItem = lcs[lcsIndex];
+                        diff.push({ 
+                            type: 'unchanged', 
+                            oldLine: lcsItem.oldPos + 1, 
+                            newLine: lcsItem.newPos + 1, 
+                            content: lcsItem.line 
+                        });
+                        oldIndex = lcsItem.oldPos + 1;
+                        newIndex = lcsItem.newPos + 1;
+                        lcsIndex++;
+                    }
+                }
+                
+                return diff;
+            }
+
+            // 构建最长递增子序列
+            static buildLIS(matches) {
+                if (matches.length === 0) return [];
+                
+                const lis = [];
+                const prev = new Array(matches.length).fill(-1);
+                
+                for (let i = 0; i < matches.length; i++) {
+                    let left = 0, right = lis.length;
+                    while (left < right) {
+                        const mid = Math.floor((left + right) / 2);
+                        if (matches[lis[mid]].newPos < matches[i].newPos) {
+                            left = mid + 1;
+                        } else {
+                            right = mid;
+                        }
+                    }
+                    
+                    if (left < lis.length) {
+                        lis[left] = i;
+                    } else {
+                        lis.push(i);
+                    }
+                    
+                    if (left > 0) {
+                        prev[i] = lis[left - 1];
+                    }
+                }
+                
+                const result = [];
+                let current = lis[lis.length - 1];
+                while (current !== -1) {
+                    result.unshift(matches[current]);
+                    current = prev[current];
+                }
+                
+                return result;
+            }
+
+            // React Diff算法
+            static reactDiff(oldText, newText) {
+                const oldLines = oldText.split('\n');
+                const newLines = newText.split('\n');
+                
+                // 创建key映射
+                const oldMap = new Map();
+                const newMap = new Map();
+                
+                oldLines.forEach((line, index) => {
+                    const key = this.getLineKey(line, index);
+                    oldMap.set(key, { line, index });
+                });
+                
+                newLines.forEach((line, index) => {
+                    const key = this.getLineKey(line, index);
+                    newMap.set(key, { line, index });
+                });
+                
+                const diff = [];
+                let lastIndex = 0;
+                
+                // 处理新行
+                for (let i = 0; i < newLines.length; i++) {
+                    const newLine = newLines[i];
+                    const key = this.getLineKey(newLine, i);
+                    
+                    if (oldMap.has(key)) {
+                        const oldItem = oldMap.get(key);
+                        const oldIndex = oldItem.index;
+                        
+                        if (oldIndex < lastIndex) {
+                            diff.push({ type: 'moved', from: oldIndex, to: i, content: newLine });
+                        }
+                        
+                        lastIndex = Math.max(lastIndex, oldIndex);
+                        diff.push({ type: 'unchanged', oldLine: oldIndex + 1, newLine: i + 1, content: newLine });
+                    } else {
+                        diff.push({ type: 'added', newLine: i + 1, content: newLine });
+                    }
+                }
+                
+                // 处理删除的行
+                for (const [key, oldItem] of oldMap) {
+                    if (!newMap.has(key)) {
+                        diff.push({ type: 'removed', oldLine: oldItem.index + 1, content: oldItem.line });
+                    }
+                }
+                
+                return diff;
+            }
+
+            // 获取行key
+            static getLineKey(line, index) {
+                // 简化的key生成策略
+                return line.trim() || `line_${index}`;
+            }
+        }
+
+        // 性能测试数据
+        const performanceData = {
+            'basic': [],
+            'myers': [],
+            'hunt-mcilroy': [],
+            'patience': [],
+            'react': []
+        };
+
+        // 运行Diff算法
+        function runDiff() {
+            const oldText = document.getElementById('oldText').value;
+            const newText = document.getElementById('newText').value;
+            const algorithm = document.getElementById('algorithm').value;
+            
+            if (!oldText.trim() || !newText.trim()) {
+                showError('请输入原始文本和修改后文本');
+                return;
+            }
+            
+            showLoading(true);
+            
+            setTimeout(() => {
+                try {
+                    const startTime = performance.now();
+                    let diff;
+                    
+                    switch (algorithm) {
+                        case 'basic':
+                            diff = DiffAlgorithms.basicLCS(oldText, newText);
+                            break;
+                        case 'myers':
+                            diff = DiffAlgorithms.myersDiff(oldText, newText);
+                            break;
+                        case 'hunt-mcilroy':
+                            diff = DiffAlgorithms.huntMcIlroy(oldText, newText);
+                            break;
+                        case 'patience':
+                            diff = DiffAlgorithms.patienceDiff(oldText, newText);
+                            break;
+                        case 'react':
+                            diff = DiffAlgorithms.reactDiff(oldText, newText);
+                            break;
+                        default:
+                            throw new Error('未知的算法类型');
+                    }
+                    
+                    const endTime = performance.now();
+                    const executionTime = endTime - startTime;
+                    
+                    // 记录性能数据
+                    performanceData[algorithm].push(executionTime);
+                    
+                    // 显示结果
+                    displayResults(diff, executionTime, algorithm);
+                    showLoading(false);
+                    
+                } catch (error) {
+                    showError('算法执行失败: ' + error.message);
+                    showLoading(false);
+                }
+            }, 100);
+        }
+
+        // 显示结果
+        function displayResults(diff, executionTime, algorithm) {
+            // 计算统计信息
+            const stats = {
+                total: diff.length,
+                added: diff.filter(d => d.type === 'added').length,
+                removed: diff.filter(d => d.type === 'removed').length,
+                unchanged: diff.filter(d => d.type === 'unchanged').length,
+                executionTime: executionTime.toFixed(2)
+            };
+            
+            // 显示统计信息
+            displayStats(stats);
+            
+            // 显示差异
+            displayDiff(diff);
+            
+            // 显示结果区域
+            document.getElementById('results').style.display = 'block';
+            
+            // 滚动到结果区域
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 显示统计信息
+        function displayStats(stats) {
+            const statsContainer = document.getElementById('stats');
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <h3>${stats.total}</h3>
+                    <p>总行数</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.added}</h3>
+                    <p>新增行</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.removed}</h3>
+                    <p>删除行</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.unchanged}</h3>
+                    <p>未改变行</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.executionTime}ms</h3>
+                    <p>执行时间</p>
+                </div>
+            `;
+        }
+
+        // 显示差异
+        function displayDiff(diff) {
+            const oldContent = document.getElementById('diffOldContent');
+            const newContent = document.getElementById('diffNewContent');
+            
+            let oldHTML = '';
+            let newHTML = '';
+            let oldLineNum = 1;
+            let newLineNum = 1;
+            
+            diff.forEach(item => {
+                const lineClass = item.type === 'added' ? 'added' : 
+                                 item.type === 'removed' ? 'removed' : 'unchanged';
+                
+                if (item.type === 'added') {
+                    oldHTML += `<div class="diff-line ${lineClass}"></div>`;
+                    newHTML += `<div class="diff-line ${lineClass}">
+                        <span class="diff-line-number">${newLineNum}</span>
+                        <span class="diff-content">${escapeHtml(item.content)}</span>
+                    </div>`;
+                    newLineNum++;
+                } else if (item.type === 'removed') {
+                    oldHTML += `<div class="diff-line ${lineClass}">
+                        <span class="diff-line-number">${oldLineNum}</span>
+                        <span class="diff-content">${escapeHtml(item.content)}</span>
+                    </div>`;
+                    newHTML += `<div class="diff-line ${lineClass}"></div>`;
+                    oldLineNum++;
+                } else {
+                    oldHTML += `<div class="diff-line ${lineClass}">
+                        <span class="diff-line-number">${oldLineNum}</span>
+                        <span class="diff-content">${escapeHtml(item.content)}</span>
+                    </div>`;
+                    newHTML += `<div class="diff-line ${lineClass}">
+                        <span class="diff-line-number">${newLineNum}</span>
+                        <span class="diff-content">${escapeHtml(item.content)}</span>
+                    </div>`;
+                    oldLineNum++;
+                    newLineNum++;
+                }
+            });
+            
+            oldContent.innerHTML = oldHTML;
+            newContent.innerHTML = newHTML;
+        }
+
+        // 转义HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 显示加载状态
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            if (show) {
+                loading.classList.add('show');
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const results = document.getElementById('results');
+            results.innerHTML = `<div class="error">${message}</div>`;
+            results.style.display = 'block';
+        }
+
+        // 清除结果
+        function clearResults() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('oldText').value = '';
+            document.getElementById('newText').value = '';
+        }
+
+        // 加载示例
+        function loadSample() {
+            document.getElementById('oldText').value = `function calculateSum(a, b) {
+    const result = a + b;
+    console.log("Sum:", result);
+    return result;
+}`;
+            
+            document.getElementById('newText').value = `function calculateSum(a, b) {
+    // 添加输入验证
+    if (typeof a !== 'number' || typeof b !== 'number') {
+        throw new Error("参数必须是数字");
+    }
+    
+    const result = a + b;
+    console.log("Sum:", result);
+    return result;
+}`;
+        }
+
+        // 运行性能测试
+        function runPerformanceTest() {
+            const algorithms = ['basic', 'myers', 'hunt-mcilroy', 'patience', 'react'];
+            const testData = {
+                old: 'This is a test string for performance testing. It contains multiple lines and should be long enough to show performance differences.',
+                new: 'This is a modified test string for performance testing. It contains multiple lines and should be long enough to show performance differences. Added some new content.'
+            };
+            
+            showLoading(true);
+            
+            setTimeout(() => {
+                const results = {};
+                
+                algorithms.forEach(algorithm => {
+                    const times = [];
+                    for (let i = 0; i < 10; i++) {
+                        const startTime = performance.now();
+                        
+                        switch (algorithm) {
+                            case 'basic':
+                                DiffAlgorithms.basicLCS(testData.old, testData.new);
+                                break;
+                            case 'myers':
+                                DiffAlgorithms.myersDiff(testData.old, testData.new);
+                                break;
+                            case 'hunt-mcilroy':
+                                DiffAlgorithms.huntMcIlroy(testData.old, testData.new);
+                                break;
+                            case 'patience':
+                                DiffAlgorithms.patienceDiff(testData.old, testData.new);
+                                break;
+                            case 'react':
+                                DiffAlgorithms.reactDiff(testData.old, testData.new);
+                                break;
+                        }
+                        
+                        const endTime = performance.now();
+                        times.push(endTime - startTime);
+                    }
+                    
+                    results[algorithm] = times.reduce((a, b) => a + b, 0) / times.length;
+                });
+                
+                displayPerformanceChart(results);
+                showLoading(false);
+            }, 100);
+        }
+
+        // 显示性能图表
+        function displayPerformanceChart(results) {
+            const chartContainer = document.getElementById('performanceChart');
+            const maxTime = Math.max(...Object.values(results));
+            
+            let chartHTML = '';
+            Object.entries(results).forEach(([algorithm, time]) => {
+                const height = (time / maxTime) * 150;
+                chartHTML += `
+                    <div class="chart-bar" style="height: ${height}px; width: 60px;" title="${algorithm}: ${time.toFixed(2)}ms">
+                        <div style="writing-mode: vertical-rl; text-orientation: mixed; font-size: 12px; margin-top: 5px;">
+                            ${algorithm}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            chartContainer.innerHTML = chartHTML;
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置默认示例
+            loadSample();
+            
+            // 绑定事件监听器
+            document.getElementById('oldText').addEventListener('input', function() {
+                // 可以添加实时预览功能
+            });
+            
+            document.getElementById('newText').addEventListener('input', function() {
+                // 可以添加实时预览功能
+            });
+        });
+    </script>
+</body>
+</html>
