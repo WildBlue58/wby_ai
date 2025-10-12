@@ -1,9 +1,11 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-// CORS Policy 同源策略
-// Cross-Origin Resource Sharing Policy
+import HelloWorld from './components/HelloWorld.vue'
+// CORS policy
+// Cross-Origin Resource Sharing policy。
 async function fetchUser() {
-  const res = await fetch("http://localhost:3000/api/user");
+  // 前端知道访问的地址和域名
+  // 委托vite 工程化 帮解决下
+  const res = await fetch('/api/user');
   const data = await res.json();
   console.log(data);
 }
@@ -13,7 +15,7 @@ fetchUser();
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
+    <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
