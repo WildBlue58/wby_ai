@@ -1,6 +1,7 @@
-# Typescript 
+# Typescript
 
 ## 为什么不用ts?
+
     第一个项目专注于react 全家桶和组件开发，还没有使用，但是能搞定常见react +ts 开发。
 
     next.js + ts 
@@ -12,6 +13,7 @@
 复用性。
 
 ## type 和 interface 区别
+
 在ts 中， interface 和 type 都能用来描述对象的结构。
 本质上很多场景可以互换，但有一些关键区别。
 
