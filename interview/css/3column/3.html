@@ -1,63 +1,624 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>圣杯布局</title>
+    <title>圣杯布局 - 三栏布局演示</title>
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-      .container {
-        padding: 0 200px;
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
       }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* 圣杯布局核心样式 */
+      .holy-grail-container {
+        padding: 0 250px;
+        min-height: 500px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      /* 主内容区域 */
       .content {
         float: left;
         width: 100%;
         background: white;
-        padding: 20px;
+        padding: 30px;
+        min-height: 500px;
       }
+
+      /* 左侧边栏 */
       .left {
         float: left;
         position: relative;
         left: -200px;
-        background-color: pink;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
         margin-left: -100%;
         width: 200px;
-        padding: 20px;
-        top: 0;
+        padding: 30px 20px;
+        min-height: 500px;
       }
+
+      /* 右侧边栏 */
       .right {
         float: left;
-        width: 200px;
-        margin-left: -200px;
+        width: 250px;
+        margin-left: -250px;
         position: relative;
-        right: -200px;
-        background: yellow;
+        right: -250px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 30px 20px;
+        min-height: 500px;
+      }
+
+      /* 清除浮动 */
+      .holy-grail-container::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      /* 内容样式 */
+      .content h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+      }
+
+      .content p {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.1rem;
+      }
+
+      .card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+      }
+
+      .sidebar h3 {
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .sidebar ul {
+        list-style: none;
+      }
+
+      .sidebar li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .sidebar li:last-child {
+        border-bottom: none;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        color: #ffd700;
+      }
+
+      /* 交互效果 */
+      .toggle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .holy-grail-container {
+          padding: 0;
+        }
+
+        .content {
+          float: none;
+          width: 100%;
+          padding: 20px;
+        }
+
+        .left,
+        .right {
+          float: none;
+          width: 100%;
+          position: static;
+          left: auto;
+          right: auto;
+          margin: 0;
+          min-height: auto;
+        }
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem 0;
+        text-align: center;
+        color: #7f8c8d;
+      }
+
+      .tech-info {
+        background: #e8f4f8;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #3498db;
+      }
+
+      .tech-info h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .tech-info code {
+        background: #f1f2f6;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      .holy-grail-demo {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .holy-grail-demo h4 {
+        color: #856404;
+        margin-bottom: 15px;
+      }
+
+      .demo-container {
+        position: relative;
+        background: #f8f9fa;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        min-height: 200px;
+      }
+
+      .demo-main {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 0 200px;
+        border: 1px solid #dee2e6;
+      }
+
+      .demo-left {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        background: #667eea;
+        color: white;
+        padding: 15px;
+        border-radius: 5px 0 0 5px;
+      }
+
+      .demo-right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        background: #dc3545;
+        color: white;
+        padding: 15px;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .comparison-table th {
+        background: #667eea;
+        color: white;
+        font-weight: 600;
+      }
+
+      .comparison-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      .advantages {
+        background: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .advantages h4 {
+        color: #0c5460;
+        margin-bottom: 15px;
+      }
+
+      .advantages ul {
+        margin-left: 20px;
+      }
+
+      .advantages li {
+        margin-bottom: 8px;
+        color: #0c5460;
+      }
+
+      .disadvantages {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .disadvantages h4 {
+        color: #721c24;
+        margin-bottom: 15px;
+      }
+
+      .disadvantages ul {
+        margin-left: 20px;
+      }
+
+      .disadvantages li {
+        margin-bottom: 8px;
+        color: #721c24;
       }
     </style>
   </head>
   <body>
+    <header class="header">
+      <h1>圣杯布局</h1>
+      <p>Holy Grail Layout - 经典三栏布局的经典实现方案</p>
+    </header>
+
     <div class="container">
-      <main class="content">
-        <h1>主内容区域</h1>
-        <p>这是主内容区域的段落。</p>
-      </main>
-      <aside class="left">
-        <h3>左侧菜单</h3>
-        <ul>
-          <li>首页</li>
-          <li>关于</li>
-          <li>联系</li>
-        </ul>
-      </aside>
-      <aside class="right">
-        <h3>右侧菜单</h3>
-        <p>这是右侧菜单的段落。</p>
-      </aside>
+      <div class="holy-grail-container">
+        <!-- 主内容区域 -->
+        <main class="content">
+          <h2>圣杯布局原理</h2>
+          <p>
+            圣杯布局（Holy Grail
+            Layout）是经典的三栏布局实现方案，通过浮动和负边距技术实现。这种布局方式的最大特点是主内容区域优先渲染，有利于SEO优化，同时兼容性极佳。
+          </p>
+
+          <div class="card">
+            <h3>核心特点</h3>
+            <ul>
+              <li>主内容区域优先渲染，有利于SEO</li>
+              <li>使用浮动和负边距技术</li>
+              <li>兼容性极佳，支持所有浏览器</li>
+              <li>经典的三栏布局实现方案</li>
+            </ul>
+          </div>
+
+          <div class="tech-info">
+            <h4>关键技术点</h4>
+            <p>
+              <strong>容器：</strong
+              ><code>padding: 0 250px;</code>为侧边栏留出空间
+            </p>
+            <p>
+              <strong>主内容：</strong><code>float: left; width: 100%;</code>
+            </p>
+            <p>
+              <strong>左侧边栏：</strong
+              ><code>margin-left: -100%; left: -200px;</code>
+            </p>
+            <p>
+              <strong>右侧边栏：</strong
+              ><code>margin-left: -250px; right: -250px;</code>
+            </p>
+          </div>
+
+          <div class="holy-grail-demo">
+            <h4>圣杯布局演示</h4>
+            <p>下面的演示展示了圣杯布局的核心结构，主内容区域优先渲染：</p>
+            <div class="demo-container">
+              <div class="demo-main">
+                <h5>主内容区域</h5>
+                <p>这是主内容，优先渲染</p>
+              </div>
+              <div class="demo-left">
+                <h5>左侧栏</h5>
+                <p>通过负边距定位</p>
+              </div>
+              <div class="demo-right">
+                <h5>右侧栏</h5>
+                <p>通过负边距定位</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="advantages">
+            <h4>圣杯布局的优势</h4>
+            <ul>
+              <li>
+                <strong>SEO友好：</strong>主内容区域优先渲染，有利于搜索引擎优化
+              </li>
+              <li><strong>兼容性好：</strong>支持所有浏览器，包括老版本IE</li>
+              <li><strong>经典方案：</strong>经过时间验证的可靠布局方法</li>
+              <li><strong>理解简单：</strong>布局原理清晰，易于理解和维护</li>
+            </ul>
+          </div>
+
+          <div class="disadvantages">
+            <h4>圣杯布局的局限性</h4>
+            <ul>
+              <li><strong>代码复杂：</strong>需要精确的负边距计算</li>
+              <li><strong>维护困难：</strong>修改布局需要重新计算边距</li>
+              <li><strong>响应式复杂：</strong>移动端适配需要额外处理</li>
+              <li><strong>现代替代：</strong>已被Flexbox和Grid替代</li>
+            </ul>
+          </div>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>技术点</th>
+                <th>实现方式</th>
+                <th>作用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>容器padding</td>
+                <td>padding: 0 250px</td>
+                <td>为侧边栏留出空间</td>
+              </tr>
+              <tr>
+                <td>主内容浮动</td>
+                <td>float: left; width: 100%</td>
+                <td>占据整行宽度</td>
+              </tr>
+              <tr>
+                <td>左侧负边距</td>
+                <td>margin-left: -100%</td>
+                <td>移动到主内容左侧</td>
+              </tr>
+              <tr>
+                <td>左侧相对定位</td>
+                <td>left: -200px</td>
+                <td>精确定位到容器边缘</td>
+              </tr>
+              <tr>
+                <td>右侧负边距</td>
+                <td>margin-left: -250px</td>
+                <td>移动到主内容右侧</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            圣杯布局虽然在现代Web开发中已经很少使用，但理解其原理对于掌握CSS布局的发展历程仍然很有价值。它是CSS布局技术发展过程中的重要里程碑。
+          </p>
+        </main>
+
+        <!-- 左侧边栏 -->
+        <aside class="left">
+          <button class="toggle-btn" onclick="toggleSidebar('left')">
+            收起侧边栏
+          </button>
+          <h3>经典布局</h3>
+          <ul>
+            <li><a href="#holy-grail">圣杯布局</a></li>
+            <li><a href="#double-wing">双飞翼布局</a></li>
+            <li><a href="#float-layout">浮动布局</a></li>
+            <li><a href="#position-layout">定位布局</a></li>
+            <li><a href="#table-layout">表格布局</a></li>
+            <li><a href="#flexbox">Flexbox布局</a></li>
+          </ul>
+
+          <h3 style="margin-top: 30px">历史发展</h3>
+          <ul>
+            <li><a href="#css1">CSS1 时代</a></li>
+            <li><a href="#css2">CSS2 时代</a></li>
+            <li><a href="#css3">CSS3 时代</a></li>
+            <li><a href="#modern">现代布局</a></li>
+          </ul>
+        </aside>
+
+        <!-- 右侧边栏 -->
+        <aside class="right">
+          <button class="toggle-btn" onclick="toggleSidebar('right')">
+            收起侧边栏
+          </button>
+          <h3>布局统计</h3>
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">使用年代</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9">2000-2015年</p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">浏览器支持</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9">IE6+ 完美支持</p>
+          </div>
+
+          <h3 style="margin-top: 30px">学习价值</h3>
+          <ul>
+            <li><a href="#css-history">CSS发展史</a></li>
+            <li><a href="#layout-evolution">布局演进</a></li>
+            <li><a href="#compatibility">兼容性处理</a></li>
+            <li><a href="#modern-alternatives">现代替代方案</a></li>
+          </ul>
+
+          <h3 style="margin-top: 30px">经典案例</h3>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 15px;
+            "
+          >
+            <p style="font-size: 0.9rem; margin-bottom: 10px">早期门户网站</p>
+            <p style="font-size: 0.8rem; opacity: 0.8">
+              新浪、搜狐等早期门户网站大量使用圣杯布局
+            </p>
+            <small style="opacity: 0.7">历史意义: ⭐⭐⭐⭐⭐</small>
+          </div>
+        </aside>
+      </div>
     </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 三栏布局演示 - 圣杯布局实现</p>
+    </footer>
+
+    <script>
+      function toggleSidebar(side) {
+        const sidebar = document.querySelector(`.${side}`);
+        const btn = sidebar.querySelector(".toggle-btn");
+
+        if (sidebar.style.display === "none") {
+          sidebar.style.display = "block";
+          btn.textContent = "收起侧边栏";
+        } else {
+          sidebar.style.display = "none";
+          btn.textContent = "展开侧边栏";
+        }
+      }
+
+      // 添加页面加载动画
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector(".holy-grail-container");
+        container.style.opacity = "0";
+        container.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+          container.style.transition = "all 0.6s ease";
+          container.style.opacity = "1";
+          container.style.transform = "translateY(0)";
+        }, 100);
+
+        // 添加圣杯布局演示动画
+        const demoElements = document.querySelectorAll(
+          ".demo-main, .demo-left, .demo-right"
+        );
+        demoElements.forEach((element, index) => {
+          element.style.transform = "scale(0.8)";
+          element.style.opacity = "0";
+          setTimeout(() => {
+            element.style.transition = "all 0.5s ease";
+            element.style.transform = "scale(1)";
+            element.style.opacity = "1";
+          }, 300 + index * 200);
+        });
+      });
+
+      // 添加圣杯布局原理演示
+      function demonstrateHolyGrail() {
+        const demoContainer = document.querySelector(".demo-container");
+        const demoMain = document.querySelector(".demo-main");
+        const demoLeft = document.querySelector(".demo-left");
+        const demoRight = document.querySelector(".demo-right");
+
+        // 演示负边距效果
+        setTimeout(() => {
+          demoLeft.style.animation = "slideIn 2s ease-in-out";
+          demoRight.style.animation = "slideIn 2s ease-in-out 0.5s";
+        }, 2000);
+      }
+
+      // 添加滑入动画
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes slideIn {
+                0% { 
+                    transform: translateX(-100%);
+                    opacity: 0;
+                }
+                50% { 
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                100% { 
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+      document.head.appendChild(style);
+
+      // 页面加载后开始演示
+      setTimeout(demonstrateHolyGrail, 2000);
+    </script>
   </body>
 </html>

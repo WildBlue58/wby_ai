@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>绝对定位布局 - 三栏布局演示</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(
+          135deg,
+          #ff9a9e 0%,
+          #fecfef 50%,
+          #fecfef 100%
+        );
+        min-height: 100vh;
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* 绝对定位布局核心样式 */
+      .layout {
+        position: relative;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        min-height: 600px;
+      }
+
+      /* 主内容区域 */
+      .main-content {
+        margin: 0 300px; /* 为左右侧边栏留出空间 */
+        padding: 30px;
+        background: white;
+        min-height: 600px;
+      }
+
+      /* 左侧边栏 - 绝对定位 */
+      .left-sidebar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px 20px;
+        z-index: 10;
+      }
+
+      /* 右侧边栏 - 绝对定位 */
+      .right-sidebar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 30px 20px;
+        z-index: 10;
+      }
+
+      /* 内容样式 */
+      .main-content h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+      }
+
+      .main-content p {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.1rem;
+      }
+
+      .card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+      }
+
+      .sidebar h3 {
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .sidebar ul {
+        list-style: none;
+      }
+
+      .sidebar li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .sidebar li:last-child {
+        border-bottom: none;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        color: #ffd700;
+      }
+
+      /* 交互效果 */
+      .toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 20;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      /* 侧边栏隐藏状态 */
+      .sidebar.hidden {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .right-sidebar.hidden {
+        transform: translateX(100%);
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .main-content {
+          margin: 0;
+          padding: 20px;
+        }
+
+        .left-sidebar,
+        .right-sidebar {
+          position: fixed;
+          top: 0;
+          height: 100vh;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          z-index: 1000;
+        }
+
+        .right-sidebar {
+          left: auto;
+          right: 0;
+          transform: translateX(100%);
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          display: none;
+        }
+
+        .overlay.show {
+          display: block;
+        }
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem 0;
+        text-align: center;
+        color: #7f8c8d;
+      }
+
+      .tech-info {
+        background: #e8f4f8;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #3498db;
+      }
+
+      .tech-info h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .tech-info code {
+        background: #f1f2f6;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .feature-item {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #e74c3c;
+      }
+
+      .feature-item h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      /* 移动端菜单按钮 */
+      .mobile-menu-btn {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>绝对定位布局</h1>
+      <p>Absolute Position Layout - 固定侧边栏的三栏布局方案</p>
+    </header>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">菜单</button>
+    <div class="overlay" id="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="container">
+      <div class="layout">
+        <!-- 主内容区域 -->
+        <main class="main-content">
+          <h2>绝对定位布局原理</h2>
+          <p>
+            绝对定位布局通过将左右侧边栏设置为<code>position: absolute</code
+            >来实现三栏布局。这种布局方式特别适合需要固定侧边栏的场景，如管理后台、文档网站等。
+          </p>
+
+          <div class="card">
+            <h3>核心特点</h3>
+            <ul>
+              <li>侧边栏固定在视口边缘，不随内容滚动</li>
+              <li>主内容区域通过margin为侧边栏留出空间</li>
+              <li>实现简单，代码量少</li>
+              <li>适合固定导航和工具栏场景</li>
+            </ul>
+          </div>
+
+          <div class="tech-info">
+            <h4>关键技术点</h4>
+            <p>
+              <strong>左侧边栏：</strong
+              ><code>position: absolute; left: 0; top: 0;</code>
+            </p>
+            <p>
+              <strong>右侧边栏：</strong
+              ><code>position: absolute; right: 0; top: 0;</code>
+            </p>
+            <p>
+              <strong>主内容区域：</strong
+              ><code>margin: 0 300px;</code>为侧边栏留出空间
+            </p>
+            <p>
+              <strong>容器：</strong
+              ><code>position: relative;</code>为绝对定位提供参考
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-item">
+              <h4>优势</h4>
+              <ul>
+                <li>实现简单直观</li>
+                <li>侧边栏固定不滚动</li>
+                <li>适合管理后台</li>
+                <li>性能表现良好</li>
+              </ul>
+            </div>
+            <div class="feature-item">
+              <h4>注意事项</h4>
+              <ul>
+                <li>需要精确计算宽度</li>
+                <li>移动端适配复杂</li>
+                <li>内容可能被遮挡</li>
+                <li>需要处理z-index层级</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            这种布局方式在管理后台、文档系统、代码编辑器等需要固定工具栏的应用中非常常见。通过合理的响应式设计，可以在移动端提供良好的用户体验。
+          </p>
+        </main>
+
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+          <button class="toggle-btn" onclick="toggleSidebar('left')">
+            收起
+          </button>
+          <h3>主导航</h3>
+          <ul>
+            <li><a href="#dashboard">仪表盘</a></li>
+            <li><a href="#users">用户管理</a></li>
+            <li><a href="#content">内容管理</a></li>
+            <li><a href="#analytics">数据分析</a></li>
+            <li><a href="#settings">系统设置</a></li>
+            <li><a href="#reports">报表中心</a></li>
+          </ul>
+
+          <h3 style="margin-top: 30px">快捷操作</h3>
+          <ul>
+            <li><a href="#new-post">新建文章</a></li>
+            <li><a href="#upload">文件上传</a></li>
+            <li><a href="#backup">数据备份</a></li>
+          </ul>
+        </aside>
+
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+          <button class="toggle-btn" onclick="toggleSidebar('right')">
+            收起
+          </button>
+          <h3>系统信息</h3>
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">服务器状态</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9">运行正常 ✓</p>
+            <p style="font-size: 0.9rem; opacity: 0.9">CPU: 45%</p>
+            <p style="font-size: 0.9rem; opacity: 0.9">内存: 2.1GB/8GB</p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">最近活动</h4>
+            <p style="font-size: 0.9rem; opacity: 0.9">用户登录: 5分钟前</p>
+            <p style="font-size: 0.9rem; opacity: 0.9">文件上传: 10分钟前</p>
+            <p style="font-size: 0.9rem; opacity: 0.9">数据备份: 1小时前</p>
+          </div>
+
+          <h3 style="margin-top: 30px">通知中心</h3>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 15px;
+            "
+          >
+            <p style="font-size: 0.9rem; margin-bottom: 10px">系统维护通知</p>
+            <p style="font-size: 0.8rem; opacity: 0.8">
+              计划于今晚22:00进行系统维护，预计持续2小时。
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 三栏布局演示 - 绝对定位布局实现</p>
+    </footer>
+
+    <script>
+      function toggleSidebar(side) {
+        const sidebar = document.querySelector(`.${side}-sidebar`);
+        const btn = sidebar.querySelector(".toggle-btn");
+
+        if (sidebar.classList.contains("hidden")) {
+          sidebar.classList.remove("hidden");
+          btn.textContent = "收起";
+        } else {
+          sidebar.classList.add("hidden");
+          btn.textContent = "展开";
+        }
+      }
+
+      function toggleMobileMenu() {
+        const leftSidebar = document.querySelector(".left-sidebar");
+        const overlay = document.getElementById("overlay");
+
+        leftSidebar.classList.toggle("show");
+        overlay.classList.toggle("show");
+      }
+
+      function closeMobileMenu() {
+        const leftSidebar = document.querySelector(".left-sidebar");
+        const rightSidebar = document.querySelector(".right-sidebar");
+        const overlay = document.getElementById("overlay");
+
+        leftSidebar.classList.remove("show");
+        rightSidebar.classList.remove("show");
+        overlay.classList.remove("show");
+      }
+
+      // 添加页面加载动画
+      document.addEventListener("DOMContentLoaded", function () {
+        const layout = document.querySelector(".layout");
+        layout.style.opacity = "0";
+        layout.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+          layout.style.transition = "all 0.6s ease";
+          layout.style.opacity = "1";
+          layout.style.transform = "translateY(0)";
+        }, 100);
+
+        // 添加侧边栏滑入动画
+        const sidebars = document.querySelectorAll(
+          ".left-sidebar, .right-sidebar"
+        );
+        sidebars.forEach((sidebar, index) => {
+          sidebar.style.transform = "translateX(-100%)";
+          setTimeout(() => {
+            sidebar.style.transition = "transform 0.5s ease";
+            sidebar.style.transform = "translateX(0)";
+          }, 200 + index * 100);
+        });
+      });
+
+      // 键盘快捷键支持
+      document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey && e.key === "b") {
+          e.preventDefault();
+          toggleSidebar("left");
+        }
+        if (e.ctrlKey && e.key === "n") {
+          e.preventDefault();
+          toggleSidebar("right");
+        }
+      });
+    </script>
+  </body>
+</html>

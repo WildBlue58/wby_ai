@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table布局 - 三栏布局演示</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        min-height: 100vh;
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Table布局核心样式 */
+      .layout {
+        display: table;
+        width: 100%;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        min-height: 500px;
+      }
+
+      /* 左侧边栏 - table-cell */
+      .left-sidebar {
+        display: table-cell;
+        width: 200px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px 20px;
+        vertical-align: top;
+      }
+
+      /* 主内容区域 - table-cell */
+      .main-content {
+        display: table-cell;
+        width: auto;
+        padding: 30px;
+        background: white;
+        vertical-align: top;
+      }
+
+      /* 右侧边栏 - table-cell */
+      .right-sidebar {
+        display: table-cell;
+        width: 250px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 30px 20px;
+        vertical-align: top;
+      }
+
+      /* 内容样式 */
+      .main-content h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+      }
+
+      .main-content p {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.1rem;
+      }
+
+      .card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+      }
+
+      .sidebar h3 {
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .sidebar ul {
+        list-style: none;
+      }
+
+      .sidebar li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .sidebar li:last-child {
+        border-bottom: none;
+      }
+
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        color: #ffd700;
+      }
+
+      /* 交互效果 */
+      .toggle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .layout {
+          display: block;
+        }
+
+        .left-sidebar,
+        .right-sidebar,
+        .main-content {
+          display: block;
+          width: 100%;
+        }
+
+        .left-sidebar {
+          order: 2;
+        }
+
+        .right-sidebar {
+          order: 3;
+        }
+
+        .main-content {
+          order: 1;
+        }
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem 0;
+        text-align: center;
+        color: #7f8c8d;
+      }
+
+      .tech-info {
+        background: #e8f4f8;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #3498db;
+      }
+
+      .tech-info h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .tech-info code {
+        background: #f1f2f6;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+        color: #e74c3c;
+      }
+
+      .table-demo {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .table-demo h4 {
+        color: #856404;
+        margin-bottom: 15px;
+      }
+
+      .table-examples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .table-example {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+      }
+
+      .table-example h5 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .table-example code {
+        background: #e9ecef;
+        padding: 8px 12px;
+        border-radius: 4px;
+        display: block;
+        margin: 10px 0;
+        font-family: "Courier New", monospace;
+        color: #e74c3c;
+      }
+
+      .table-example .result {
+        background: #d4edda;
+        color: #155724;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .comparison-table th {
+        background: #667eea;
+        color: white;
+        font-weight: 600;
+      }
+
+      .comparison-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      .advantages {
+        background: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .advantages h4 {
+        color: #0c5460;
+        margin-bottom: 15px;
+      }
+
+      .advantages ul {
+        margin-left: 20px;
+      }
+
+      .advantages li {
+        margin-bottom: 8px;
+        color: #0c5460;
+      }
+
+      .disadvantages {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .disadvantages h4 {
+        color: #721c24;
+        margin-bottom: 15px;
+      }
+
+      .disadvantages ul {
+        margin-left: 20px;
+      }
+
+      .disadvantages li {
+        margin-bottom: 8px;
+        color: #721c24;
+      }
+
+      /* 等高列演示 */
+      .equal-height-demo {
+        background: #e2e3e5;
+        border: 2px solid #6c757d;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .equal-height-demo h4 {
+        color: #495057;
+        margin-bottom: 15px;
+      }
+
+      .demo-layout {
+        display: table;
+        width: 100%;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .demo-cell {
+        display: table-cell;
+        width: 33.33%;
+        padding: 20px;
+        vertical-align: top;
+      }
+
+      .demo-cell:nth-child(1) {
+        background: #007bff;
+        color: white;
+      }
+
+      .demo-cell:nth-child(2) {
+        background: #28a745;
+        color: white;
+      }
+
+      .demo-cell:nth-child(3) {
+        background: #dc3545;
+        color: white;
+      }
+
+      .demo-cell h5 {
+        margin-bottom: 10px;
+      }
+
+      .demo-cell p {
+        margin-bottom: 10px;
+      }
+
+      .demo-cell ul {
+        margin-left: 20px;
+      }
+
+      .demo-cell li {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Table布局</h1>
+      <p>CSS Table Layout - 等高列的三栏布局方案</p>
+    </header>
+
+    <div class="container">
+      <div class="layout">
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+          <button class="toggle-btn" onclick="toggleSidebar('left')">
+            收起侧边栏
+          </button>
+          <h3>数据表格</h3>
+          <ul>
+            <li><a href="#users">用户数据</a></li>
+            <li><a href="#orders">订单信息</a></li>
+            <li><a href="#products">产品列表</a></li>
+            <li><a href="#inventory">库存管理</a></li>
+            <li><a href="#reports">报表统计</a></li>
+            <li><a href="#analytics">数据分析</a></li>
+          </ul>
+
+          <h3 style="margin-top: 30px">表格操作</h3>
+          <ul>
+            <li><a href="#export">导出数据</a></li>
+            <li><a href="#import">导入数据</a></li>
+            <li><a href="#backup">数据备份</a></li>
+            <li><a href="#restore">数据恢复</a></li>
+          </ul>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+          <h2>CSS Table布局原理</h2>
+          <p>
+            CSS Table布局使用<code>display: table</code>、<code
+              >display: table-cell</code
+            >等属性来模拟HTML表格的布局行为。这种布局方式的最大优势是天然支持等高列，无需额外的CSS技巧。
+          </p>
+
+          <div class="card">
+            <h3>核心特点</h3>
+            <ul>
+              <li>天然支持等高列布局</li>
+              <li>兼容性极佳，支持所有浏览器</li>
+              <li>实现简单，代码量少</li>
+              <li>适合表格化数据展示</li>
+            </ul>
+          </div>
+
+          <div class="tech-info">
+            <h4>关键技术点</h4>
+            <p>
+              <strong>容器：</strong><code>display: table; width: 100%;</code>
+            </p>
+            <p>
+              <strong>列元素：</strong
+              ><code>display: table-cell; vertical-align: top;</code>
+            </p>
+            <p>
+              <strong>固定宽度：</strong
+              ><code>width: 200px;</code>设置侧边栏宽度
+            </p>
+            <p>
+              <strong>自适应宽度：</strong
+              >主内容区域不设置width，自动填充剩余空间
+            </p>
+          </div>
+
+          <div class="table-demo">
+            <h4>Table布局示例</h4>
+            <div class="table-examples">
+              <div class="table-example">
+                <h5>基础Table布局</h5>
+                <code>.container { display: table; }</code>
+                <code>.column { display: table-cell; }</code>
+                <div class="result">创建表格化布局结构</div>
+              </div>
+              <div class="table-example">
+                <h5>等高列效果</h5>
+                <code>vertical-align: top;</code>
+                <div class="result">所有列自动等高</div>
+              </div>
+              <div class="table-example">
+                <h5>固定宽度列</h5>
+                <code>width: 200px;</code>
+                <div class="result">侧边栏固定宽度</div>
+              </div>
+              <div class="table-example">
+                <h5>自适应列</h5>
+                <code>width: auto;</code>
+                <div class="result">主内容区域自适应</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="equal-height-demo">
+            <h4>等高列效果演示</h4>
+            <p>Table布局的天然优势 - 所有列自动等高：</p>
+            <div class="demo-layout">
+              <div class="demo-cell">
+                <h5>左侧列</h5>
+                <p>这是左侧列的内容。</p>
+                <p>Table布局会自动让所有列保持相同高度。</p>
+                <ul>
+                  <li>项目1</li>
+                  <li>项目2</li>
+                  <li>项目3</li>
+                </ul>
+              </div>
+              <div class="demo-cell">
+                <h5>中间列</h5>
+                <p>这是中间列的内容。</p>
+                <p>即使内容较少，列的高度也会保持一致。</p>
+              </div>
+              <div class="demo-cell">
+                <h5>右侧列</h5>
+                <p>这是右侧列的内容。</p>
+                <p>Table布局确保了所有列的视觉一致性。</p>
+                <p>这是额外的段落内容。</p>
+                <p>更多内容来展示等高效果。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="advantages">
+            <h4>Table布局的优势</h4>
+            <ul>
+              <li><strong>等高列：</strong>天然支持等高列，无需额外CSS</li>
+              <li><strong>兼容性：</strong>支持所有浏览器，包括IE6+</li>
+              <li><strong>简单实现：</strong>代码简洁，易于理解和维护</li>
+              <li><strong>稳定可靠：</strong>布局稳定，不会出现浮动问题</li>
+              <li><strong>适合表格：</strong>特别适合表格化数据的展示</li>
+            </ul>
+          </div>
+
+          <div class="disadvantages">
+            <h4>Table布局的局限性</h4>
+            <ul>
+              <li><strong>语义问题：</strong>使用div模拟表格，语义不够清晰</li>
+              <li><strong>灵活性差：</strong>不如Flexbox和Grid灵活</li>
+              <li><strong>响应式复杂：</strong>移动端适配需要额外处理</li>
+              <li><strong>现代替代：</strong>已被Flexbox和Grid替代</li>
+              <li><strong>性能考虑：</strong>在某些情况下性能不如现代布局</li>
+            </ul>
+          </div>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>布局方式</th>
+                <th>等高列</th>
+                <th>兼容性</th>
+                <th>灵活性</th>
+                <th>推荐度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Table布局</td>
+                <td>✓ 天然支持</td>
+                <td>✓ 极佳</td>
+                <td>✗ 较差</td>
+                <td>★★☆☆☆</td>
+              </tr>
+              <tr>
+                <td>Flexbox</td>
+                <td>✓ 支持</td>
+                <td>✓ 良好</td>
+                <td>✓ 很好</td>
+                <td>★★★★★</td>
+              </tr>
+              <tr>
+                <td>Grid</td>
+                <td>✓ 支持</td>
+                <td>✓ 良好</td>
+                <td>✓ 极佳</td>
+                <td>★★★★★</td>
+              </tr>
+              <tr>
+                <td>浮动布局</td>
+                <td>✗ 不支持</td>
+                <td>✓ 极佳</td>
+                <td>△ 一般</td>
+                <td>★★☆☆☆</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            虽然Table布局在现代Web开发中已经很少使用，但理解其原理对于掌握CSS布局的发展历程仍然很有价值。在某些特定的场景下，如需要极佳兼容性的老项目，Table布局仍然是一个可靠的选择。
+          </p>
+        </main>
+
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+          <button class="toggle-btn" onclick="toggleSidebar('right')">
+            收起侧边栏
+          </button>
+          <h3>表格统计</h3>
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">总记录数</h4>
+            <p style="font-size: 1.5rem; font-weight: bold; opacity: 0.9">
+              1,234
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <h4 style="font-size: 1rem; margin-bottom: 8px">今日新增</h4>
+            <p style="font-size: 1.2rem; font-weight: bold; opacity: 0.9">56</p>
+          </div>
+
+          <h3 style="margin-top: 30px">快速筛选</h3>
+          <ul>
+            <li><a href="#today">今日数据</a></li>
+            <li><a href="#week">本周数据</a></li>
+            <li><a href="#month">本月数据</a></li>
+            <li><a href="#year">年度数据</a></li>
+          </ul>
+
+          <h3 style="margin-top: 30px">操作日志</h3>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 15px;
+            "
+          >
+            <p style="font-size: 0.9rem; margin-bottom: 10px">数据导出</p>
+            <p style="font-size: 0.8rem; opacity: 0.8">成功导出1000条记录</p>
+            <small style="opacity: 0.7">2分钟前</small>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 三栏布局演示 - CSS Table布局实现</p>
+    </footer>
+
+    <script>
+      function toggleSidebar(side) {
+        const sidebar = document.querySelector(`.${side}-sidebar`);
+        const btn = sidebar.querySelector(".toggle-btn");
+
+        if (sidebar.style.display === "none") {
+          sidebar.style.display = "table-cell";
+          btn.textContent = "收起侧边栏";
+        } else {
+          sidebar.style.display = "none";
+          btn.textContent = "展开侧边栏";
+        }
+      }
+
+      // 添加页面加载动画
+      document.addEventListener("DOMContentLoaded", function () {
+        const layout = document.querySelector(".layout");
+        layout.style.opacity = "0";
+        layout.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+          layout.style.transition = "all 0.6s ease";
+          layout.style.opacity = "1";
+          layout.style.transform = "translateY(0)";
+        }, 100);
+
+        // 添加表格单元格动画
+        const cells = document.querySelectorAll(
+          ".left-sidebar, .main-content, .right-sidebar"
+        );
+        cells.forEach((cell, index) => {
+          cell.style.transform = "translateY(20px)";
+          cell.style.opacity = "0";
+          setTimeout(() => {
+            cell.style.transition = "all 0.5s ease";
+            cell.style.transform = "translateY(0)";
+            cell.style.opacity = "1";
+          }, 200 + index * 150);
+        });
+
+        // 演示等高效果
+        setTimeout(() => {
+          const demoCells = document.querySelectorAll(".demo-cell");
+          demoCells.forEach((cell) => {
+            cell.style.animation = "highlight 2s ease-in-out";
+          });
+        }, 1000);
+      });
+
+      // 添加高亮动画
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes highlight {
+                0%, 100% { 
+                    transform: scale(1);
+                    box-shadow: 0 0 0 rgba(0,123,255,0.4);
+                }
+                50% { 
+                    transform: scale(1.02);
+                    box-shadow: 0 0 20px rgba(0,123,255,0.6);
+                }
+            }
+        `;
+      document.head.appendChild(style);
+
+      // 动态更新统计数字
+      function updateStats() {
+        const totalRecords = document.querySelector(".right-sidebar h4 + p");
+        const todayNew = document.querySelector(
+          ".right-sidebar h4 + p + div h4 + p"
+        );
+
+        if (totalRecords && todayNew) {
+          let total = 1234;
+          let today = 56;
+
+          setInterval(() => {
+            total += Math.floor(Math.random() * 3);
+            today += Math.floor(Math.random() * 2);
+
+            totalRecords.textContent = total.toLocaleString();
+            todayNew.textContent = today;
+          }, 5000);
+        }
+      }
+
+      // 页面加载后开始更新统计
+      setTimeout(updateStats, 2000);
+    </script>
+  </body>
+</html>
