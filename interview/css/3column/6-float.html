@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浮动布局 - 三栏布局演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 浮动布局核心样式 */
+        .layout {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        /* 左侧边栏 - 左浮动 */
+        .left-sidebar {
+            float: left;
+            width: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            min-height: 500px;
+        }
+
+        /* 右侧边栏 - 右浮动 */
+        .right-sidebar {
+            float: right;
+            width: 250px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px 20px;
+            min-height: 500px;
+        }
+
+        /* 主内容区域 - 使用margin避免被浮动元素覆盖 */
+        .main-content {
+            margin: 0 270px 0 230px; /* 左右margin为侧边栏宽度 + 间距 */
+            padding: 30px;
+            background: white;
+            min-height: 500px;
+        }
+
+        /* 清除浮动 - 关键点 */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* 内容样式 */
+        .main-content h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .main-content p {
+            margin-bottom: 1rem;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar li:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            color: #ffd700;
+        }
+
+        /* 交互效果 */
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .left-sidebar,
+            .right-sidebar {
+                float: none;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main-content {
+                margin: 0;
+                padding: 20px;
+            }
+
+            .layout {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 0;
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .tech-info {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .tech-info h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .tech-info code {
+            background: #f1f2f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .float-demo {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .float-demo h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .float-demo p {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .float-demo code {
+            background: #f1f2f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        /* 浮动元素演示 */
+        .float-example {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px dashed #3498db;
+        }
+
+        .float-box {
+            width: 100px;
+            height: 100px;
+            background: #e74c3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            border-radius: 8px;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .clear-demo {
+            clear: both;
+            background: #2ecc71;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>浮动布局</h1>
+        <p>Float Layout - 传统三栏布局实现方案</p>
+    </header>
+
+    <div class="container">
+        <div class="layout clearfix">
+            <!-- 左侧边栏 -->
+            <aside class="left-sidebar">
+                <button class="toggle-btn" onclick="toggleSidebar('left')">收起侧边栏</button>
+                <h3>分类导航</h3>
+                <ul>
+                    <li><a href="#tech">技术文章</a></li>
+                    <li><a href="#design">设计分享</a></li>
+                    <li><a href="#life">生活随笔</a></li>
+                    <li><a href="#travel">旅行日记</a></li>
+                    <li><a href="#food">美食推荐</a></li>
+                    <li><a href="#music">音乐分享</a></li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">热门标签</h3>
+                <ul>
+                    <li><a href="#css">CSS</a></li>
+                    <li><a href="#javascript">JavaScript</a></li>
+                    <li><a href="#react">React</a></li>
+                    <li><a href="#vue">Vue.js</a></li>
+                </ul>
+            </aside>
+
+            <!-- 右侧边栏 -->
+            <aside class="right-sidebar">
+                <button class="toggle-btn" onclick="toggleSidebar('right')">收起侧边栏</button>
+                <h3>最新文章</h3>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 1rem; margin-bottom: 8px;">CSS Grid 完全指南</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">深入理解现代CSS布局技术...</p>
+                    <small style="opacity: 0.7;">2024-01-15</small>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 1rem; margin-bottom: 8px;">JavaScript 异步编程</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Promise、async/await详解...</p>
+                    <small style="opacity: 0.7;">2024-01-12</small>
+                </div>
+
+                <h3 style="margin-top: 30px;">友情链接</h3>
+                <ul>
+                    <li><a href="#mdn">MDN Web Docs</a></li>
+                    <li><a href="#github">GitHub</a></li>
+                    <li><a href="#stackoverflow">Stack Overflow</a></li>
+                </ul>
+            </aside>
+
+            <!-- 主内容区域 -->
+            <main class="main-content">
+                <h2>浮动布局原理</h2>
+                <p>浮动布局是早期Web开发中最常用的三栏布局方法。通过<code>float: left</code>和<code>float: right</code>将侧边栏浮动到左右两侧，主内容区域使用<code>margin</code>为浮动元素留出空间。</p>
+                
+                <div class="card">
+                    <h3>核心特点</h3>
+                    <ul>
+                        <li>使用CSS float属性实现布局</li>
+                        <li>需要精确计算margin值</li>
+                        <li>必须使用clearfix清除浮动</li>
+                        <li>兼容性极佳，支持所有浏览器</li>
+                    </ul>
+                </div>
+
+                <div class="tech-info">
+                    <h4>关键技术点</h4>
+                    <p><strong>左侧边栏：</strong><code>float: left; width: 200px;</code></p>
+                    <p><strong>右侧边栏：</strong><code>float: right; width: 250px;</code></p>
+                    <p><strong>主内容区域：</strong><code>margin: 0 270px 0 230px;</code></p>
+                    <p><strong>清除浮动：</strong><code>.clearfix::after { clear: both; }</code></p>
+                </div>
+
+                <div class="float-demo">
+                    <h4>浮动演示</h4>
+                    <p>下面的演示展示了浮动元素的基本行为：</p>
+                    <div class="float-example">
+                        <div class="float-box float-left">左浮动</div>
+                        <div class="float-box float-right">右浮动</div>
+                        <p>这是围绕浮动元素的文本内容。文本会自动环绕浮动元素，这是浮动布局的核心特性。浮动元素会脱离正常文档流，其他元素会围绕它排列。</p>
+                        <div class="clear-demo">
+                            这是使用 clear: both 清除浮动的元素
+                        </div>
+                    </div>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>布局方式</th>
+                            <th>优点</th>
+                            <th>缺点</th>
+                            <th>适用场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>浮动布局</td>
+                            <td>兼容性好、实现简单</td>
+                            <td>需要清除浮动、计算复杂</td>
+                            <td>传统网站、兼容性要求高</td>
+                        </tr>
+                        <tr>
+                            <td>Flexbox</td>
+                            <td>灵活、现代</td>
+                            <td>IE支持有限</td>
+                            <td>现代Web应用</td>
+                        </tr>
+                        <tr>
+                            <td>Grid</td>
+                            <td>功能强大、二维布局</td>
+                            <td>学习成本高</td>
+                            <td>复杂布局需求</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>虽然浮动布局在现代Web开发中逐渐被Flexbox和Grid替代，但理解浮动的工作原理对于掌握CSS布局仍然非常重要。特别是在维护老项目或需要极佳兼容性的场景中，浮动布局仍然有其价值。</p>
+            </main>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 三栏布局演示 - 浮动布局实现</p>
+    </footer>
+
+    <script>
+        function toggleSidebar(side) {
+            const sidebar = document.querySelector(`.${side}-sidebar`);
+            const btn = sidebar.querySelector('.toggle-btn');
+            
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+                btn.textContent = '收起侧边栏';
+                
+                // 调整主内容区域的margin
+                const mainContent = document.querySelector('.main-content');
+                if (side === 'left') {
+                    mainContent.style.marginLeft = '230px';
+                } else {
+                    mainContent.style.marginRight = '270px';
+                }
+            } else {
+                sidebar.style.display = 'none';
+                btn.textContent = '展开侧边栏';
+                
+                // 调整主内容区域的margin
+                const mainContent = document.querySelector('.main-content');
+                if (side === 'left') {
+                    mainContent.style.marginLeft = '0';
+                } else {
+                    mainContent.style.marginRight = '0';
+                }
+            }
+        }
+
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const layout = document.querySelector('.layout');
+            layout.style.opacity = '0';
+            layout.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                layout.style.transition = 'all 0.6s ease';
+                layout.style.opacity = '1';
+                layout.style.transform = 'translateY(0)';
+            }, 100);
+
+            // 浮动元素动画演示
+            const floatBoxes = document.querySelectorAll('.float-box');
+            floatBoxes.forEach((box, index) => {
+                box.style.transform = 'translateY(20px)';
+                box.style.opacity = '0';
+                setTimeout(() => {
+                    box.style.transition = 'all 0.5s ease';
+                    box.style.transform = 'translateY(0)';
+                    box.style.opacity = '1';
+                }, 300 + index * 200);
+            });
+        });
+
+        // 添加浮动效果演示
+        function demonstrateFloat() {
+            const floatBoxes = document.querySelectorAll('.float-box');
+            floatBoxes.forEach(box => {
+                box.style.animation = 'float 2s ease-in-out infinite';
+            });
+        }
+
+        // CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 页面加载后开始浮动动画
+        setTimeout(demonstrateFloat, 1000);
+    </script>
+</body>
+</html>

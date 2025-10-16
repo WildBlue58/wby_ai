@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>三栏布局演示合集 - CSS布局技术大全</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem 0;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .header p {
+        color: #7f8c8d;
+        font-size: 1.3rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .intro {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .intro h2 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .intro p {
+        color: #555;
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* 网格布局 */
+      .layouts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .layout-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .layout-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+      }
+
+      .layout-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .layout-card h3 {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .layout-icon {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+
+      .layout-preview {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+        position: relative;
+        height: 120px;
+        overflow: hidden;
+      }
+
+      .preview-sidebar {
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        width: 30px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 4px;
+      }
+
+      .preview-sidebar.left {
+        left: 10px;
+      }
+
+      .preview-sidebar.right {
+        right: 10px;
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+      }
+
+      .preview-main {
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        left: 50px;
+        right: 50px;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+
+      .layout-features {
+        list-style: none;
+        margin: 1rem 0;
+      }
+
+      .layout-features li {
+        padding: 0.3rem 0;
+        color: #555;
+        font-size: 0.9rem;
+        position: relative;
+        padding-left: 1.5rem;
+      }
+
+      .layout-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .layout-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: #f8f9fa;
+        color: #6c757d;
+        border: 2px solid #e9ecef;
+      }
+
+      .btn-secondary:hover {
+        background: #e9ecef;
+        color: #495057;
+      }
+
+      .compatibility {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
+      }
+
+      .compatibility h2 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .compatibility-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .compatibility-table th,
+      .compatibility-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .compatibility-table th {
+        background: #667eea;
+        color: white;
+        font-weight: 600;
+      }
+
+      .compatibility-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      .browser-support {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .support-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: bold;
+        color: white;
+      }
+
+      .support-excellent {
+        background: #28a745;
+      }
+
+      .support-good {
+        background: #ffc107;
+      }
+
+      .support-poor {
+        background: #dc3545;
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem 0;
+        text-align: center;
+        color: #7f8c8d;
+        margin-top: 3rem;
+      }
+
+      .footer p {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer a {
+        color: #667eea;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2rem;
+        }
+
+        .header p {
+          font-size: 1.1rem;
+        }
+
+        .layouts-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .layout-card {
+          padding: 1.5rem;
+        }
+
+        .layout-actions {
+          flex-direction: column;
+        }
+
+        .compatibility-table {
+          font-size: 0.9rem;
+        }
+
+        .compatibility-table th,
+        .compatibility-table td {
+          padding: 0.8rem;
+        }
+      }
+
+      /* 动画效果 */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .layout-card {
+        animation: fadeInUp 0.6s ease forwards;
+      }
+
+      .layout-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .layout-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .layout-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .layout-card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .layout-card:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .layout-card:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .layout-card:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .layout-card:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+
+      /* 特殊预览样式 */
+      .preview-flex .preview-sidebar {
+        width: 25px;
+      }
+
+      .preview-flex .preview-main {
+        left: 35px;
+        right: 35px;
+      }
+
+      .preview-grid .preview-sidebar {
+        width: 28px;
+      }
+
+      .preview-grid .preview-main {
+        left: 38px;
+        right: 38px;
+      }
+
+      .preview-holy-grail .preview-sidebar {
+        width: 26px;
+      }
+
+      .preview-holy-grail .preview-main {
+        left: 36px;
+        right: 36px;
+      }
+
+      .preview-double-wing .preview-sidebar {
+        width: 27px;
+      }
+
+      .preview-double-wing .preview-main {
+        left: 37px;
+        right: 37px;
+      }
+
+      .preview-position .preview-sidebar {
+        width: 29px;
+      }
+
+      .preview-position .preview-main {
+        left: 39px;
+        right: 39px;
+      }
+
+      .preview-float .preview-sidebar {
+        width: 24px;
+      }
+
+      .preview-float .preview-main {
+        left: 34px;
+        right: 34px;
+      }
+
+      .preview-calc .preview-sidebar {
+        width: 26px;
+      }
+
+      .preview-calc .preview-main {
+        left: 36px;
+        right: 36px;
+      }
+
+      .preview-table .preview-sidebar {
+        width: 25px;
+      }
+
+      .preview-table .preview-main {
+        left: 35px;
+        right: 35px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>三栏布局演示合集</h1>
+      <p>探索8种不同的CSS三栏布局实现方案，从传统到现代，从简单到复杂</p>
+    </header>
+
+    <div class="container">
+      <div class="intro">
+        <h2>CSS布局技术大全</h2>
+        <p>
+          本合集展示了8种主流的三栏布局实现方案，每种方案都有其独特的优势和适用场景。从传统的浮动布局到现代的Flexbox和Grid，帮助您全面掌握CSS布局技术。
+        </p>
+      </div>
+
+      <div class="layouts-grid">
+        <!-- Flexbox布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">1</span>
+            Flexbox布局
+          </h3>
+          <div class="layout-preview preview-flex">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>现代浏览器首选方案</li>
+            <li>代码简洁，易于理解</li>
+            <li>中间区域自适应</li>
+            <li>响应式友好</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="1.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('flexbox')">
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">2</span>
+            CSS Grid布局
+          </h3>
+          <div class="layout-preview preview-grid">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>二维布局系统</li>
+            <li>强大的网格控制</li>
+            <li>区域命名清晰</li>
+            <li>响应式设计优秀</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="2.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('grid')">
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- 圣杯布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">3</span>
+            圣杯布局
+          </h3>
+          <div class="layout-preview preview-holy-grail">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>经典三栏布局方案</li>
+            <li>主内容优先渲染</li>
+            <li>SEO友好</li>
+            <li>兼容性极佳</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="3.html" class="btn btn-primary">查看演示</a>
+            <button
+              class="btn btn-secondary"
+              onclick="showDetails('holy-grail')"
+            >
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- 双飞翼布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">4</span>
+            双飞翼布局
+          </h3>
+          <div class="layout-preview preview-double-wing">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>圣杯布局的改进版</li>
+            <li>无需相对定位</li>
+            <li>实现更简洁</li>
+            <li>负边距技术</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="4-double-wing.html" class="btn btn-primary">查看演示</a>
+            <button
+              class="btn btn-secondary"
+              onclick="showDetails('double-wing')"
+            >
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- 绝对定位布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">5</span>
+            绝对定位布局
+          </h3>
+          <div class="layout-preview preview-position">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>固定侧边栏</li>
+            <li>适合管理后台</li>
+            <li>实现简单直观</li>
+            <li>侧边栏不滚动</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="5-position.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('position')">
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- 浮动布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">6</span>
+            浮动布局
+          </h3>
+          <div class="layout-preview preview-float">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>传统布局方案</li>
+            <li>兼容性极佳</li>
+            <li>需要清除浮动</li>
+            <li>经典实现方式</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="6-float.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('float')">
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- Calc函数布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">7</span>
+            Calc函数布局
+          </h3>
+          <div class="layout-preview preview-calc">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>精确宽度计算</li>
+            <li>混合单位支持</li>
+            <li>现代CSS方案</li>
+            <li>实时计算</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="7-calc.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('calc')">
+              详情
+            </button>
+          </div>
+        </div>
+
+        <!-- Table布局 -->
+        <div class="layout-card">
+          <h3>
+            <span class="layout-icon">8</span>
+            Table布局
+          </h3>
+          <div class="layout-preview preview-table">
+            <div class="preview-sidebar left"></div>
+            <div class="preview-main">主内容</div>
+            <div class="preview-sidebar right"></div>
+          </div>
+          <ul class="layout-features">
+            <li>天然等高列</li>
+            <li>兼容性极佳</li>
+            <li>实现简单</li>
+            <li>适合表格数据</li>
+          </ul>
+          <div class="layout-actions">
+            <a href="8-table.html" class="btn btn-primary">查看演示</a>
+            <button class="btn btn-secondary" onclick="showDetails('table')">
+              详情
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="compatibility">
+        <h2>浏览器兼容性对比</h2>
+        <table class="compatibility-table">
+          <thead>
+            <tr>
+              <th>布局方式</th>
+              <th>Chrome</th>
+              <th>Firefox</th>
+              <th>Safari</th>
+              <th>Edge</th>
+              <th>IE</th>
+              <th>推荐度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Flexbox</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-poor">✗</span></span
+                >
+              </td>
+              <td>★★★★★</td>
+            </tr>
+            <tr>
+              <td>Grid</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-poor">✗</span></span
+                >
+              </td>
+              <td>★★★★★</td>
+            </tr>
+            <tr>
+              <td>圣杯/双飞翼</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>★★★★☆</td>
+            </tr>
+            <tr>
+              <td>绝对定位</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>★★★☆☆</td>
+            </tr>
+            <tr>
+              <td>浮动</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>★★☆☆☆</td>
+            </tr>
+            <tr>
+              <td>Calc函数</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-good">△</span></span
+                >
+              </td>
+              <td>★★★★☆</td>
+            </tr>
+            <tr>
+              <td>Table</td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>
+                <span class="browser-support"
+                  ><span class="support-icon support-excellent">✓</span></span
+                >
+              </td>
+              <td>★★☆☆☆</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 三栏布局演示合集 - CSS布局技术大全</p>
+      <p>探索现代Web开发中的各种布局解决方案</p>
+      <p>
+        <a href="readme.md">查看详细文档</a> |
+        <a href="https://github.com">GitHub仓库</a>
+      </p>
+    </footer>
+
+    <script>
+      function showDetails(layoutType) {
+        const details = {
+          flexbox: {
+            title: "Flexbox布局详情",
+            content:
+              "Flexbox是CSS3引入的一维布局方法，特别适合处理组件内部元素的排列。它提供了强大的对齐和分布能力，是现代Web开发的首选布局方案。",
+          },
+          grid: {
+            title: "CSS Grid布局详情",
+            content:
+              "Grid是CSS3引入的二维布局系统，可以同时处理行和列。它提供了最强大的布局控制能力，适合复杂的页面布局需求。",
+          },
+          "holy-grail": {
+            title: "圣杯布局详情",
+            content:
+              "圣杯布局是经典的三栏布局方案，通过浮动和负边距技术实现。主内容区域优先渲染，有利于SEO优化。",
+          },
+          "double-wing": {
+            title: "双飞翼布局详情",
+            content:
+              "双飞翼布局是圣杯布局的改进版本，通过在主内容区域添加包装div来简化实现，无需使用相对定位。",
+          },
+          position: {
+            title: "绝对定位布局详情",
+            content:
+              "绝对定位布局通过position: absolute将侧边栏固定在视口边缘，适合需要固定导航的管理后台等场景。",
+          },
+          float: {
+            title: "浮动布局详情",
+            content:
+              "浮动布局是早期Web开发中最常用的布局方法，通过float属性实现元素排列，兼容性极佳但需要处理浮动清除。",
+          },
+          calc: {
+            title: "Calc函数布局详情",
+            content:
+              "CSS calc()函数允许在CSS中进行数学计算，特别适合需要精确控制尺寸的布局场景，支持混合单位计算。",
+          },
+          table: {
+            title: "Table布局详情",
+            content:
+              "Table布局使用display: table等属性模拟HTML表格的布局行为，天然支持等高列，兼容性极佳但灵活性较差。",
+          },
+        };
+
+        const detail = details[layoutType];
+        if (detail) {
+          alert(`${detail.title}\n\n${detail.content}`);
+        }
+      }
+
+      // 添加页面加载动画
+      document.addEventListener("DOMContentLoaded", function () {
+        const cards = document.querySelectorAll(".layout-card");
+        cards.forEach((card, index) => {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(30px)";
+
+          setTimeout(() => {
+            card.style.transition = "all 0.6s ease";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+          }, 100 + index * 100);
+        });
+
+        // 添加预览动画
+        const previews = document.querySelectorAll(".layout-preview");
+        previews.forEach((preview, index) => {
+          setTimeout(() => {
+            preview.style.animation = "pulse 2s ease-in-out infinite";
+          }, 1000 + index * 200);
+        });
+      });
+
+      // 添加脉冲动画
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes pulse {
+                0%, 100% { 
+                    transform: scale(1);
+                    box-shadow: 0 0 0 rgba(102, 126, 234, 0.4);
+                }
+                50% { 
+                    transform: scale(1.05);
+                    box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+                }
+            }
+        `;
+      document.head.appendChild(style);
+
+      // 添加键盘导航支持
+      document.addEventListener("keydown", function (e) {
+        if (e.key >= "1" && e.key <= "8") {
+          const index = parseInt(e.key) - 1;
+          const cards = document.querySelectorAll(".layout-card");
+          if (cards[index]) {
+            const link = cards[index].querySelector(".btn-primary");
+            if (link) {
+              link.click();
+            }
+          }
+        }
+      });
+
+      // 添加滚动效果
+      window.addEventListener("scroll", function () {
+        const cards = document.querySelectorAll(".layout-card");
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+          if (isVisible) {
+            card.style.transform = "translateY(0)";
+            card.style.opacity = "1";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
