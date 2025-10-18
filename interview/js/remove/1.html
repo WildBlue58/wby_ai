@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul id="list">
+      <li>
+        A
+        <button class="del">删除</button>
+      </li>
+      <li>
+        B
+        <button class="del">删除</button>
+      </li>
+    </ul>
+    <script>
+      // document.querySelectorAll(".del").forEach((item) => {
+      //   item.addEventListener("click", () => {
+      //     //   item.parentElement.remove();
+      //     const li = e.target.parentElement;
+      //     // li.remove(); // 直接删除 兼容问题
+      //     li.parentNode.removeChild(li); //兼容性好
+      //   });
+      // });
+      const ul = document.getElementById("list");
+      ul.addEventListener("click", (e) => {
+        if (e.target.classList.contains("del")) {
+          const li = e.target.parentElement;
+          if (li) {
+            li.remove();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
