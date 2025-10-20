@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS隐藏元素对比 - 小白学习版</title>
+    <style>
+      /* 基础样式 */
+      body {
+        font-family: "Microsoft YaHei", Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .demo-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fafafa;
+      }
+
+      .demo-title {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .demo-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+
+      /* 测试元素样式 */
+      .test-element {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border: 3px solid #333;
+        border-radius: 10px;
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .test-element:hover {
+        transform: scale(1.05);
+      }
+
+      /* 按钮样式 */
+      .btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background: #2980b9;
+      }
+
+      .btn.danger {
+        background: #e74c3c;
+      }
+
+      .btn.danger:hover {
+        background: #c0392b;
+      }
+
+      .btn.success {
+        background: #27ae60;
+      }
+
+      .btn.success:hover {
+        background: #229954;
+      }
+
+      /* 对比说明 */
+      .comparison {
+        background: #ecf0f1;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+
+      .comparison h3 {
+        color: #2c3e50;
+        margin-top: 0;
+      }
+
+      .comparison ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+
+      .comparison li {
+        margin: 5px 0;
+        color: #555;
+      }
+
+      /* 性能提示 */
+      .performance-tip {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        color: #856404;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎯 CSS隐藏元素对比学习</h1>
+
+      <div class="comparison">
+        <h3>📚 三种隐藏方式对比</h3>
+        <ul>
+          <li>
+            <strong>display: none</strong> -
+            完全从渲染树移除，不占空间，触发重排（性能开销大）
+          </li>
+          <li>
+            <strong>visibility: hidden</strong> -
+            元素仍占空间，不可见，只触发重绘（性能较好）
+          </li>
+          <li>
+            <strong>opacity: 0</strong> -
+            元素仍占空间，完全透明，只触发重绘（性能最好）
+          </li>
+        </ul>
+      </div>
+
+      <!-- display: none 演示 -->
+      <div class="demo-section">
+        <div class="demo-title">1️⃣ display: none 演示</div>
+        <div class="demo-description">
+          <strong>特点：</strong
+          >元素完全消失，不占用任何空间，从文档流中移除<br />
+          <strong>性能：</strong>会触发重排（reflow），性能开销最大<br />
+          <strong>交互：</strong>元素无法被点击或交互
+        </div>
+        <button class="btn danger" id="toggleDisplay">
+          切换 display: none
+        </button>
+        <div id="displayElement" class="test-element">display 测试</div>
+        <p>注意：当元素被隐藏时，下面的文字会向上移动</p>
+      </div>
+
+      <!-- visibility: hidden 演示 -->
+      <div class="demo-section">
+        <div class="demo-title">2️⃣ visibility: hidden 演示</div>
+        <div class="demo-description">
+          <strong>特点：</strong>元素不可见但仍占用空间<br />
+          <strong>性能：</strong>只触发重绘（repaint），性能较好<br />
+          <strong>交互：</strong>元素无法被点击或交互
+        </div>
+        <button class="btn" id="toggleVisibility">
+          切换 visibility: hidden
+        </button>
+        <div id="visibilityElement" class="test-element">visibility 测试</div>
+        <p>注意：当元素被隐藏时，下面的文字位置不变（仍占用空间）</p>
+      </div>
+
+      <!-- opacity: 0 演示 -->
+      <div class="demo-section">
+        <div class="demo-title">3️⃣ opacity: 0 演示</div>
+        <div class="demo-description">
+          <strong>特点：</strong>元素完全透明但仍占用空间<br />
+          <strong>性能：</strong>只触发重绘，性能最好<br />
+          <strong>交互：</strong>元素仍可被点击和交互（需要配合pointer-events:
+          none禁用）
+        </div>
+        <button class="btn success" id="toggleOpacity">切换 opacity: 0</button>
+        <div id="opacityElement" class="test-element">opacity 测试</div>
+        <p>注意：当元素透明时，下面的文字位置不变，但元素仍可被点击</p>
+      </div>
+
+      <div class="performance-tip">
+        <strong>💡 性能提示：</strong>
+        在需要频繁显示/隐藏元素时，优先使用 opacity 和 visibility，避免使用
+        display: none。 如果使用 opacity，记得配合 pointer-events: none
+        来禁用交互。
+      </div>
+
+      <div class="comparison">
+        <h3>🎯 使用场景建议</h3>
+        <ul>
+          <li>
+            <strong>display: none</strong> -
+            适合完全移除元素，如响应式布局中的隐藏
+          </li>
+          <li>
+            <strong>visibility: hidden</strong> - 适合临时隐藏但保持布局稳定
+          </li>
+          <li><strong>opacity: 0</strong> - 适合淡入淡出动画效果</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // 获取所有测试元素
+      const displayElement = document.getElementById("displayElement");
+      const visibilityElement = document.getElementById("visibilityElement");
+      const opacityElement = document.getElementById("opacityElement");
+
+      // display: none 切换
+      document
+        .getElementById("toggleDisplay")
+        .addEventListener("click", function () {
+          if (displayElement.style.display === "none") {
+            displayElement.style.display = "flex";
+            this.textContent = "隐藏元素";
+          } else {
+            displayElement.style.display = "none";
+            this.textContent = "显示元素";
+          }
+        });
+
+      // visibility: hidden 切换
+      document
+        .getElementById("toggleVisibility")
+        .addEventListener("click", function () {
+          if (visibilityElement.style.visibility === "hidden") {
+            visibilityElement.style.visibility = "visible";
+            this.textContent = "隐藏元素";
+          } else {
+            visibilityElement.style.visibility = "hidden";
+            this.textContent = "显示元素";
+          }
+        });
+
+      // opacity: 0 切换
+      document
+        .getElementById("toggleOpacity")
+        .addEventListener("click", function () {
+          if (opacityElement.style.opacity === "0") {
+            opacityElement.style.opacity = "1";
+            opacityElement.style.pointerEvents = "auto";
+            this.textContent = "隐藏元素";
+          } else {
+            opacityElement.style.opacity = "0";
+            opacityElement.style.pointerEvents = "none";
+            this.textContent = "显示元素";
+          }
+        });
+
+      // 为所有测试元素添加点击事件
+      [displayElement, visibilityElement, opacityElement].forEach((element) => {
+        element.addEventListener("click", function () {
+          alert("你点击了 " + this.textContent + " 元素！");
+        });
+      });
+    </script>
+  </body>
+</html>
