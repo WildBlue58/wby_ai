@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPU加速与性能优化 - 小白学习版</title>
+    <style>
+      /* 基础样式 */
+      body {
+        font-family: "Microsoft YaHei", Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 28px;
+      }
+
+      .section {
+        margin: 30px 0;
+        padding: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        background: #fafafa;
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        margin-top: 0;
+        font-size: 20px;
+      }
+
+      .demo-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+
+      .demo-box {
+        flex: 1;
+        min-width: 200px;
+        text-align: center;
+      }
+
+      .demo-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      /* 普通元素 - 无GPU加速 */
+      .normal-box {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border: 5px solid #333;
+        border-radius: 15px;
+        margin: 10px auto;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        transition: opacity 1s ease-in-out;
+        position: relative;
+      }
+
+      .normal-box::before {
+        content: "CPU渲染";
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: #666;
+        background: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      .normal-box.hidden {
+        opacity: 0;
+      }
+
+      /* GPU加速元素 */
+      .gpu-box {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border: 5px solid #333;
+        border-radius: 15px;
+        margin: 10px auto;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        transition: opacity 1s ease-in-out;
+        position: relative;
+
+        /* GPU加速关键属性 */
+        transform: translateZ(0); /* 强制开启硬件加速 */
+        will-change: opacity; /* 告诉浏览器这个属性会改变 */
+        backface-visibility: hidden; /* 优化渲染 */
+      }
+
+      .gpu-box::before {
+        content: "GPU渲染";
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: #666;
+        background: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      .gpu-box.hidden {
+        opacity: 0;
+      }
+
+      /* 控制按钮 */
+      .controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        margin: 5px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .btn:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+      }
+
+      .btn.danger {
+        background: #e74c3c;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      .btn.danger:hover {
+        background: #c0392b;
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+      }
+
+      .btn.success {
+        background: #27ae60;
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+      }
+
+      .btn.success:hover {
+        background: #229954;
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+      }
+
+      /* 性能监控 */
+      .performance-monitor {
+        background: #2c3e50;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-family: "Courier New", monospace;
+      }
+
+      .performance-monitor h3 {
+        margin-top: 0;
+        color: #ecf0f1;
+      }
+
+      .performance-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .stat-item {
+        background: #34495e;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2ecc71;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #bdc3c7;
+        margin-top: 5px;
+      }
+
+      /* 知识卡片 */
+      .knowledge-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .knowledge-card h3 {
+        margin-top: 0;
+        color: #fff;
+      }
+
+      .knowledge-card ul {
+        margin: 15px 0;
+        padding-left: 20px;
+      }
+
+      .knowledge-card li {
+        margin: 8px 0;
+        line-height: 1.5;
+      }
+
+      /* 代码示例 */
+      .code-example {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        margin: 15px 0;
+        overflow-x: auto;
+      }
+
+      .code-comment {
+        color: #95a5a6;
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .demo-container {
+          flex-direction: column;
+        }
+
+        .container {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 GPU加速与性能优化学习</h1>
+
+      <div class="section">
+        <h2>📚 什么是GPU加速？</h2>
+        <div class="knowledge-card">
+          <h3>💡 GPU加速原理</h3>
+          <ul>
+            <li>
+              <strong>CPU渲染：</strong>使用主处理器进行图形计算，速度较慢
+            </li>
+            <li>
+              <strong>GPU渲染：</strong>使用显卡进行图形计算，专门优化图形处理
+            </li>
+            <li>
+              <strong>硬件加速：</strong>将图形计算任务转移到GPU，提升性能
+            </li>
+            <li>
+              <strong>合成层：</strong>GPU将元素提升到独立的合成层进行渲染
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎯 实际对比演示</h2>
+        <p>点击下面的按钮，观察CPU渲染和GPU渲染的性能差异：</p>
+
+        <div class="demo-container">
+          <div class="demo-box">
+            <div class="demo-title">CPU渲染（普通方式）</div>
+            <div id="normalBox" class="normal-box">普通元素</div>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">GPU渲染（硬件加速）</div>
+            <div id="gpuBox" class="gpu-box">GPU加速元素</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn danger" id="toggleNormal">切换普通元素</button>
+          <button class="btn success" id="toggleGpu">切换GPU元素</button>
+          <button class="btn" id="toggleAll">同时切换所有</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>⚡ 性能监控</h2>
+        <div class="performance-monitor">
+          <h3>📊 实时性能数据</h3>
+          <div class="performance-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="fpsCounter">60</div>
+              <div class="stat-label">FPS</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="renderTime">0ms</div>
+              <div class="stat-label">渲染时间</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="gpuUsage">0%</div>
+              <div class="stat-label">GPU使用率</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🛠️ 如何开启GPU加速？</h2>
+        <div class="code-example">
+          <span class="code-comment">/* 方法1：使用 transform 属性 */</span>
+          .element { transform: translateZ(0);
+          <span class="code-comment">/* 强制开启硬件加速 */</span>
+          }
+
+          <span class="code-comment">/* 方法2：使用 will-change 属性 */</span>
+          .element { will-change: opacity;
+          <span class="code-comment">/* 告诉浏览器这个属性会改变 */</span>
+          }
+
+          <span class="code-comment"
+            >/* 方法3：使用 backface-visibility */</span
+          >
+          .element { backface-visibility: hidden;
+          <span class="code-comment">/* 优化渲染性能 */</span>
+          }
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎨 最佳实践</h2>
+        <div class="knowledge-card">
+          <h3>✅ 推荐做法</h3>
+          <ul>
+            <li>
+              对动画元素使用 <code>transform</code> 和 <code>opacity</code>
+            </li>
+            <li>使用 <code>will-change</code> 提前告知浏览器</li>
+            <li>避免频繁改变 <code>width</code>、<code>height</code> 等属性</li>
+            <li>
+              使用 <code>transform3d()</code> 而不是 <code>translateZ(0)</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>⚠️ 注意事项</h2>
+        <div class="knowledge-card">
+          <h3>❌ 避免的问题</h3>
+          <ul>
+            <li>不要滥用GPU加速，会消耗更多内存</li>
+            <li>避免同时开启太多合成层</li>
+            <li>不要在不必要的元素上使用GPU加速</li>
+            <li>注意移动设备的性能限制</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 获取元素
+      const normalBox = document.getElementById("normalBox");
+      const gpuBox = document.getElementById("gpuBox");
+
+      // 性能监控变量
+      let frameCount = 0;
+      let lastTime = performance.now();
+      let fps = 60;
+
+      // 性能监控函数
+      function updatePerformanceStats() {
+        const now = performance.now();
+        frameCount++;
+
+        if (now - lastTime >= 1000) {
+          fps = Math.round((frameCount * 1000) / (now - lastTime));
+          frameCount = 0;
+          lastTime = now;
+
+          document.getElementById("fpsCounter").textContent = fps;
+          document.getElementById("renderTime").textContent =
+            Math.round(1000 / fps) + "ms";
+          document.getElementById("gpuUsage").textContent =
+            Math.min(100, Math.round((fps / 60) * 100)) + "%";
+        }
+
+        requestAnimationFrame(updatePerformanceStats);
+      }
+
+      // 开始性能监控
+      updatePerformanceStats();
+
+      // 普通元素切换
+      document
+        .getElementById("toggleNormal")
+        .addEventListener("click", function () {
+          normalBox.classList.toggle("hidden");
+          this.textContent = normalBox.classList.contains("hidden")
+            ? "显示普通元素"
+            : "隐藏普通元素";
+        });
+
+      // GPU元素切换
+      document
+        .getElementById("toggleGpu")
+        .addEventListener("click", function () {
+          gpuBox.classList.toggle("hidden");
+          this.textContent = gpuBox.classList.contains("hidden")
+            ? "显示GPU元素"
+            : "隐藏GPU元素";
+        });
+
+      // 同时切换所有元素
+      document
+        .getElementById("toggleAll")
+        .addEventListener("click", function () {
+          const isHidden = normalBox.classList.contains("hidden");
+          normalBox.classList.toggle("hidden");
+          gpuBox.classList.toggle("hidden");
+          this.textContent = isHidden ? "隐藏所有元素" : "显示所有元素";
+        });
+
+      // 为元素添加点击事件
+      [normalBox, gpuBox].forEach((element, index) => {
+        element.addEventListener("click", function () {
+          const type = index === 0 ? "CPU渲染" : "GPU渲染";
+          alert(`你点击了${type}元素！\n\n注意观察性能监控数据的变化。`);
+        });
+      });
+
+      // 添加一些随机动画来测试性能
+      function addRandomAnimation() {
+        const boxes = [normalBox, gpuBox];
+        boxes.forEach((box, index) => {
+          if (!box.classList.contains("hidden")) {
+            const randomX = (Math.random() - 0.5) * 20;
+            const randomY = (Math.random() - 0.5) * 20;
+            box.style.transform = `translate(${randomX}px, ${randomY}px)`;
+          }
+        });
+
+        setTimeout(() => {
+          boxes.forEach((box) => {
+            box.style.transform = "";
+          });
+        }, 100);
+      }
+
+      // 每2秒添加一次随机动画
+      setInterval(addRandomAnimation, 2000);
+    </script>
+  </body>
+</html>
