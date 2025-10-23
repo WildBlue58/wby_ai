@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>正则表达式学习演示</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft YaHei", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .demo-section {
+        margin-bottom: 40px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 5px solid #4facfe;
+      }
+
+      .demo-section h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.4em;
+      }
+
+      .demo-section p {
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.6;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+      }
+
+      .result-box {
+        background: #e8f5e8;
+        border: 2px solid #4caf50;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+      }
+
+      .input-section {
+        margin: 20px 0;
+      }
+
+      .input-section label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .input-section input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .input-section input:focus {
+        outline: none;
+        border-color: #4facfe;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px 5px;
+        transition: transform 0.2s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .symbol-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .symbol-table th,
+      .symbol-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .symbol-table th {
+        background: #f8f9fa;
+        font-weight: bold;
+      }
+
+      .symbol-table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      .highlight {
+        background: #fff3cd;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+
+      .footer {
+        background: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          margin: 10px;
+          border-radius: 10px;
+        }
+
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🔍 正则表达式学习演示</h1>
+        <p>适合编程新手的基础教程</p>
+      </div>
+
+      <div class="content">
+        <!-- 基础介绍 -->
+        <div class="demo-section">
+          <h3>📚 什么是正则表达式？</h3>
+          <p>
+            正则表达式是一种用来匹配字符串中字符组合的模式。在 JavaScript
+            中，正则表达式也是对象。
+          </p>
+          <p>
+            <strong>简单理解：</strong
+            >就像搜索功能一样，但更强大！可以找到符合特定规则的文本。
+          </p>
+        </div>
+
+        <!-- 练习1 -->
+        <div class="demo-section">
+          <h3>🎯 练习1：去掉指定字符</h3>
+          <p><strong>目标：</strong>从字符串中去掉 a、b、c 这三个字符</p>
+          <p>
+            <strong>原始字符串：</strong>
+            <span class="highlight">abc345efgabcab</span>
+          </p>
+          <p>
+            <strong>期望结果：</strong> <span class="highlight">345efg</span>
+          </p>
+
+          <div class="code-block">
+            // 解决方案 var str = "abc345efgabcab"; var reg = /[abc]/g; // 匹配
+            a、b、c 中的任意一个 var result = str.replace(reg, "");
+            console.log(result); // 输出: 345efg
+          </div>
+
+          <div class="input-section">
+            <label>试试你的字符串：</label>
+            <input
+              type="text"
+              id="input1"
+              placeholder="输入你的字符串"
+              value="abc345efgabcab"
+            />
+            <button class="btn" onclick="demo1()">运行演示</button>
+          </div>
+          <div id="result1" class="result-box" style="display: none"></div>
+        </div>
+
+        <!-- 练习2 -->
+        <div class="demo-section">
+          <h3>🎯 练习2：给数字加括号</h3>
+          <p><strong>目标：</strong>将字符串中的数字用中括号括起来</p>
+          <p>
+            <strong>原始字符串：</strong>
+            <span class="highlight">abc345efgabcab</span>
+          </p>
+          <p>
+            <strong>期望结果：</strong>
+            <span class="highlight">abc[345]efgabcab</span>
+          </p>
+
+          <div class="code-block">
+            // 解决方案 var str = "abc345efgabcab"; var reg = /\d+/g; //
+            匹配一个或多个数字 var result = str.replace(reg, function(match) {
+            return `[${match}]`; }); console.log(result); // 输出:
+            abc[345]efgabcab
+          </div>
+
+          <div class="input-section">
+            <label>试试你的字符串：</label>
+            <input
+              type="text"
+              id="input2"
+              placeholder="输入你的字符串"
+              value="abc345efgabcab"
+            />
+            <button class="btn" onclick="demo2()">运行演示</button>
+          </div>
+          <div id="result2" class="result-box" style="display: none"></div>
+        </div>
+
+        <!-- 练习3 -->
+        <div class="demo-section">
+          <h3>🎯 练习3：数字运算</h3>
+          <p><strong>目标：</strong>将字符串中的每个数字乘以2</p>
+          <p>
+            <strong>原始字符串：</strong>
+            <span class="highlight">abc345efgabcab</span>
+          </p>
+          <p>
+            <strong>期望结果：</strong>
+            <span class="highlight">abc6810efgabcab</span>
+          </p>
+
+          <div class="code-block">
+            // 解决方案 var str = "abc345efgabcab"; var reg = /\d+/g; //
+            匹配一个或多个数字 var result = str.replace(reg, function(match) {
+            return parseInt(match) * 2; }); console.log(result); // 输出:
+            abc6810efgabcab
+          </div>
+
+          <div class="input-section">
+            <label>试试你的字符串：</label>
+            <input
+              type="text"
+              id="input3"
+              placeholder="输入你的字符串"
+              value="abc345efgabcab"
+            />
+            <button class="btn" onclick="demo3()">运行演示</button>
+          </div>
+          <div id="result3" class="result-box" style="display: none"></div>
+        </div>
+
+        <!-- 符号表 -->
+        <div class="demo-section">
+          <h3>📖 常用正则表达式符号</h3>
+          <p>掌握这些基本符号，你就能写出大部分正则表达式了！</p>
+
+          <table class="symbol-table">
+            <thead>
+              <tr>
+                <th>符号</th>
+                <th>含义</th>
+                <th>示例</th>
+                <th>匹配结果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>\d</code></td>
+                <td>匹配数字</td>
+                <td><code>/\d/</code></td>
+                <td>匹配 "5"</td>
+              </tr>
+              <tr>
+                <td><code>\w</code></td>
+                <td>匹配字母、数字、下划线</td>
+                <td><code>/\w/</code></td>
+                <td>匹配 "a"</td>
+              </tr>
+              <tr>
+                <td><code>\s</code></td>
+                <td>匹配空白字符</td>
+                <td><code>/\s/</code></td>
+                <td>匹配 " "</td>
+              </tr>
+              <tr>
+                <td><code>+</code></td>
+                <td>匹配一个或多个</td>
+                <td><code>/\d+/</code></td>
+                <td>匹配 "123"</td>
+              </tr>
+              <tr>
+                <td><code>*</code></td>
+                <td>匹配零个或多个</td>
+                <td><code>/\d*/</code></td>
+                <td>匹配 "" 或 "123"</td>
+              </tr>
+              <tr>
+                <td><code>?</code></td>
+                <td>匹配零个或一个</td>
+                <td><code>/\d?/</code></td>
+                <td>匹配 "" 或 "1"</td>
+              </tr>
+              <tr>
+                <td><code>[abc]</code></td>
+                <td>匹配方括号内任意字符</td>
+                <td><code>/[abc]/</code></td>
+                <td>匹配 "a"、"b" 或 "c"</td>
+              </tr>
+              <tr>
+                <td><code>^</code></td>
+                <td>匹配字符串开始</td>
+                <td><code>/^a/</code></td>
+                <td>匹配以 "a" 开头的字符串</td>
+              </tr>
+              <tr>
+                <td><code>$</code></td>
+                <td>匹配字符串结束</td>
+                <td><code>/a$/</code></td>
+                <td>匹配以 "a" 结尾的字符串</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 互动练习 -->
+        <div class="demo-section">
+          <h3>🎮 互动练习</h3>
+          <p>试试修改正则表达式，看看不同的效果！</p>
+
+          <div class="input-section">
+            <label>输入字符串：</label>
+            <input
+              type="text"
+              id="interactiveInput"
+              placeholder="输入你的字符串"
+              value="Hello123World456"
+            />
+          </div>
+
+          <div class="input-section">
+            <label>正则表达式：</label>
+            <input
+              type="text"
+              id="regexInput"
+              placeholder="输入正则表达式"
+              value="\d+"
+            />
+          </div>
+
+          <button class="btn" onclick="interactiveDemo()">
+            测试正则表达式
+          </button>
+          <div
+            id="interactiveResult"
+            class="result-box"
+            style="display: none"
+          ></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>💡 提示：打开浏览器控制台（F12）可以看到更详细的输出信息</p>
+        <p>
+          📚 更多学习资源：<a href="https://regex101.com" target="_blank"
+            >regex101.com</a
+          >
+          - 在线正则表达式测试工具
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // 练习1：去掉指定字符
+      function demo1() {
+        const input = document.getElementById("input1").value;
+        const reg = /[abc]/g;
+        const result = input.replace(reg, "");
+
+        const resultDiv = document.getElementById("result1");
+        resultDiv.innerHTML = `
+                <strong>原始字符串：</strong> ${input}<br>
+                <strong>正则表达式：</strong> /[abc]/g<br>
+                <strong>结果：</strong> ${result}<br>
+                <strong>解释：</strong> 匹配并删除所有 a、b、c 字符
+            `;
+        resultDiv.style.display = "block";
+      }
+
+      // 练习2：给数字加括号
+      function demo2() {
+        const input = document.getElementById("input2").value;
+        const reg = /\d+/g;
+        const result = input.replace(reg, function (match) {
+          return `[${match}]`;
+        });
+
+        const resultDiv = document.getElementById("result2");
+        resultDiv.innerHTML = `
+                <strong>原始字符串：</strong> ${input}<br>
+                <strong>正则表达式：</strong> /\\d+/g<br>
+                <strong>结果：</strong> ${result}<br>
+                <strong>解释：</strong> 找到所有数字并用方括号包围
+            `;
+        resultDiv.style.display = "block";
+      }
+
+      // 练习3：数字运算
+      function demo3() {
+        const input = document.getElementById("input3").value;
+        const reg = /\d+/g;
+        const result = input.replace(reg, function (match) {
+          return parseInt(match) * 2;
+        });
+
+        const resultDiv = document.getElementById("result3");
+        resultDiv.innerHTML = `
+                <strong>原始字符串：</strong> ${input}<br>
+                <strong>正则表达式：</strong> /\\d+/g<br>
+                <strong>结果：</strong> ${result}<br>
+                <strong>解释：</strong> 将每个数字乘以2
+            `;
+        resultDiv.style.display = "block";
+      }
+
+      // 互动练习
+      function interactiveDemo() {
+        const input = document.getElementById("interactiveInput").value;
+        const regexStr = document.getElementById("regexInput").value;
+
+        try {
+          const reg = new RegExp(regexStr, "g");
+          const matches = input.match(reg);
+          const result = input.replace(
+            reg,
+            '<span style="background: yellow; padding: 2px;">$&</span>'
+          );
+
+          const resultDiv = document.getElementById("interactiveResult");
+          resultDiv.innerHTML = `
+                    <strong>原始字符串：</strong> ${input}<br>
+                    <strong>正则表达式：</strong> /${regexStr}/g<br>
+                    <strong>匹配结果：</strong> ${
+                      matches ? matches.join(", ") : "无匹配"
+                    }<br>
+                    <strong>高亮显示：</strong> <div style="margin-top: 10px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9;">${result}</div>
+                `;
+          resultDiv.style.display = "block";
+        } catch (error) {
+          const resultDiv = document.getElementById("interactiveResult");
+          resultDiv.innerHTML = `
+                    <strong style="color: red;">错误：</strong> ${error.message}<br>
+                    <strong>提示：</strong> 请检查正则表达式语法是否正确
+                `;
+          resultDiv.style.display = "block";
+        }
+      }
+
+      // 页面加载完成后自动运行演示
+      window.onload = function () {
+        console.log("正则表达式学习演示已加载！");
+        console.log("原始字符串: abc345efgabcab");
+        console.log("=".repeat(50));
+
+        // 自动运行基础演示
+        const str = "abc345efgabcab";
+
+        console.log("1. 去掉a、b、c字符:");
+        const reg1 = /[abc]/g;
+        const result1 = str.replace(reg1, "");
+        console.log("结果:", result1);
+
+        console.log("2. 给数字加括号:");
+        const reg2 = /\d+/g;
+        const result2 = str.replace(reg2, function (match) {
+          return `[${match}]`;
+        });
+        console.log("结果:", result2);
+
+        console.log("3. 数字乘以2:");
+        const reg3 = /\d+/g;
+        const result3 = str.replace(reg3, function (match) {
+          return parseInt(match) * 2;
+        });
+        console.log("结果:", result3);
+      };
+    </script>
+  </body>
+</html>
