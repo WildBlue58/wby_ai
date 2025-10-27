@@ -19,3 +19,12 @@
   JS Bridge React 写的代码 调用手机上的设备
   VDOM
 - expo 是让RN开发更丝滑的工具
+  - expo go 扫码安装应用
+  - 手机上查看效果，react 开发
+
+## RN UI 组件库
+
+### 思路
+
+- 用熟悉的React 组件写法调用手机原生组件
+- CSS RN 提供了StyleSheet 样式表
