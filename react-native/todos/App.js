@@ -50,6 +50,22 @@ export default function App() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  // mounted
+  useEffect(() => {
+    AsyncStorage.getItem("todos").then((data) => {
+      if (data) {
+        setTodos(JSON.parse(data));
+      } else {
+        setTodos([]);
+      }
+    });
+  }, []);
+
+  // update
+  useEffect(() => {
+    AsyncStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const renderItem = ({ item }) => (
     <List.Item
       title={item.text}
