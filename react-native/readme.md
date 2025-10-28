@@ -28,3 +28,4 @@
 
 - 用熟悉的React 组件写法调用手机原生组件
 - CSS RN 提供了StyleSheet 样式表
+- 不是HTML5，没有LocalStorage，但是有AsyncStorage异步存储
