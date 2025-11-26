@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>孙悟空的穿越新生活 - Canvas动画</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="title-area">
+            <h1 class="main-title">孙悟空的穿越新生活</h1>
+            <p class="subtitle">一个齐天大圣的现代都市奇遇记</p>
+        </header>
+
+        <!-- 画布区域 -->
+        <div class="canvas-wrapper">
+            <canvas id="mainCanvas" width="1000" height="600"></canvas>
+            
+            <!-- 场景标题叠加层 -->
+            <div class="scene-title-overlay" id="sceneTitle">
+                <span class="scene-number">第一幕</span>
+                <span class="scene-name">时空裂隙</span>
+            </div>
+
+            <!-- 字幕区域 -->
+            <div class="subtitle-area" id="subtitleArea">
+                <p id="subtitleText"></p>
+            </div>
+        </div>
+
+        <!-- 控制面板 -->
+        <div class="control-panel">
+            <div class="scene-indicators">
+                <div class="indicator active" data-scene="1" title="时空裂隙">
+                    <span class="indicator-icon">🌀</span>
+                    <span class="indicator-label">穿越</span>
+                </div>
+                <div class="indicator" data-scene="2" title="城市着陆">
+                    <span class="indicator-icon">🏙️</span>
+                    <span class="indicator-label">着陆</span>
+                </div>
+                <div class="indicator" data-scene="3" title="地铁历险">
+                    <span class="indicator-icon">🚇</span>
+                    <span class="indicator-label">地铁</span>
+                </div>
+                <div class="indicator" data-scene="4" title="外卖猴王">
+                    <span class="indicator-icon">🛵</span>
+                    <span class="indicator-label">外卖</span>
+                </div>
+                <div class="indicator" data-scene="5" title="直播天王">
+                    <span class="indicator-icon">📱</span>
+                    <span class="indicator-label">直播</span>
+                </div>
+            </div>
+
+            <div class="control-buttons">
+                <button class="control-btn" id="prevBtn" title="上一个场景">
+                    <span>◀</span>
+                    <span class="btn-text">上一幕</span>
+                </button>
+                <button class="control-btn play-btn" id="playBtn" title="播放/暂停">
+                    <span id="playIcon">▶</span>
+                </button>
+                <button class="control-btn" id="nextBtn" title="下一个场景">
+                    <span class="btn-text">下一幕</span>
+                    <span>▶</span>
+                </button>
+            </div>
+
+            <div class="auto-play-toggle">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoPlayToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">自动播放</span>
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- 底部信息 -->
+        <footer class="footer">
+            <p>🐵 齐天大圣 × 现代都市 | Canvas动画作品</p>
+        </footer>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="characters/wukong.js"></script>
+    <script src="scenes/scene1.js"></script>
+    <script src="scenes/scene2.js"></script>
+    <script src="scenes/scene3.js"></script>
+    <script src="scenes/scene4.js"></script>
+    <script src="scenes/scene5.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
+
