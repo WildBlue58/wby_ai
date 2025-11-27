@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>博扬和乡乡的婚后生活</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "ZCOOL KuaiLe", cursive, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #ffe5e5 0%,
+          #fff5e6 50%,
+          #ffe5f0 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        padding: 20px;
+      }
+
+      .title {
+        text-align: center;
+        margin-bottom: 20px;
+        animation: titleFloat 3s ease-in-out infinite;
+      }
+
+      .title h1 {
+        font-family: "Ma Shan Zheng", cursive;
+        font-size: 2.8em;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #ffb6c1, #ff6b6b);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientFlow 4s ease infinite;
+        text-shadow: 2px 2px 4px rgba(255, 107, 107, 0.3);
+      }
+
+      .title .subtitle {
+        font-size: 1.1em;
+        color: #ff8888;
+        margin-top: 5px;
+        opacity: 0.9;
+      }
+
+      @keyframes titleFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @keyframes gradientFlow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .canvas-wrapper {
+        position: relative;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(255, 107, 107, 0.3),
+          0 0 0 5px rgba(255, 255, 255, 0.8),
+          inset 0 0 30px rgba(255, 182, 193, 0.2);
+        background: white;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+      }
+
+      .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(145deg, #ffb6c1, #ff8888);
+        color: white;
+        font-size: 1.4em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255, 136, 136, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(255, 136, 136, 0.5);
+      }
+
+      .nav-btn:active {
+        transform: scale(0.95);
+      }
+
+      .scene-dots {
+        display: flex;
+        gap: 12px;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #ffd1d1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .dot::after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .dot.active {
+        background: linear-gradient(145deg, #ff6b6b, #ff8888);
+        transform: scale(1.3);
+        box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+      }
+
+      .dot.active::after {
+        border-color: rgba(255, 107, 107, 0.3);
+      }
+
+      .dot:hover:not(.active) {
+        background: #ffb0b0;
+        transform: scale(1.15);
+      }
+
+      .play-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(145deg, #98d7c2, #7bc4a8);
+        color: white;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(152, 215, 194, 0.4);
+      }
+
+      .play-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(152, 215, 194, 0.5);
+      }
+
+      .play-btn.paused {
+        background: linear-gradient(145deg, #ffb347, #ffa033);
+        box-shadow: 0 5px 15px rgba(255, 179, 71, 0.4);
+      }
+
+      .scene-text {
+        text-align: center;
+        margin-top: 20px;
+        min-height: 50px;
+      }
+
+      .scene-text p {
+        font-family: "Ma Shan Zheng", cursive;
+        font-size: 1.6em;
+        color: #ff6b6b;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s ease;
+      }
+
+      .scene-text p.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hearts-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .floating-heart {
+        position: absolute;
+        font-size: 20px;
+        opacity: 0.3;
+        animation: floatUp 15s linear infinite;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.3;
+        }
+        90% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 2px;
+        margin-top: 15px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff6b6b, #ffb6c1);
+        border-radius: 2px;
+        transition: width 0.1s linear;
+        width: 0%;
+      }
+
+      @media (max-width: 600px) {
+        .title h1 {
+          font-size: 2em;
+        }
+        .container {
+          padding: 10px;
+        }
+        .nav-btn,
+        .play-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 1em;
+        }
+        .scene-text p {
+          font-size: 1.2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="container">
+      <div class="title">
+        <h1>💕 博扬和乡乡的婚后生活 💕</h1>
+        <p class="subtitle">五个甜蜜的瞬间</p>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="canvas" width="800" height="500"></canvas>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="controls">
+        <button class="nav-btn" id="prevBtn">◀</button>
+        <div class="scene-dots" id="sceneDots"></div>
+        <button class="nav-btn" id="nextBtn">▶</button>
+        <button class="play-btn" id="playBtn">⏸</button>
+      </div>
+
+      <div class="scene-text">
+        <p id="sceneText"></p>
+      </div>
+    </div>
+
+    <script>
+      // ==================== 初始化 ====================
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // ==================== 场景配置 ====================
+      const scenes = [
+        {
+          name: "清晨的厨房",
+          text: "「每一个清晨，都因为有你而美好」",
+          bgColors: ["#FFF8E7", "#FFE4B5", "#FFDAB9"],
+        },
+        {
+          name: "雨天的窗边",
+          text: "「有你的雨天，是最浪漫的晴天」",
+          bgColors: ["#B0C4DE", "#87CEEB", "#D3D3D3"],
+        },
+        {
+          name: "星空下的阳台",
+          text: "「我的全部愿望，就是和你在一起」",
+          bgColors: ["#1a1a2e", "#16213e", "#0f3460"],
+        },
+        {
+          name: "温馨的客厅",
+          text: "「平凡的每一天，因为有你而闪闪发光」",
+          bgColors: ["#FFF5E6", "#FFE4C4", "#FFDEAD"],
+        },
+        {
+          name: "未来的畅想",
+          text: "「博扬 ❤ 乡乡 | 永远幸福」",
+          bgColors: ["#FFE4E1", "#FFB6C1", "#FFC0CB"],
+        },
+      ];
+
+      let currentScene = 0;
+      let isPlaying = true;
+      let sceneTimer = 0;
+      const SCENE_DURATION = 8000; // 8秒
+      let lastTime = 0;
+      let transitionProgress = 1;
+      let isTransitioning = false;
+
+      // ==================== 粒子系统 ====================
+      let particles = [];
+
+      class Particle {
+        constructor(type, x, y) {
+          this.type = type;
+          this.x = x;
+          this.y = y;
+          this.vx = 0;
+          this.vy = 0;
+          this.life = 1;
+          this.maxLife = 1;
+          this.size = 10;
+          this.rotation = 0;
+          this.rotationSpeed = 0;
+          this.alpha = 1;
+
+          this.init();
+        }
+
+        init() {
+          switch (this.type) {
+            case "heart":
+              this.size = Math.random() * 15 + 8;
+              this.vy = -Math.random() * 1.5 - 0.5;
+              this.vx = (Math.random() - 0.5) * 0.8;
+              this.maxLife = Math.random() * 2 + 2;
+              this.life = this.maxLife;
+              this.rotationSpeed = (Math.random() - 0.5) * 0.05;
+              break;
+            case "steam":
+              this.size = Math.random() * 20 + 10;
+              this.vy = -Math.random() * 1 - 0.3;
+              this.vx = (Math.random() - 0.5) * 0.5;
+              this.maxLife = Math.random() * 1.5 + 1;
+              this.life = this.maxLife;
+              break;
+            case "rain":
+              this.size = Math.random() * 15 + 10;
+              this.vy = Math.random() * 5 + 8;
+              this.vx = -1;
+              this.maxLife = Math.random() * 2 + 1;
+              this.life = this.maxLife;
+              break;
+            case "star":
+              this.size = Math.random() * 3 + 1;
+              this.twinkleSpeed = Math.random() * 0.1 + 0.05;
+              this.twinklePhase = Math.random() * Math.PI * 2;
+              this.maxLife = 999;
+              this.life = this.maxLife;
+              break;
+            case "shootingStar":
+              this.size = 3;
+              this.vx = -8;
+              this.vy = 4;
+              this.maxLife = 1.5;
+              this.life = this.maxLife;
+              this.trail = [];
+              break;
+            case "firefly":
+              this.size = Math.random() * 4 + 2;
+              this.angle = Math.random() * Math.PI * 2;
+              this.angleSpeed = (Math.random() - 0.5) * 0.05;
+              this.radius = Math.random() * 30 + 20;
+              this.centerX = this.x;
+              this.centerY = this.y;
+              this.maxLife = 999;
+              this.life = this.maxLife;
+              this.glowPhase = Math.random() * Math.PI * 2;
+              break;
+            case "sparkle":
+              this.size = Math.random() * 8 + 4;
+              this.vy = -Math.random() * 2 - 1;
+              this.vx = (Math.random() - 0.5) * 2;
+              this.maxLife = Math.random() * 1 + 0.5;
+              this.life = this.maxLife;
+              this.rotationSpeed = Math.random() * 0.2;
+              break;
+            case "sakura":
+              this.size = Math.random() * 12 + 8;
+              this.vy = Math.random() * 1.5 + 0.5;
+              this.vx = Math.random() * 1 - 0.3;
+              this.maxLife = Math.random() * 4 + 3;
+              this.life = this.maxLife;
+              this.rotationSpeed = (Math.random() - 0.5) * 0.08;
+              this.swayPhase = Math.random() * Math.PI * 2;
+              this.swaySpeed = Math.random() * 0.05 + 0.02;
+              break;
+            case "bird":
+              this.size = 15;
+              this.vx = Math.random() * 2 + 1;
+              this.vy = Math.sin(this.x * 0.02) * 0.5;
+              this.maxLife = 999;
+              this.life = this.maxLife;
+              this.wingPhase = 0;
+              this.wingSpeed = 0.3;
+              break;
+            case "bubble":
+              this.size = Math.random() * 15 + 5;
+              this.vy = -Math.random() * 1.5 - 0.5;
+              this.vx = (Math.random() - 0.5) * 0.5;
+              this.maxLife = Math.random() * 3 + 2;
+              this.life = this.maxLife;
+              break;
+          }
+        }
+
+        update(dt) {
+          this.life -= dt;
+          this.alpha = Math.min(1, this.life / (this.maxLife * 0.3));
+          this.rotation += this.rotationSpeed;
+
+          switch (this.type) {
+            case "heart":
+            case "steam":
+            case "sparkle":
+            case "bubble":
+              this.x += this.vx;
+              this.y += this.vy;
+              break;
+            case "rain":
+              this.x += this.vx;
+              this.y += this.vy;
+              if (this.y > H) {
+                this.y = -20;
+                this.x = Math.random() * W;
+              }
+              break;
+            case "star":
+              this.twinklePhase += this.twinkleSpeed;
+              this.alpha = 0.5 + Math.sin(this.twinklePhase) * 0.5;
+              break;
+            case "shootingStar":
+              this.x += this.vx;
+              this.y += this.vy;
+              this.trail.push({ x: this.x, y: this.y, alpha: 1 });
+              if (this.trail.length > 20) this.trail.shift();
+              this.trail.forEach((t) => (t.alpha *= 0.9));
+              break;
+            case "firefly":
+              this.angle += this.angleSpeed;
+              this.x = this.centerX + Math.cos(this.angle) * this.radius;
+              this.y = this.centerY + Math.sin(this.angle) * this.radius;
+              this.glowPhase += 0.1;
+              this.alpha = 0.5 + Math.sin(this.glowPhase) * 0.5;
+              break;
+            case "sakura":
+              this.swayPhase += this.swaySpeed;
+              this.x += this.vx + Math.sin(this.swayPhase) * 0.5;
+              this.y += this.vy;
+              break;
+            case "bird":
+              this.x += this.vx;
+              this.wingPhase += this.wingSpeed;
+              this.y += Math.sin(this.x * 0.02) * 0.3;
+              if (this.x > W + 50) this.life = 0;
+              break;
+          }
+
+          return this.life > 0;
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.globalAlpha = this.alpha;
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+
+          switch (this.type) {
+            case "heart":
+              this.drawHeart(ctx, this.size, "#FF6B6B");
+              break;
+            case "steam":
+              this.drawSteam(ctx);
+              break;
+            case "rain":
+              this.drawRain(ctx);
+              break;
+            case "star":
+              this.drawStar(ctx);
+              break;
+            case "shootingStar":
+              this.drawShootingStar(ctx);
+              break;
+            case "firefly":
+              this.drawFirefly(ctx);
+              break;
+            case "sparkle":
+              this.drawSparkle(ctx);
+              break;
+            case "sakura":
+              this.drawSakura(ctx);
+              break;
+            case "bird":
+              this.drawBird(ctx);
+              break;
+            case "bubble":
+              this.drawBubble(ctx);
+              break;
+          }
+
+          ctx.restore();
+        }
+
+        drawHeart(ctx, size, color) {
+          ctx.beginPath();
+          ctx.moveTo(0, size * 0.3);
+          ctx.bezierCurveTo(
+            -size * 0.5,
+            -size * 0.3,
+            -size,
+            size * 0.1,
+            0,
+            size
+          );
+          ctx.bezierCurveTo(
+            size,
+            size * 0.1,
+            size * 0.5,
+            -size * 0.3,
+            0,
+            size * 0.3
+          );
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
+
+        drawSteam(ctx) {
+          const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+          gradient.addColorStop(0, "rgba(255, 255, 255, 0.8)");
+          gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+
+        drawRain(ctx) {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(3, this.size);
+          ctx.strokeStyle = "rgba(150, 200, 255, 0.6)";
+          ctx.lineWidth = 2;
+          ctx.lineCap = "round";
+          ctx.stroke();
+        }
+
+        drawStar(ctx) {
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          const gradient = ctx.createRadialGradient(
+            0,
+            0,
+            0,
+            0,
+            0,
+            this.size * 2
+          );
+          gradient.addColorStop(0, "rgba(255, 255, 200, 1)");
+          gradient.addColorStop(0.5, "rgba(255, 255, 200, 0.5)");
+          gradient.addColorStop(1, "rgba(255, 255, 200, 0)");
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+
+        drawShootingStar(ctx) {
+          // 绘制尾迹
+          ctx.restore();
+          ctx.save();
+          for (let i = 0; i < this.trail.length; i++) {
+            const t = this.trail[i];
+            ctx.beginPath();
+            ctx.arc(
+              t.x,
+              t.y,
+              this.size * (i / this.trail.length),
+              0,
+              Math.PI * 2
+            );
+            ctx.fillStyle = `rgba(255, 255, 200, ${t.alpha * 0.5})`;
+            ctx.fill();
+          }
+          // 绘制头部
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = "#FFFFD0";
+          ctx.fill();
+        }
+
+        drawFirefly(ctx) {
+          const gradient = ctx.createRadialGradient(
+            0,
+            0,
+            0,
+            0,
+            0,
+            this.size * 3
+          );
+          gradient.addColorStop(0, "rgba(255, 255, 150, 1)");
+          gradient.addColorStop(0.3, "rgba(255, 255, 100, 0.5)");
+          gradient.addColorStop(1, "rgba(255, 255, 100, 0)");
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size * 3, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = "#FFFF88";
+          ctx.fill();
+        }
+
+        drawSparkle(ctx) {
+          ctx.beginPath();
+          for (let i = 0; i < 4; i++) {
+            const angle = (Math.PI / 2) * i;
+            ctx.moveTo(0, 0);
+            ctx.lineTo(
+              Math.cos(angle) * this.size,
+              Math.sin(angle) * this.size
+            );
+          }
+          ctx.strokeStyle = "#FFD700";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        drawSakura(ctx) {
+          ctx.fillStyle = `rgba(255, 182, 193, ${this.alpha})`;
+          for (let i = 0; i < 5; i++) {
+            ctx.save();
+            ctx.rotate(((Math.PI * 2) / 5) * i);
+            ctx.beginPath();
+            ctx.ellipse(
+              0,
+              -this.size * 0.4,
+              this.size * 0.3,
+              this.size * 0.5,
+              0,
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+            ctx.restore();
+          }
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size * 0.2, 0, Math.PI * 2);
+          ctx.fillStyle = "#FFE4E1";
+          ctx.fill();
+        }
+
+        drawBird(ctx) {
+          const wingY = Math.sin(this.wingPhase) * 5;
+          ctx.fillStyle = "#4A4A4A";
+          // 身体
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size * 0.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          // 翅膀
+          ctx.beginPath();
+          ctx.moveTo(-3, 0);
+          ctx.quadraticCurveTo(0, -this.size + wingY, 8, 0);
+          ctx.fill();
+        }
+
+        drawBubble(ctx) {
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255, 150, 180, ${this.alpha * 0.5})`;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          // 高光
+          ctx.beginPath();
+          ctx.arc(
+            -this.size * 0.3,
+            -this.size * 0.3,
+            this.size * 0.2,
+            0,
+            Math.PI * 2
+          );
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha * 0.8})`;
+          ctx.fill();
+        }
+      }
+
+      // ==================== 绘制Q版人物 ====================
+      function drawBoyang(ctx, x, y, scale = 1, action = "stand") {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+
+        // 身体
+        ctx.fillStyle = "#5B8DD9"; // 蓝色衣服
+        ctx.beginPath();
+        ctx.ellipse(0, 35, 28, 35, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 脖子
+        ctx.fillStyle = "#FFE4C4";
+        ctx.fillRect(-8, -5, 16, 15);
+
+        // 头
+        ctx.beginPath();
+        ctx.arc(0, -25, 35, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFE4C4";
+        ctx.fill();
+
+        // 头发
+        ctx.fillStyle = "#3D3D3D";
+        ctx.beginPath();
+        ctx.arc(0, -35, 30, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(-28, -35, 56, 15);
+        // 刘海
+        ctx.beginPath();
+        ctx.ellipse(-15, -45, 12, 8, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(0, -48, 10, 6, 0, 0, Math.PI * 2);
+        ctx.ellipse(15, -45, 12, 8, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 眼睛
+        ctx.fillStyle = "#3D3D3D";
+        ctx.beginPath();
+        ctx.ellipse(-12, -25, 5, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(12, -25, 5, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 眼睛高光
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(-10, -27, 2, 0, Math.PI * 2);
+        ctx.arc(14, -27, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 腮红
+        ctx.fillStyle = "rgba(255, 150, 150, 0.5)";
+        ctx.beginPath();
+        ctx.ellipse(-25, -15, 8, 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(25, -15, 8, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 嘴巴
+        ctx.strokeStyle = "#E88888";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, -12, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+
+        // 手臂
+        ctx.fillStyle = "#FFE4C4";
+        if (action === "cook") {
+          // 做饭动作
+          ctx.beginPath();
+          ctx.ellipse(-35, 40, 12, 8, -0.5, 0, Math.PI * 2);
+          ctx.ellipse(40, 30, 12, 8, 0.8, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.ellipse(-35, 45, 12, 8, 0, 0, Math.PI * 2);
+          ctx.ellipse(35, 45, 12, 8, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+
+      function drawXiangxiang(ctx, x, y, scale = 1, action = "stand") {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+
+        // 身体 - 粉色裙子
+        ctx.fillStyle = "#FFB6C1";
+        ctx.beginPath();
+        ctx.moveTo(-30, 20);
+        ctx.quadraticCurveTo(-35, 70, -25, 75);
+        ctx.lineTo(25, 75);
+        ctx.quadraticCurveTo(35, 70, 30, 20);
+        ctx.closePath();
+        ctx.fill();
+
+        // 裙子装饰
+        ctx.fillStyle = "#FF8FAF";
+        ctx.beginPath();
+        ctx.ellipse(0, 30, 25, 8, 0, 0, Math.PI);
+        ctx.fill();
+
+        // 脖子
+        ctx.fillStyle = "#FFE4C4";
+        ctx.fillRect(-7, -5, 14, 12);
+
+        // 头
+        ctx.beginPath();
+        ctx.arc(0, -25, 32, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFE4C4";
+        ctx.fill();
+
+        // 头发 - 双马尾
+        ctx.fillStyle = "#4A3728";
+        // 头顶头发
+        ctx.beginPath();
+        ctx.arc(0, -35, 28, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(-26, -35, 52, 12);
+
+        // 刘海
+        ctx.beginPath();
+        ctx.ellipse(-12, -48, 10, 8, -0.2, 0, Math.PI * 2);
+        ctx.ellipse(0, -50, 8, 6, 0, 0, Math.PI * 2);
+        ctx.ellipse(12, -48, 10, 8, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 马尾
+        ctx.beginPath();
+        ctx.ellipse(-38, -15, 12, 25, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(38, -15, 12, 25, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 头饰蝴蝶结
+        ctx.fillStyle = "#FF6B6B";
+        ctx.beginPath();
+        ctx.ellipse(-38, -35, 8, 5, -0.5, 0, Math.PI * 2);
+        ctx.ellipse(-32, -35, 8, 5, 0.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 眼睛
+        ctx.fillStyle = "#3D3D3D";
+        ctx.beginPath();
+        ctx.ellipse(-10, -25, 5, 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(10, -25, 5, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 眼睛高光
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(-8, -27, 2.5, 0, Math.PI * 2);
+        ctx.arc(12, -27, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        // 睫毛
+        ctx.strokeStyle = "#3D3D3D";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(-15, -30);
+        ctx.lineTo(-17, -33);
+        ctx.moveTo(-10, -32);
+        ctx.lineTo(-10, -35);
+        ctx.moveTo(10, -32);
+        ctx.lineTo(10, -35);
+        ctx.moveTo(15, -30);
+        ctx.lineTo(17, -33);
+        ctx.stroke();
+
+        // 腮红
+        ctx.fillStyle = "rgba(255, 150, 150, 0.6)";
+        ctx.beginPath();
+        ctx.ellipse(-22, -15, 7, 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(22, -15, 7, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 嘴巴
+        ctx.fillStyle = "#FF8888";
+        ctx.beginPath();
+        ctx.ellipse(0, -10, 4, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 手臂
+        ctx.fillStyle = "#FFE4C4";
+        if (action === "cut") {
+          ctx.beginPath();
+          ctx.ellipse(-32, 35, 10, 7, -0.3, 0, Math.PI * 2);
+          ctx.ellipse(35, 25, 10, 7, 0.8, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.ellipse(-32, 40, 10, 7, 0, 0, Math.PI * 2);
+          ctx.ellipse(32, 40, 10, 7, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+
+      // ==================== 场景绘制 ====================
+      function drawScene1(ctx, time) {
+        // 场景1：清晨的厨房
+
+        // 绘制背景
+        const gradient = ctx.createLinearGradient(0, 0, 0, H);
+        gradient.addColorStop(0, "#FFF8E7");
+        gradient.addColorStop(1, "#FFE4B5");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        // 阳光效果
+        ctx.save();
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.moveTo(W - 100, 0);
+          ctx.lineTo(W - 150 + i * 60, H);
+          ctx.lineTo(W - 100 + i * 60, H);
+          ctx.lineTo(W - 50, 0);
+          ctx.closePath();
+          ctx.fillStyle = `rgba(255, 250, 200, ${0.1 - i * 0.015})`;
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // 窗户
+        ctx.fillStyle = "#87CEEB";
+        ctx.fillRect(W - 200, 30, 150, 120);
+        ctx.strokeStyle = "#DEB887";
+        ctx.lineWidth = 8;
+        ctx.strokeRect(W - 200, 30, 150, 120);
+        ctx.beginPath();
+        ctx.moveTo(W - 125, 30);
+        ctx.lineTo(W - 125, 150);
+        ctx.moveTo(W - 200, 90);
+        ctx.lineTo(W - 50, 90);
+        ctx.stroke();
+
+        // 窗帘
+        ctx.fillStyle = "#FFE4E1";
+        ctx.beginPath();
+        ctx.moveTo(W - 210, 20);
+        ctx.quadraticCurveTo(W - 230, 100, W - 210, 160);
+        ctx.lineTo(W - 205, 160);
+        ctx.quadraticCurveTo(W - 225, 100, W - 205, 20);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(W - 40, 20);
+        ctx.quadraticCurveTo(W - 20, 100, W - 40, 160);
+        ctx.lineTo(W - 45, 160);
+        ctx.quadraticCurveTo(W - 25, 100, W - 45, 20);
+        ctx.fill();
+
+        // 厨房台面
+        ctx.fillStyle = "#DEB887";
+        ctx.fillRect(0, H - 180, W, 30);
+        ctx.fillStyle = "#F5DEB3";
+        ctx.fillRect(0, H - 150, W, 150);
+
+        // 锅
+        ctx.fillStyle = "#2F2F2F";
+        ctx.beginPath();
+        ctx.ellipse(250, H - 190, 50, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(200, H - 200, 100, 15);
+        // 锅柄
+        ctx.fillStyle = "#8B4513";
+        ctx.fillRect(300, H - 198, 50, 10);
+
+        // 煎蛋
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.ellipse(245, H - 195, 25, 18, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#FFD700";
+        ctx.beginPath();
+        ctx.arc(248, H - 197, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 水果盘
+        ctx.fillStyle = "#FFFFFF";
+        ctx.beginPath();
+        ctx.ellipse(550, H - 170, 60, 20, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#DDD";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 水果
+        ctx.fillStyle = "#FF6347"; // 草莓
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.arc(530 + i * 20, H - 180, 10, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = "#FFFF00"; // 香蕉
+        ctx.beginPath();
+        ctx.ellipse(560, H - 175, 20, 8, 0.3, 0, Math.PI);
+        ctx.fill();
+
+        // 绘制博扬（穿围裙）
+        ctx.save();
+        drawBoyang(ctx, 200, H - 260, 0.9, "cook");
+        // 围裙
+        ctx.translate(200, H - 260);
+        ctx.scale(0.9, 0.9);
+        ctx.fillStyle = "#98D7C2";
+        ctx.beginPath();
+        ctx.moveTo(-25, 25);
+        ctx.lineTo(-30, 70);
+        ctx.lineTo(30, 70);
+        ctx.lineTo(25, 25);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = "#7BC4A8";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // 围裙带
+        ctx.beginPath();
+        ctx.moveTo(-25, 25);
+        ctx.lineTo(-40, 10);
+        ctx.moveTo(25, 25);
+        ctx.lineTo(40, 10);
+        ctx.stroke();
+        ctx.restore();
+
+        // 绘制乡乡
+        drawXiangxiang(ctx, 500, H - 255, 0.85, "cut");
+
+        // 蒸汽粒子
+        if (Math.random() < 0.1) {
+          particles.push(
+            new Particle("steam", 250 + Math.random() * 30 - 15, H - 220)
+          );
+        }
+
+        // 爱心粒子
+        if (Math.random() < 0.03) {
+          particles.push(
+            new Particle("heart", 350 + Math.random() * 100, H - 150)
+          );
+        }
+
+        // 金色光点
+        if (Math.random() < 0.05) {
+          particles.push(
+            new Particle("sparkle", Math.random() * W, Math.random() * H * 0.6)
+          );
+        }
+      }
+
+      function drawScene2(ctx, time) {
+        // 场景2：雨天的窗边
+
+        // 背景渐变
+        const gradient = ctx.createLinearGradient(0, 0, 0, H);
+        gradient.addColorStop(0, "#708090");
+        gradient.addColorStop(0.5, "#A9A9A9");
+        gradient.addColorStop(1, "#C0C0C0");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        // 大窗户
+        ctx.fillStyle = "#B0C4DE";
+        ctx.fillRect(100, 50, 600, 300);
+        // 窗框
+        ctx.strokeStyle = "#8B7355";
+        ctx.lineWidth = 15;
+        ctx.strokeRect(100, 50, 600, 300);
+        // 窗格
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(400, 50);
+        ctx.lineTo(400, 350);
+        ctx.moveTo(100, 200);
+        ctx.lineTo(700, 200);
+        ctx.stroke();
+
+        // 雨滴在窗户上
+        ctx.strokeStyle = "rgba(200, 220, 255, 0.4)";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 20; i++) {
+          const x = 120 + Math.random() * 560;
+          const y = 70 + Math.random() * 260;
+          const len = Math.random() * 30 + 20;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x - 5, y + len);
+          ctx.stroke();
+        }
+
+        // 窗台
+        ctx.fillStyle = "#8B7355";
+        ctx.fillRect(80, 350, 640, 25);
+
+        // 沙发
+        ctx.fillStyle = "#DEB887";
+        ctx.beginPath();
+        ctx.roundRect(150, 380, 500, 100, 20);
+        ctx.fill();
+        // 沙发靠背
+        ctx.fillStyle = "#D2B48C";
+        ctx.beginPath();
+        ctx.roundRect(150, 360, 500, 50, [20, 20, 0, 0]);
+        ctx.fill();
+        // 沙发扶手
+        ctx.fillStyle = "#DEB887";
+        ctx.beginPath();
+        ctx.roundRect(130, 380, 40, 90, 10);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.roundRect(630, 380, 40, 90, 10);
+        ctx.fill();
+
+        // 毯子
+        ctx.fillStyle = "#FFB6C1";
+        ctx.beginPath();
+        ctx.moveTo(280, 410);
+        ctx.quadraticCurveTo(400, 380, 520, 410);
+        ctx.quadraticCurveTo(530, 470, 500, 480);
+        ctx.lineTo(300, 480);
+        ctx.quadraticCurveTo(270, 470, 280, 410);
+        ctx.fill();
+        ctx.strokeStyle = "#FF8FAF";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 绘制两人相依偎
+        ctx.save();
+        ctx.translate(350, 350);
+        ctx.scale(0.7, 0.7);
+        drawBoyang(ctx, -30, 0, 1);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(430, 355);
+        ctx.scale(0.65, 0.65);
+        drawXiangxiang(ctx, 0, 0, 1);
+        ctx.restore();
+
+        // 茶杯
+        ctx.fillStyle = "#FFF8DC";
+        ctx.beginPath();
+        ctx.moveTo(280, 430);
+        ctx.lineTo(270, 460);
+        ctx.lineTo(310, 460);
+        ctx.lineTo(300, 430);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = "#DEB887";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // 杯把
+        ctx.beginPath();
+        ctx.arc(315, 445, 10, -0.5 * Math.PI, 0.5 * Math.PI);
+        ctx.stroke();
+
+        // 茶杯蒸汽
+        if (Math.random() < 0.08) {
+          particles.push(new Particle("steam", 290 + Math.random() * 10, 420));
+        }
+
+        // 小猫在窗台
+        ctx.save();
+        ctx.translate(620, 320);
+        // 猫身体
+        ctx.fillStyle = "#FFA500";
+        ctx.beginPath();
+        ctx.ellipse(0, 15, 25, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 猫头
+        ctx.beginPath();
+        ctx.arc(-20, 5, 18, 0, Math.PI * 2);
+        ctx.fill();
+        // 猫耳朵
+        ctx.beginPath();
+        ctx.moveTo(-32, -8);
+        ctx.lineTo(-28, -20);
+        ctx.lineTo(-22, -8);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-18, -8);
+        ctx.lineTo(-12, -18);
+        ctx.lineTo(-6, -5);
+        ctx.fill();
+        // 猫眼睛（闭着的）
+        ctx.strokeStyle = "#333";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(-25, 5, 4, 0, Math.PI);
+        ctx.arc(-15, 5, 4, 0, Math.PI);
+        ctx.stroke();
+        // 猫尾巴
+        ctx.fillStyle = "#FFA500";
+        ctx.beginPath();
+        ctx.moveTo(20, 20);
+        ctx.quadraticCurveTo(45, 10, 40, -10);
+        ctx.quadraticCurveTo(38, 15, 20, 25);
+        ctx.fill();
+        ctx.restore();
+
+        // 雨滴粒子
+        if (Math.random() < 0.3) {
+          particles.push(new Particle("rain", Math.random() * W, -20));
+        }
+
+        // 爱心气泡
+        if (Math.random() < 0.02) {
+          particles.push(
+            new Particle("bubble", 350 + Math.random() * 100, 350)
+          );
+        }
+      }
+
+      function drawScene3(ctx, time) {
+        // 场景3：星空下的阳台
+
+        // 星空背景
+        const gradient = ctx.createLinearGradient(0, 0, 0, H);
+        gradient.addColorStop(0, "#0a0a20");
+        gradient.addColorStop(0.4, "#1a1a3e");
+        gradient.addColorStop(1, "#2a2a5e");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        // 初始化星星（只在开始时）
+        if (particles.filter((p) => p.type === "star").length < 50) {
+          for (let i = 0; i < 50; i++) {
+            const star = new Particle(
+              "star",
+              Math.random() * W,
+              Math.random() * H * 0.6
+            );
+            particles.push(star);
+          }
+        }
+
+        // 月亮
+        ctx.save();
+        // 月亮光晕
+        const moonGlow = ctx.createRadialGradient(650, 80, 0, 650, 80, 100);
+        moonGlow.addColorStop(0, "rgba(255, 255, 200, 0.3)");
+        moonGlow.addColorStop(0.5, "rgba(255, 255, 200, 0.1)");
+        moonGlow.addColorStop(1, "rgba(255, 255, 200, 0)");
+        ctx.fillStyle = moonGlow;
+        ctx.beginPath();
+        ctx.arc(650, 80, 100, 0, Math.PI * 2);
+        ctx.fill();
+        // 月亮本体
+        ctx.fillStyle = "#FFFFD0";
+        ctx.beginPath();
+        ctx.arc(650, 80, 40, 0, Math.PI * 2);
+        ctx.fill();
+        // 月亮阴影（弯月效果）
+        ctx.fillStyle = "#1a1a3e";
+        ctx.beginPath();
+        ctx.arc(665, 75, 35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // 远山
+        ctx.fillStyle = "#1a1a4e";
+        ctx.beginPath();
+        ctx.moveTo(0, H * 0.65);
+        ctx.quadraticCurveTo(200, H * 0.5, 400, H * 0.6);
+        ctx.quadraticCurveTo(600, H * 0.5, W, H * 0.65);
+        ctx.lineTo(W, H);
+        ctx.lineTo(0, H);
+        ctx.fill();
+
+        // 阳台地板
+        ctx.fillStyle = "#4a4a6a";
+        ctx.fillRect(0, H - 150, W, 150);
+
+        // 阳台栏杆
+        ctx.strokeStyle = "#6a6a8a";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(0, H - 150);
+        ctx.lineTo(W, H - 150);
+        ctx.stroke();
+        // 栏杆柱子
+        for (let i = 0; i < 10; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * 90 + 40, H - 150);
+          ctx.lineTo(i * 90 + 40, H - 120);
+          ctx.stroke();
+        }
+
+        // 躺椅
+        ctx.fillStyle = "#8B4513";
+        // 左躺椅
+        ctx.beginPath();
+        ctx.moveTo(150, H - 100);
+        ctx.lineTo(130, H - 50);
+        ctx.lineTo(320, H - 50);
+        ctx.lineTo(350, H - 80);
+        ctx.closePath();
+        ctx.fill();
+        // 躺椅垫子
+        ctx.fillStyle = "#87CEEB";
+        ctx.beginPath();
+        ctx.moveTo(155, H - 95);
+        ctx.lineTo(140, H - 55);
+        ctx.lineTo(310, H - 55);
+        ctx.lineTo(340, H - 82);
+        ctx.closePath();
+        ctx.fill();
+
+        // 右躺椅
+        ctx.fillStyle = "#8B4513";
+        ctx.beginPath();
+        ctx.moveTo(450, H - 100);
+        ctx.lineTo(430, H - 50);
+        ctx.lineTo(620, H - 50);
+        ctx.lineTo(650, H - 80);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#FFB6C1";
+        ctx.beginPath();
+        ctx.moveTo(455, H - 95);
+        ctx.lineTo(440, H - 55);
+        ctx.lineTo(610, H - 55);
+        ctx.lineTo(640, H - 82);
+        ctx.closePath();
+        ctx.fill();
+
+        // 绘制躺着的两人
+        ctx.save();
+        ctx.translate(240, H - 110);
+        ctx.rotate(-0.15);
+        ctx.scale(0.6, 0.6);
+        drawBoyang(ctx, 0, 0, 1);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(540, H - 105);
+        ctx.rotate(-0.15);
+        ctx.scale(0.55, 0.55);
+        drawXiangxiang(ctx, 0, 0, 1);
+        ctx.restore();
+
+        // 两人之间的手牵着
+        ctx.strokeStyle = "#FFE4C4";
+        ctx.lineWidth = 8;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(320, H - 85);
+        ctx.quadraticCurveTo(390, H - 70, 460, H - 85);
+        ctx.stroke();
+
+        // 萤火虫
+        if (particles.filter((p) => p.type === "firefly").length < 8) {
+          particles.push(
+            new Particle(
+              "firefly",
+              100 + Math.random() * 600,
+              100 + Math.random() * 200
+            )
+          );
+        }
+
+        // 流星
+        if (Math.random() < 0.008) {
+          particles.push(
+            new Particle("shootingStar", W + 50, Math.random() * 100)
+          );
+        }
+      }
+
+      function drawScene4(ctx, time) {
+        // 场景4：温馨的客厅
+
+        // 背景
+        const gradient = ctx.createLinearGradient(0, 0, 0, H);
+        gradient.addColorStop(0, "#3a3a4a");
+        gradient.addColorStop(1, "#2a2a3a");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        // 墙壁
+        ctx.fillStyle = "#F5E6D3";
+        ctx.fillRect(0, 0, W, H - 100);
+
+        // 地板
+        ctx.fillStyle = "#8B7355";
+        ctx.fillRect(0, H - 100, W, 100);
+        // 地板纹理
+        ctx.strokeStyle = "#7A6245";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 8; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * 120, H - 100);
+          ctx.lineTo(i * 120, H);
+          ctx.stroke();
+        }
+
+        // 落地灯
+        ctx.fillStyle = "#2F2F2F";
+        ctx.fillRect(100, H - 250, 8, 150);
+        // 灯罩
+        ctx.fillStyle = "#FFE4B5";
+        ctx.beginPath();
+        ctx.moveTo(70, H - 250);
+        ctx.lineTo(60, H - 300);
+        ctx.lineTo(148, H - 300);
+        ctx.lineTo(138, H - 250);
+        ctx.closePath();
+        ctx.fill();
+        // 灯光效果
+        const lampGlow = ctx.createRadialGradient(
+          104,
+          H - 275,
+          0,
+          104,
+          H - 275,
+          200
+        );
+        lampGlow.addColorStop(0, "rgba(255, 220, 150, 0.4)");
+        lampGlow.addColorStop(0.5, "rgba(255, 220, 150, 0.1)");
+        lampGlow.addColorStop(1, "rgba(255, 220, 150, 0)");
+        ctx.fillStyle = lampGlow;
+        ctx.beginPath();
+        ctx.arc(104, H - 275, 200, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 电视柜
+        ctx.fillStyle = "#5a4a3a";
+        ctx.fillRect(500, H - 180, 250, 80);
+
+        // 电视
+        ctx.fillStyle = "#1a1a1a";
+        ctx.fillRect(530, H - 320, 190, 130);
+        // 电视屏幕
+        ctx.fillStyle = "#2a4a6a";
+        ctx.fillRect(538, H - 312, 174, 114);
+        // 电视光效
+        const tvGlow = ctx.createRadialGradient(
+          625,
+          H - 255,
+          0,
+          625,
+          H - 255,
+          150
+        );
+        tvGlow.addColorStop(0, "rgba(100, 150, 255, 0.2)");
+        tvGlow.addColorStop(1, "rgba(100, 150, 255, 0)");
+        ctx.fillStyle = tvGlow;
+        ctx.fillRect(400, H - 380, 350, 250);
+
+        // 大沙发
+        ctx.fillStyle = "#D2691E";
+        // 沙发主体
+        ctx.beginPath();
+        ctx.roundRect(180, H - 230, 280, 130, 15);
+        ctx.fill();
+        // 沙发靠背
+        ctx.fillStyle = "#CD853F";
+        ctx.beginPath();
+        ctx.roundRect(180, H - 280, 280, 80, [15, 15, 0, 0]);
+        ctx.fill();
+        // 扶手
+        ctx.fillStyle = "#D2691E";
+        ctx.beginPath();
+        ctx.roundRect(160, H - 230, 35, 120, 10);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.roundRect(445, H - 230, 35, 120, 10);
+        ctx.fill();
+
+        // 毯子
+        ctx.fillStyle = "#FF6B6B";
+        ctx.beginPath();
+        ctx.moveTo(250, H - 180);
+        ctx.quadraticCurveTo(320, H - 220, 400, H - 180);
+        ctx.quadraticCurveTo(420, H - 120, 380, H - 100);
+        ctx.lineTo(270, H - 100);
+        ctx.quadraticCurveTo(230, H - 120, 250, H - 180);
+        ctx.fill();
+        // 毯子花纹
+        ctx.strokeStyle = "#FF8888";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 茶几
+        ctx.fillStyle = "#5a4a3a";
+        ctx.fillRect(240, H - 120, 160, 20);
+        ctx.fillRect(250, H - 100, 10, 50);
+        ctx.fillRect(380, H - 100, 10, 50);
+
+        // 爆米花桶
+        ctx.fillStyle = "#FF4444";
+        ctx.beginPath();
+        ctx.moveTo(280, H - 120);
+        ctx.lineTo(275, H - 165);
+        ctx.lineTo(325, H - 165);
+        ctx.lineTo(320, H - 120);
+        ctx.closePath();
+        ctx.fill();
+        // 爆米花
+        ctx.fillStyle = "#FFF8DC";
+        for (let i = 0; i < 8; i++) {
+          ctx.beginPath();
+          ctx.arc(
+            285 + Math.random() * 25,
+            H - 165 - Math.random() * 15,
+            8,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
+
+        // 可乐
+        ctx.fillStyle = "#8B0000";
+        ctx.beginPath();
+        ctx.roundRect(350, H - 155, 25, 35, 5);
+        ctx.fill();
+        ctx.fillStyle = "#FFD700";
+        ctx.fillRect(352, H - 145, 21, 5);
+
+        // 绘制两人
+        ctx.save();
+        ctx.translate(280, H - 280);
+        ctx.scale(0.7, 0.7);
+        drawBoyang(ctx, 0, 0, 1);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(380, H - 275);
+        ctx.scale(0.65, 0.65);
+        drawXiangxiang(ctx, 0, 0, 1);
+        ctx.restore();
+
+        // 爱心气泡
+        if (Math.random() < 0.04) {
+          particles.push(
+            new Particle("heart", 300 + Math.random() * 100, H - 200)
+          );
+        }
+
+        // 金色光点
+        if (Math.random() < 0.03) {
+          particles.push(
+            new Particle(
+              "sparkle",
+              Math.random() * 200 + 50,
+              Math.random() * 200 + 100
+            )
+          );
+        }
+      }
+
+      function drawScene5(ctx, time) {
+        // 场景5：未来的畅想
+
+        // 天空背景
+        const gradient = ctx.createLinearGradient(0, 0, 0, H);
+        gradient.addColorStop(0, "#87CEEB");
+        gradient.addColorStop(0.6, "#FFE4E1");
+        gradient.addColorStop(1, "#98D7C2");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        // 云朵
+        function drawCloud(x, y, scale) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(scale, scale);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+          ctx.beginPath();
+          ctx.arc(0, 0, 30, 0, Math.PI * 2);
+          ctx.arc(25, -10, 25, 0, Math.PI * 2);
+          ctx.arc(50, 0, 30, 0, Math.PI * 2);
+          ctx.arc(25, 10, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+        drawCloud(100, 60, 1);
+        drawCloud(600, 80, 0.8);
+        drawCloud(350, 40, 0.6);
+
+        // 草地
+        ctx.fillStyle = "#98D7C2";
+        ctx.fillRect(0, H - 150, W, 150);
+        // 草地纹理
+        ctx.fillStyle = "#7BC4A8";
+        for (let i = 0; i < 50; i++) {
+          ctx.beginPath();
+          ctx.ellipse(
+            Math.random() * W,
+            H - 140 + Math.random() * 130,
+            15,
+            5,
+            0,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
+
+        // 小房子
+        ctx.save();
+        ctx.translate(400, H - 280);
+
+        // 房子主体
+        ctx.fillStyle = "#FFF5E6";
+        ctx.fillRect(-80, 0, 160, 130);
+
+        // 屋顶
+        ctx.fillStyle = "#FF6B6B";
+        ctx.beginPath();
+        ctx.moveTo(-100, 0);
+        ctx.lineTo(0, -70);
+        ctx.lineTo(100, 0);
+        ctx.closePath();
+        ctx.fill();
+        // 屋顶纹理
+        ctx.strokeStyle = "#FF5555";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.moveTo(-90 + i * 25, -5 + i * 12);
+          ctx.lineTo(90 - i * 25, -5 + i * 12);
+          ctx.stroke();
+        }
+
+        // 烟囱
+        ctx.fillStyle = "#CD853F";
+        ctx.fillRect(40, -50, 25, 40);
+        // 烟
+        if (Math.random() < 0.1) {
+          particles.push(new Particle("steam", 452, H - 330));
+        }
+
+        // 门
+        ctx.fillStyle = "#8B4513";
+        ctx.beginPath();
+        ctx.roundRect(-25, 50, 50, 80, [10, 10, 0, 0]);
+        ctx.fill();
+        // 门把手
+        ctx.fillStyle = "#FFD700";
+        ctx.beginPath();
+        ctx.arc(15, 95, 5, 0, Math.PI * 2);
+        ctx.fill();
+        // 爱心门饰
+        ctx.fillStyle = "#FF6B6B";
+        ctx.save();
+        ctx.translate(0, 70);
+        ctx.scale(0.5, 0.5);
+        ctx.beginPath();
+        ctx.moveTo(0, 8);
+        ctx.bezierCurveTo(-15, -8, -25, 3, 0, 25);
+        ctx.bezierCurveTo(25, 3, 15, -8, 0, 8);
+        ctx.fill();
+        ctx.restore();
+
+        // 窗户
+        ctx.fillStyle = "#87CEEB";
+        ctx.fillRect(-70, 30, 35, 40);
+        ctx.fillRect(35, 30, 35, 40);
+        // 窗框
+        ctx.strokeStyle = "#FFF";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-70, 30, 35, 40);
+        ctx.strokeRect(35, 30, 35, 40);
+        ctx.beginPath();
+        ctx.moveTo(-52.5, 30);
+        ctx.lineTo(-52.5, 70);
+        ctx.moveTo(-70, 50);
+        ctx.lineTo(-35, 50);
+        ctx.moveTo(52.5, 30);
+        ctx.lineTo(52.5, 70);
+        ctx.moveTo(35, 50);
+        ctx.lineTo(70, 50);
+        ctx.stroke();
+        // 窗帘
+        ctx.fillStyle = "#FFB6C1";
+        ctx.beginPath();
+        ctx.moveTo(-70, 30);
+        ctx.quadraticCurveTo(-65, 50, -60, 30);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-45, 30);
+        ctx.quadraticCurveTo(-40, 50, -35, 30);
+        ctx.fill();
+
+        ctx.restore();
+
+        // 围栏
+        ctx.fillStyle = "#FFF";
+        for (let i = 0; i < 12; i++) {
+          const x = 180 + i * 40;
+          ctx.fillRect(x, H - 180, 8, 50);
+          // 尖顶
+          ctx.beginPath();
+          ctx.moveTo(x, H - 180);
+          ctx.lineTo(x + 4, H - 195);
+          ctx.lineTo(x + 8, H - 180);
+          ctx.fill();
+        }
+        ctx.fillRect(180, H - 160, 440, 8);
+
+        // 花朵
+        function drawFlower(x, y, color) {
+          ctx.fillStyle = color;
+          for (let i = 0; i < 5; i++) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(((Math.PI * 2) / 5) * i);
+            ctx.beginPath();
+            ctx.ellipse(0, -8, 5, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+          ctx.fillStyle = "#FFD700";
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        drawFlower(150, H - 130, "#FF6B6B");
+        drawFlower(180, H - 120, "#FFB6C1");
+        drawFlower(650, H - 125, "#FF8888");
+        drawFlower(680, H - 135, "#FFB6C1");
+        drawFlower(200, H - 140, "#FF9999");
+
+        // 树
+        ctx.fillStyle = "#8B4513";
+        ctx.fillRect(100, H - 250, 20, 100);
+        ctx.fillStyle = "#228B22";
+        ctx.beginPath();
+        ctx.arc(110, H - 280, 50, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(90, H - 250, 35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(130, H - 250, 35, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillRect(680, H - 230, 15, 80);
+        ctx.fillStyle = "#228B22";
+        ctx.beginPath();
+        ctx.arc(688, H - 250, 40, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 绘制两人站在门前
+        drawBoyang(ctx, 340, H - 195, 0.55);
+        drawXiangxiang(ctx, 460, H - 190, 0.5);
+
+        // 两人中间的爱心
+        ctx.save();
+        ctx.translate(400, H - 220);
+        const heartScale = 1 + Math.sin(time * 0.003) * 0.1;
+        ctx.scale(heartScale, heartScale);
+        ctx.fillStyle = "#FF6B6B";
+        ctx.beginPath();
+        ctx.moveTo(0, 5);
+        ctx.bezierCurveTo(-10, -5, -15, 2, 0, 15);
+        ctx.bezierCurveTo(15, 2, 10, -5, 0, 5);
+        ctx.fill();
+        ctx.restore();
+
+        // 樱花飘落
+        if (Math.random() < 0.08) {
+          particles.push(new Particle("sakura", Math.random() * W, -20));
+        }
+
+        // 小鸟
+        if (
+          Math.random() < 0.01 &&
+          particles.filter((p) => p.type === "bird").length < 2
+        ) {
+          particles.push(new Particle("bird", -30, 80 + Math.random() * 100));
+        }
+
+        // 爱心汇聚效果
+        if (Math.random() < 0.05) {
+          particles.push(new Particle("heart", Math.random() * W, H + 20));
+          particles[particles.length - 1].vy = -Math.random() * 2 - 1;
+        }
+      }
+
+      // ==================== 主渲染循环 ====================
+      function render(timestamp) {
+        const dt = (timestamp - lastTime) / 1000;
+        lastTime = timestamp;
+
+        // 清空画布
+        ctx.clearRect(0, 0, W, H);
+
+        // 绘制当前场景
+        switch (currentScene) {
+          case 0:
+            drawScene1(ctx, timestamp);
+            break;
+          case 1:
+            drawScene2(ctx, timestamp);
+            break;
+          case 2:
+            drawScene3(ctx, timestamp);
+            break;
+          case 3:
+            drawScene4(ctx, timestamp);
+            break;
+          case 4:
+            drawScene5(ctx, timestamp);
+            break;
+        }
+
+        // 更新和绘制粒子
+        particles = particles.filter((p) => {
+          const alive = p.update(dt);
+          if (alive) p.draw(ctx);
+          return alive;
+        });
+
+        // 场景过渡效果
+        if (isTransitioning) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${1 - transitionProgress})`;
+          ctx.fillRect(0, 0, W, H);
+          transitionProgress += dt * 2;
+          if (transitionProgress >= 1) {
+            isTransitioning = false;
+            transitionProgress = 1;
+          }
+        }
+
+        // 自动播放计时
+        if (isPlaying && !isTransitioning) {
+          sceneTimer += dt * 1000;
+          updateProgressBar();
+          if (sceneTimer >= SCENE_DURATION) {
+            nextScene();
+          }
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      // ==================== 场景切换 ====================
+      function nextScene() {
+        if (isTransitioning) return;
+        particles = [];
+        currentScene = (currentScene + 1) % scenes.length;
+        sceneTimer = 0;
+        isTransitioning = true;
+        transitionProgress = 0;
+        updateUI();
+      }
+
+      function prevScene() {
+        if (isTransitioning) return;
+        particles = [];
+        currentScene = (currentScene - 1 + scenes.length) % scenes.length;
+        sceneTimer = 0;
+        isTransitioning = true;
+        transitionProgress = 0;
+        updateUI();
+      }
+
+      function goToScene(index) {
+        if (isTransitioning || index === currentScene) return;
+        particles = [];
+        currentScene = index;
+        sceneTimer = 0;
+        isTransitioning = true;
+        transitionProgress = 0;
+        updateUI();
+      }
+
+      function togglePlay() {
+        isPlaying = !isPlaying;
+        updatePlayButton();
+      }
+
+      // ==================== UI更新 ====================
+      function updateUI() {
+        updateDots();
+        updateSceneText();
+      }
+
+      function updateDots() {
+        const dots = document.querySelectorAll(".dot");
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentScene);
+        });
+      }
+
+      function updateSceneText() {
+        const textEl = document.getElementById("sceneText");
+        textEl.classList.remove("visible");
+        setTimeout(() => {
+          textEl.textContent = scenes[currentScene].text;
+          textEl.classList.add("visible");
+        }, 300);
+      }
+
+      function updatePlayButton() {
+        const btn = document.getElementById("playBtn");
+        btn.textContent = isPlaying ? "⏸" : "▶";
+        btn.classList.toggle("paused", !isPlaying);
+      }
+
+      function updateProgressBar() {
+        const fill = document.getElementById("progressFill");
+        fill.style.width = `${(sceneTimer / SCENE_DURATION) * 100}%`;
+      }
+
+      // ==================== 初始化 ====================
+      function init() {
+        // 创建场景导航点
+        const dotsContainer = document.getElementById("sceneDots");
+        scenes.forEach((scene, i) => {
+          const dot = document.createElement("div");
+          dot.className = "dot" + (i === 0 ? " active" : "");
+          dot.title = scene.name;
+          dot.addEventListener("click", () => goToScene(i));
+          dotsContainer.appendChild(dot);
+        });
+
+        // 绑定按钮事件
+        document.getElementById("prevBtn").addEventListener("click", prevScene);
+        document.getElementById("nextBtn").addEventListener("click", nextScene);
+        document
+          .getElementById("playBtn")
+          .addEventListener("click", togglePlay);
+
+        // 创建背景漂浮爱心
+        const heartsBg = document.getElementById("heartsBg");
+        for (let i = 0; i < 15; i++) {
+          const heart = document.createElement("div");
+          heart.className = "floating-heart";
+          heart.textContent = "💕";
+          heart.style.left = Math.random() * 100 + "%";
+          heart.style.animationDelay = Math.random() * 15 + "s";
+          heart.style.fontSize = Math.random() * 15 + 15 + "px";
+          heartsBg.appendChild(heart);
+        }
+
+        // 初始化UI
+        updateSceneText();
+
+        // 开始渲染
+        requestAnimationFrame(render);
+      }
+
+      // 启动
+      init();
+    </script>
+  </body>
+</html>
