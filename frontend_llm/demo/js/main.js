@@ -8,7 +8,7 @@ async function callDeepSeekAPI() {
     const headers = {
       'Content-Type': 'application/json',
       // api key 请求令牌
-      'Authorization': 'Bearer __REDACTED__'
+      'Authorization': 'Bearer ' + ((typeof window !== 'undefined' && window.DEEPSEEK_API_KEY) || '')
     }
     
     // 请求体

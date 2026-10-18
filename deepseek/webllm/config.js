@@ -132,7 +132,7 @@ window.WebLLMConfig = {
     api: {
         enabled: true,
         endpoint: 'https://api.deepseek.com/chat/completions',
-        apiKey: '__REDACTED__',
+        apiKey: (typeof window !== 'undefined' && window.DEEPSEEK_API_KEY) || '',
         model: 'deepseek-chat',
         timeout: 30000,
         temperature: 0.7,

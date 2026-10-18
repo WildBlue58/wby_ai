@@ -26,7 +26,7 @@ class WebLLMApp {
         this.endpoint = "https://api.deepseek.com/chat/completions";
         this.headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer __REDACTED__'
+            'Authorization': 'Bearer ' + ((typeof window !== 'undefined' && window.DEEPSEEK_API_KEY) || '')
         };
         
         this.init();
